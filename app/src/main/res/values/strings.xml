@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Amoure</string>
+    <string name="title_home">Home</string>
+    <string name="title_category">Category</string>
+    <string name="title_vis_search">Vis Search</string>
+    <string name="title_wishlist">Wishlist</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_add">Add</string>
+</resources>
