@@ -5,6 +5,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="gray_blue_200">#DEE3ED</color>
     <color name="navy_blue_500">#0B4F8F</color>
     <color name="navy_blue_700">#FF092D4F</color>
     <color name="gray_200">#FFE1E1E1</color>

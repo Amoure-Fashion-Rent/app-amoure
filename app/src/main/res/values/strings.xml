@@ -7,4 +7,12 @@
     <string name="title_profile">Profile</string>
     <string name="title_cart">Cart</string>
     <string name="title_add">Add</string>
+
+    <string name="lorem_ipsum">Lorem Ipsum</string>
+    <string name="four">4</string>
+    <string name="product_image">Product Image</string>
+
+    <string name="trending">Trending</string>
+    <string name="for_you">For You</string>
+    <string name="search_hint">Search fashion items…</string>
 </resources>

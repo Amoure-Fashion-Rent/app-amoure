@@ -18,9 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
+            android:fitsSystemWindows="true"
             app:title="@string/app_name"
             app:menu="@menu/top_app_bar"
-            app:navigationIcon="@drawable/ic_dot_24"
+            app:navigationIcon="@drawable/app_icon"
             style="@style/Widget.App.Toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
