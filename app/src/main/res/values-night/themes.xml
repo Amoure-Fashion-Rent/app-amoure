@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Amoure" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/navy_blue_500</item>
-        <item name="colorPrimaryVariant">@color/navy_blue_700</item>
+        <item name="colorPrimary">@color/navy_blue_700</item>
+        <item name="colorPrimaryVariant">@color/navy_blue_500</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -54,9 +54,20 @@
         <item name="colorSurface">@color/gray_200</item>
         <item name="colorOnSurface">@color/navy_blue_700</item>
         <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="titleTextColor">@color/navy_blue_700</item>
     </style>
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/gray_blue_200</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="shapeAppearance">@style/MyShapeAppearance</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="MyShapeAppearance">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
     </style>
 </resources>
