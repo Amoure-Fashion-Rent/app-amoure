@@ -69,6 +69,8 @@ dependencies {
     implementation(libs.androidx.room)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.coordinatorlayout)
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)

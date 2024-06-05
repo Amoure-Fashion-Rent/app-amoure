@@ -9,7 +9,10 @@ data class LoginResponse(
 
 	@field:SerializedName("email")
 	val email: String? = null,
-	// TODO
+
 	@field:SerializedName("userType")
-	val userType: String? = null
+	val userType: String? = null,
+
+	@field:SerializedName("userId")
+	val userId: String? = null
 )
