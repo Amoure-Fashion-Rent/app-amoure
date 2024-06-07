@@ -40,7 +40,6 @@ data class ProductItem(
 	@field:SerializedName("ownerId")
 	val ownerId: String? = null,
 
-	// TODO
 	@field:SerializedName("ownerName")
 	val ownerName: String? = null,
 
