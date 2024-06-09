@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.category.CategoryFragment">
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -24,6 +23,44 @@
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/app_icon"
             style="@style/Widget.App.Toolbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/navigation_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_arrow_back_24px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/search_hint"
+                app:backgroundTint="@color/gray_blue_200"
+                app:navigationIconTint="@color/navy_blue_700"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/navigation_icon"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.search.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/search_hint"
+                    app:backgroundTint="@color/gray_blue_200" />
+            </com.google.android.material.search.SearchBar>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
