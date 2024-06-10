@@ -1,13 +1,14 @@
 package com.amoure.amoure.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.amoure.amoure.data.UserRepository
+import kotlinx.coroutines.launch
 
-class ProfileViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is profile Fragment"
+class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
     }
-    val text: LiveData<String> = _text
 }
