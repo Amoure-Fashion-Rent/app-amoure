@@ -7,6 +7,9 @@ import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.di.Injection
 import com.amoure.amoure.ui.cart.CartViewModel
 import com.amoure.amoure.ui.home.HomeViewModel
+import com.amoure.amoure.ui.login.LoginViewModel
+import com.amoure.amoure.ui.main.MainViewModel
+import com.amoure.amoure.ui.profile.ProfileViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
@@ -23,6 +26,15 @@ class ViewModelFactory(private val repository: UserRepository) :
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 SearchViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                LoginViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
