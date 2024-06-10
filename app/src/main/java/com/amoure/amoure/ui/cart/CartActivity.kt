@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,7 +30,6 @@ class CartActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var req: PutCartRequest
-    val regex = Regex("[^0-9]")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +38,9 @@ class CartActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.rvCart.layoutManager = LinearLayoutManager(this)
         // TODO: Remove
-        req = PutCartRequest("", 1, "", "", "")
+        req = PutCartRequest("","", 4, "", 1, "", "", "")
 
         cartViewModel.carts.observe(this) {
-            // TODO: Change to CartResponse
-            it?.products.let { products ->
-                if (products != null) {
-                    setCarts(products)
-                }
-            }
 //            req = PutCartRequest(
 //                it.delivery,
 //                it.deliveryPrice,
@@ -55,15 +49,20 @@ class CartActivity : AppCompatActivity() {
 //                it.cardCVV,
 //            )
 //            with (binding) {
-//                edCcNumber.setText(it.cardNumber)
-//                edSecCode.setText(it.cardCVV)
-//                edExpDate.setText(it.cardExpiry)
 //                edDelivery.setText(String.format(getString(R.string.delivery_item), it.delivery, it.deliveryPrice?.withCurrencyFormat()), false)
 //            }
         }
 
+        cartViewModel.products.observe(this) {
+            setCarts(it)
+        }
+
         cartViewModel.isError.observe(this) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
+        }
+
+        cartViewModel.isLoading.observe(this) {
+            showLoading(it)
         }
 
         binding.topAppBarSecond.setNavigationOnClickListener {
@@ -80,15 +79,39 @@ class CartActivity : AppCompatActivity() {
         binding.edDelivery.setAdapter(deliveryAdapter)
 
         with (binding) {
+            edRentalPeriod.setOnTouchListener { _, motionEvent ->
+                if (motionEvent.action == MotionEvent.ACTION_UP) {
+                    val constraintsBuilder =
+                        CalendarConstraints.Builder()
+                            .setFirstDayOfWeek(Calendar.MONDAY)
+                            .setValidator(DateValidatorPointForward.now())
+
+                    val datePicker =
+                        MaterialDatePicker.Builder.datePicker()
+                            .setTitleText("Select rental period")
+                            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                            .setCalendarConstraints(constraintsBuilder.build())
+                            .build()
+
+                    datePicker.show(supportFragmentManager,"RENTAL_PERIOD_DATE_PICKER")
+
+                    datePicker.addOnPositiveButtonClickListener {
+                        val cal = Calendar.getInstance()
+                        cal.timeInMillis = it
+                        val format = SimpleDateFormat("dd/MM/yyyy")
+                        val formattedDate: String = format.format(cal.time)
+                        binding.edlRentalPeriod.editText?.setText(formattedDate)
+                    }
+                }
+                false
+            }
             edCcNumber.afterTextChangedDelayed {
                 req.cardNumber = edCcNumber.text.toString()
                 showToast(req.cardNumber)
-//                cartViewModel.putFromCart(req)
             }
             edSecCode.afterTextChangedDelayed {
                 req.cardCVV = edSecCode.text.toString()
                 showToast(req.cardCVV)
-//                cartViewModel.putFromCart(req)
             }
             edExpDate.setOnTouchListener { _, motionEvent ->
                 if (motionEvent.action == MotionEvent.ACTION_UP) {
@@ -114,8 +137,8 @@ class CartActivity : AppCompatActivity() {
                         binding.edlExpDate.editText?.setText(formattedDate)
                         req.cardExpiry = formattedDate
                         showToast(req.cardExpiry)
-//                cartViewModel.putFromCart(req)
                     }
+//                cartViewModel.putFromCart(req)
                 }
                 false
             }
@@ -147,5 +170,9 @@ class CartActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
