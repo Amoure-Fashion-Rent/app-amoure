@@ -25,6 +25,16 @@
             app:navigationIcon="@drawable/app_icon"
             style="@style/Widget.App.Toolbar" />
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_marginTop="-20dp"
+            app:title="@string/title_wishlist"
+            app:navigationIcon="@drawable/ic_arrow_back_24px"
+            style="@style/Widget.App.Toolbar" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
