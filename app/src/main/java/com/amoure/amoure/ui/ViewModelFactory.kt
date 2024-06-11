@@ -8,6 +8,9 @@ import com.amoure.amoure.di.Injection
 import com.amoure.amoure.ui.cart.CartViewModel
 import com.amoure.amoure.ui.home.HomeViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
+//import com.amoure.amoure.ui.search.ProfileViewModel
+//import com.amoure.amoure.ui.search.VisSearchViewModel
+//import com.amoure.amoure.ui.search.WishlistViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
     ViewModelProvider.NewInstanceFactory() {
