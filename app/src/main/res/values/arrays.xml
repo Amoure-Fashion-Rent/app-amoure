@@ -5,4 +5,8 @@
         <item>JNE Express (Rp 16.000)</item>
         <item>Gojek Sameday (Rp 20.000)</item>
     </string-array>
+    <string-array name="user_type_items" >
+        <item>User</item>
+        <item>Owner</item>
+    </string-array>
 </resources>

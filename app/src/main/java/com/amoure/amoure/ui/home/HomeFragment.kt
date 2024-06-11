@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
@@ -17,7 +18,9 @@ import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ProductSmallAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
+import com.amoure.amoure.ui.search.SearchFragment
 import com.amoure.amoure.ui.search.SearchViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 
 class HomeFragment : Fragment() {
@@ -62,6 +65,7 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun setSearchBar() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
@@ -72,11 +76,9 @@ class HomeFragment : Fragment() {
                     searchView.hide()
                     if (searchView.text.toString() != "") {
                         val query = searchView.text.toString()
-//                        searchViewModel.getSearch(query)
-                        svHome.removeAllViews()
-                        val layoutInflater = LayoutInflater.from(context)
-                        val layoutItem = layoutInflater.inflate(R.layout.item_search, null)
-                        svHome.addView(layoutItem)
+                        val bundle = Bundle()
+                        bundle.putString(SearchFragment.QUERY, query)
+                        findNavController().navigate(R.id.action_navigation_home_to_navigation_search, bundle)
                     }
                     false
                 }

@@ -11,5 +11,8 @@ data class InitialResponse<T>(
 	val status: String? = null,
 
 	@field:SerializedName("data")
-	val data: T? = null
+	val data: T? = null,
+
+	@field:SerializedName("errors")
+	val errors: List<ErrorResponse>? = null
 )

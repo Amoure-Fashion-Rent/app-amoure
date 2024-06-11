@@ -55,30 +55,4 @@
         app:layout_constraintTop_toBottomOf="@id/tv_name"
         tools:text="@string/lorem_ipsum" />
 
-    <ImageView
-        android:id="@+id/iv_star"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:contentDescription="@string/product_image"
-        android:src="@drawable/ic_star_24"
-        app:layout_constraintStart_toStartOf="@id/iv_product"
-        app:layout_constraintTop_toTopOf="@id/iv_product"
-        app:tint="@color/yellow_500" />
-
-    <TextView
-        android:id="@+id/tv_rating"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:textStyle="bold"
-        android:text="@string/four"
-        android:layout_marginTop="9dp"
-        android:layout_marginStart="2dp"
-        app:layout_constraintStart_toEndOf="@id/iv_star"
-        app:layout_constraintEnd_toEndOf="@id/iv_product"
-        app:layout_constraintTop_toTopOf="@id/iv_product"
-        tools:text="@string/four" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

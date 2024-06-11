@@ -5,20 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.amoure.amoure.R
 import com.amoure.amoure.databinding.FragmentProfileBinding
+import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
+import com.amoure.amoure.ui.start.StartActivity
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-    private val profileViewModel by viewModels<ProfileViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -29,13 +30,32 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
-        profileViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-
         setTopAppBar()
+        setupAction()
         return root
+    }
+
+    private fun setupAction() {
+        with(binding) {
+            btEditProfile.setOnClickListener {
+                // TODO: Go to edit profile page
+//                val moveIntent = Intent(context, DetailActivity::class.java)
+//                moveIntent.putExtra(DetailActivity.ID, id)
+//                startActivity(moveIntent)
+            }
+            btYourRent.setOnClickListener {
+                // TODO: Go to your rent page
+//                val moveIntent = Intent(context, DetailActivity::class.java)
+//                moveIntent.putExtra(DetailActivity.ID, id)
+//                startActivity(moveIntent)
+            }
+            btLogout.setOnClickListener {
+                profileViewModel.logout()
+                val intent = Intent(requireContext(), StartActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+        }
     }
 
     private fun setTopAppBar() {
