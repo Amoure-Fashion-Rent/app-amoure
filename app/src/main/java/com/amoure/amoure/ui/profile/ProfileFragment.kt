@@ -11,6 +11,7 @@ import com.amoure.amoure.R
 import com.amoure.amoure.databinding.FragmentProfileBinding
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
+import com.amoure.amoure.ui.editprofile.EditProfileActivity
 import com.amoure.amoure.ui.start.StartActivity
 
 class ProfileFragment : Fragment() {
@@ -38,10 +39,8 @@ class ProfileFragment : Fragment() {
     private fun setupAction() {
         with(binding) {
             btEditProfile.setOnClickListener {
-                // TODO: Go to edit profile page
-//                val moveIntent = Intent(context, DetailActivity::class.java)
-//                moveIntent.putExtra(DetailActivity.ID, id)
-//                startActivity(moveIntent)
+                val moveIntent = Intent(context, EditProfileActivity::class.java)
+                startActivity(moveIntent)
             }
             btYourRent.setOnClickListener {
                 // TODO: Go to your rent page

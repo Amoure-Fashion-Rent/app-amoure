@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.cart.CartActivity">
+    tools:context=".ui.editprofile.EditProfileActivity">
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,24 +17,244 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_cart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="20dp" />
-
             <TextView
-                android:id="@+id/tv_rental_period"
+                android:id="@+id/tv_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/rental_period"
+                android:text="@string/your_name"
                 android:textColor="@color/navy_blue_700"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="12dp"
-                android:labelFor="@+id/ed_rental_period" />
+                android:labelFor="@+id/ed_profile_name" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_rental_period"
+                android:id="@+id/edl_profile_name"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_email"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:inputType="textEmailAddress"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_province"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/province"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_province" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_province"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_province"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_city" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_city"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_district"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/district"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_district" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_district"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_postal_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/postal_code"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_postal_code" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_postal_code"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_postal_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:inputType="number"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address_detail"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_address" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_address"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:inputType="textPostalAddress|textMultiLine"
+                    android:maxLines="3"
+                    android:padding="5dp"
+                    android:gravity="top"
+                    android:scrollbars="vertical"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_phone_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_num"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_phone_num" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_phone_num"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="20dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_phone_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:inputType="phone|number"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_phone_num_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_num_message"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:textSize="12sp"
+                android:labelFor="@+id/ed_register_password"/>
+
+            <TextView
+                android:id="@+id/tv_profile_birth_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/birth_date"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_birth_date" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_birth_date"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +262,7 @@
                 android:layout_marginBottom="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_rental_period"
+                    android:id="@+id/ed_profile_birth_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
@@ -50,190 +270,14 @@
                     android:padding="5dp"
                     tools:ignore="TouchTargetSizeCheck" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                app:dividerInsetStart="20dp"
-                app:dividerInsetEnd="20dp"/>
-
-            <TextView
-                android:id="@+id/tv_your_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="8dp"
-                android:textSize="20sp"
-                android:text="@string/your_address"
-                style="@style/TextHeadline3" />
-
-            <TextView
-                android:id="@+id/tv_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="8dp"
-                android:text="@string/lorem_ipsum" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                app:dividerInsetStart="20dp"
-                app:dividerInsetEnd="20dp"/>
-
-            <TextView
-                android:id="@+id/tv_payment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="8dp"
-                android:textSize="20sp"
-                android:text="@string/payment_method"
-                style="@style/TextHeadline3" />
-
-            <TextView
-                android:id="@+id/tv_cc_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cc_number"
-                android:textColor="@color/navy_blue_700"
-                android:layout_marginHorizontal="20dp"
-                android:labelFor="@+id/ed_cc_number"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_cc_number"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_cc_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:padding="5dp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_exp_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/exp_date"
-                android:textColor="@color/navy_blue_700"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                android:labelFor="@+id/ed_exp_date" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_exp_date"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_exp_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:padding="5dp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_sec_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sec_code"
-                android:textColor="@color/navy_blue_700"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                android:labelFor="@+id/ed_sec_code"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_sec_code"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_sec_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:padding="5dp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                app:dividerInsetStart="20dp"
-                app:dividerInsetEnd="20dp"/>
-
-            <TextView
-                android:id="@+id/tv_delivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="8dp"
-                android:textSize="20sp"
-                android:text="@string/delivery"
-                android:labelFor="@+id/ed_delivery"
-                style="@style/TextHeadline3" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_delivery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="12dp"
-                app:endIconMinSize="20dp"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-                <AutoCompleteTextView
-                    android:id="@+id/ed_delivery"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:padding="5dp"
-                    app:simpleItems="@array/delivery_items"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                app:dividerInsetStart="20dp"
-                app:dividerInsetEnd="20dp"/>
-
-            <TextView
-                android:id="@+id/tv_total"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="8dp"
-                android:textSize="20sp"
-                android:text="@string/total"
-                style="@style/TextHeadline3" />
-
 
             <Button
-                android:id="@+id/bt_checkout"
+                android:id="@+id/bt_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/checkout"
+                android:text="@string/save"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginVertical="30dp"
                 style="@style/Widget.App.Button"
                 />
 
@@ -263,7 +307,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             android:layout_marginTop="-20dp"
-            app:title="@string/title_your_cart"
+            app:title="@string/title_edit_profile"
             app:navigationIcon="@drawable/ic_arrow_back_24px"
             style="@style/Widget.App.Toolbar" />
 
@@ -284,4 +328,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
