@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
@@ -44,10 +45,12 @@ class SearchFragment : Fragment() {
             if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 
-        query = arguments?.getString(QUERY)
-        if (query != null) {
-//            query?.let { searchViewModel.getSearch(it) }
+        searchViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
         }
+
+        query = arguments?.getString(QUERY)
+//        query?.let { searchViewModel.getSearch(it) }
 
 
         setSearchBar()
@@ -58,6 +61,7 @@ class SearchFragment : Fragment() {
     private fun setSearchBar() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
+            searchBar.setText(query)
             searchView
                 .editText
                 .setOnEditorActionListener { _, _, _ ->
@@ -83,6 +87,9 @@ class SearchFragment : Fragment() {
                 else -> false
             }
         }
+        binding.searchBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setSearchResults(products: List<ProductItem?>) {
@@ -101,6 +108,10 @@ class SearchFragment : Fragment() {
 
     private fun showToast(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {

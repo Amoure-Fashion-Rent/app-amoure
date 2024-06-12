@@ -34,9 +34,8 @@ class ProductSmallAdapter : ListAdapter<ProductItem, ProductSmallAdapter.MyViewH
         fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
             with(binding) {
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_product), product.rentPrice?.withCurrencyFormat())
-                tvName.text = product.name
+                tvName.text = product.productName
                 tvOwner.text = product.ownerName
-                tvRating.text = product.rating.toString()
                 Glide.with(ivProduct.context)
                     .load(product.imgProduct)
                     .into(ivProduct)

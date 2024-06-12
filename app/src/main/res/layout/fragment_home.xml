@@ -83,7 +83,8 @@
             android:hint="@string/search_hint"
             android:layout_marginTop="-10dp"
             app:backgroundTint="@color/gray_blue_200"
-            app:navigationIconTint="@color/navy_blue_700" />
+            app:navigationIconTint="@color/navy_blue_700"
+            app:forceDefaultNavigationOnClickListener="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -1,10 +1,11 @@
 package com.amoure.amoure.data.retrofit
 
+import com.amoure.amoure.data.response.CartResponse
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
+import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
-import com.amoure.amoure.data.response.RegisterResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -19,10 +20,11 @@ interface ApiService {
     @FormUrlEncoded
     @POST("auth/register")
     fun register(
+        @Field("fullName") fullName: String,
         @Field("email") email: String,
         @Field("password") password: String,
         @Field("userType") userType: String
-    ): Call<InitialResponse<RegisterResponse>>
+    ): Call<InitialResponse<IdResponse>>
 
     @FormUrlEncoded
     @POST("auth/login")
@@ -37,22 +39,20 @@ interface ApiService {
     @GET("products/{productId}")
     fun getProductById(
         @Path("productId") id: String
-    ): Call<InitialResponse<ProductsResponse>>
+    ): Call<InitialResponse<ProductResponse>>
 
-    // TODO: Change to CartResponse
     @GET("/carts/{userId}")
     fun getUserCart(
         @Path("userId") id: String
-    ): Call<InitialResponse<ProductsResponse>>
+    ): Call<InitialResponse<CartResponse>>
 
     @PUT("/carts/{userId}")
     fun putFromCart(
         @Path("userId") id: String,
+        @Field("rentalStartDate") rentalStartDate: String,
+        @Field("rentalEndDate") rentalEndDate: String,
+        @Field("rentalDuration") rentalDuration: Int,
         @Field("delivery") delivery: String,
-        @Field("deliveryPrice") deliveryPrice: Int,
-        @Field("cardNumber") cardNumber: String,
-        @Field("cardCVV") cardCVV: String,
-        @Field("cardExpiry") cardExpiry: String,
     ): Call<InitialResponse<IdResponse>>
 
     @POST("/carts/{userId}/{productId}")

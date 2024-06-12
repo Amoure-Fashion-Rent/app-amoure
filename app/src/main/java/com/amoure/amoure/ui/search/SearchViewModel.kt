@@ -21,6 +21,9 @@ class SearchViewModel(private val repository: UserRepository) : ViewModel() {
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private lateinit var accessToken: String
 
     init {
@@ -38,6 +41,7 @@ class SearchViewModel(private val repository: UserRepository) : ViewModel() {
     }
 
     private fun getSearch(token: String, name: String) {
+        _isLoading.value = true
         val client = ApiConfig.getApiService(token).getSearch(name)
         client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {
             override fun onResponse(
@@ -52,10 +56,12 @@ class SearchViewModel(private val repository: UserRepository) : ViewModel() {
                 } else {
                     _isError.value = true
                 }
+                _isLoading.value = false
             }
 
             override fun onFailure(call: Call<InitialResponse<ProductsResponse>>, t: Throwable) {
                 _isError.value = true
+                _isLoading.value = false
             }
         })
     }

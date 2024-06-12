@@ -10,20 +10,23 @@ data class ProductsResponse(
 
 data class ProductResponse(
 
-	@field:SerializedName("products")
+	@field:SerializedName("product")
 	val product: ProductItem? = null
 )
 
 data class ProductItem(
 
-	@field:SerializedName("size")
-	val size: String? = null,
+	@field:SerializedName("ownerName")
+	val ownerName: String? = null,
 
 	@field:SerializedName("color")
 	val color: String? = null,
 
-	@field:SerializedName("name")
-	val name: String? = null,
+	@field:SerializedName("styleNotes")
+	val styleNotes: String? = null,
+
+	@field:SerializedName("available")
+	val available: Boolean? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
@@ -34,23 +37,17 @@ data class ProductItem(
 	@field:SerializedName("rentPrice")
 	val rentPrice: Int? = null,
 
-	@field:SerializedName("stock")
-	val stock: Int? = null,
-
-	@field:SerializedName("ownerId")
-	val ownerId: String? = null,
-
-	@field:SerializedName("ownerName")
-	val ownerName: String? = null,
-
-	@field:SerializedName("rating")
-	val rating: Double? = null,
-
 	@field:SerializedName("retailPrice")
 	val retailPrice: Int? = null,
 
+	@field:SerializedName("userId")
+	val userId: String? = null,
+
+	@field:SerializedName("productName")
+	val productName: String? = null,
+
 	@field:SerializedName("imgProduct")
-	val imgProduct: String? = null,
+	val imgProduct: List<String?>? = null,
 
 	@field:SerializedName("categoryId")
 	val categoryId: String? = null
