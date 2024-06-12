@@ -11,6 +11,8 @@ import com.amoure.amoure.ui.login.LoginViewModel
 import com.amoure.amoure.ui.main.MainViewModel
 import com.amoure.amoure.ui.profile.ProfileViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
+import com.amoure.amoure.ui.wishlist.WishlistViewModel
+
 //import com.amoure.amoure.ui.search.ProfileViewModel
 //import com.amoure.amoure.ui.search.VisSearchViewModel
 //import com.amoure.amoure.ui.search.WishlistViewModel
@@ -38,6 +40,9 @@ class ViewModelFactory(private val repository: UserRepository) :
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(WishlistViewModel::class.java) -> {
+                WishlistViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

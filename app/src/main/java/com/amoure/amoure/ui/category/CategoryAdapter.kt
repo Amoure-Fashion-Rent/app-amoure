@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.dataclass.Category
 import com.amoure.amoure.databinding.ItemCategoryBinding
+import com.bumptech.glide.Glide
 
 class CategoryAdapter : ListAdapter<ProductItem, CategoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -33,8 +34,10 @@ class CategoryAdapter : ListAdapter<ProductItem, CategoryAdapter.MyViewHolder>(D
         @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
         fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
             with(binding) {
-                tvName.text = product.name
-
+                tvName.text = product.productName
+                Glide.with(ivProduct.context)
+                    .load(product.imgProduct)
+                    .into(ivProduct)
             }
         }
     }

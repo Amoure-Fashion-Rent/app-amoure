@@ -1,5 +1,13 @@
 package com.amoure.amoure.ui.main
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -20,12 +28,32 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
+
+        // Register activity results for camera and gallery
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // Handle the camera result here
+            if (result.resultCode == RESULT_OK) {
+                val imageUri: Uri? = result.data?.data
+                // Use the imageUri as needed
+            }
+        }
+
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            // Handle the gallery result here
+            if (result.resultCode == RESULT_OK) {
+                val imageUri: Uri? = result.data?.data
+                // Use the imageUri as needed
+            }
+        }
 
 //        mainViewModel.getSession().observe(this) { user ->
 //            if (!user.isLogin || user.accessToken.isEmpty()) {
@@ -58,5 +86,37 @@ class MainActivity : AppCompatActivity() {
                 navView.visibility = View.VISIBLE
             }
         }
+
+        navView.setOnItemSelectedListener { item: MenuItem ->
+            if (item.itemId == R.id.navigation_vis_search) {
+                showCameraGalleryDialog()
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun showCameraGalleryDialog() {
+        val options = arrayOf("Camera", "Gallery")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Choose an option")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> openCamera()
+                1 -> openGallery()
+            }
+        }
+        builder.show()
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraLauncher.launch(cameraIntent)
+    }
+
+    private fun openGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(galleryIntent)
     }
 }

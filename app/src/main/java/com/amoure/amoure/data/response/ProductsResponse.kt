@@ -22,6 +22,9 @@ data class ProductItem(
 	@field:SerializedName("color")
 	val color: String? = null,
 
+	@field:SerializedName("size")
+	val size: String? = null,
+
 	@field:SerializedName("styleNotes")
 	val styleNotes: String? = null,
 

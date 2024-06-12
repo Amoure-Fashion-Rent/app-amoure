@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
-import com.amoure.amoure.data.dataclass.Category
 import com.amoure.amoure.databinding.ItemWishlistBinding
 import com.amoure.amoure.withCurrencyFormat
 import com.bumptech.glide.Glide
@@ -39,7 +38,7 @@ class WishlistAdapter : ListAdapter<ProductItem, WishlistAdapter.MyViewHolder>(D
                 tvRetailPrice.text = String.format(context.resources.getString(R.string.retail_price_cart), product.retailPrice?.withCurrencyFormat())
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_cart), product.rentPrice?.withCurrencyFormat())
                 tvOwner.text = product.ownerName
-                tvName.text = product.name
+                tvName.text = product.productName
                 tvSize.text = product.size
                 Glide.with(ivProduct.context)
                     .load(product.imgProduct)

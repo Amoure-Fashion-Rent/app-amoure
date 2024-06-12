@@ -20,7 +20,7 @@ import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.search.CategoryViewModel
 
-class CategoryFragment : Fragment() {
+class CategoryFragmentClick : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val CategoryViewModel by viewModels<CategoryViewModel>() {
@@ -100,7 +100,7 @@ class CategoryFragment : Fragment() {
         binding.rvCategory.adapter = adapter
         adapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
-                // TODO: Go to list of category lists
+                // TODO: Go to product page
 //                val moveIntent = Intent(context, DetailActivity::class.java)
 //                moveIntent.putExtra(DetailActivity.ID, id)
 //                startActivity(moveIntent)

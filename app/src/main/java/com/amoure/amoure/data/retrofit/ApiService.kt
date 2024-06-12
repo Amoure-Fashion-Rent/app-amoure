@@ -6,6 +6,7 @@ import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
+import com.amoure.amoure.data.response.WishlistResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -71,4 +72,22 @@ interface ApiService {
     fun getSearch(
         @Query("name") name: String
     ): Call<InitialResponse<ProductsResponse>>
+
+    @GET("/wishlists/{userId}")
+    fun getUserWishlist(
+        @Path("userId") id: String
+    ): Call<InitialResponse<WishlistResponse>>
+
+    @POST("/wishlists/{userId}/{productId}")
+    fun postToWishlist(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
+
+    @DELETE("/wishlists/{userId}/{productId}")
+    fun deleteFromWishlist(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
 }
