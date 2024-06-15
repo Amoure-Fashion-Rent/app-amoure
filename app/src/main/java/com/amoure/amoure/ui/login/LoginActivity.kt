@@ -8,7 +8,6 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.InitialResponse
@@ -18,6 +17,7 @@ import com.amoure.amoure.isEmailValid
 import com.amoure.amoure.isPasswordValid
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.main.MainActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -84,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
             val moveIntent = Intent(baseContext, MainActivity::class.java)
             startActivity(moveIntent)
         } else {
-            AlertDialog.Builder(this).apply {
+            MaterialAlertDialogBuilder(this).apply {
                 setTitle(resources.getString(R.string.login_alert_title_error))
                 setMessage(response.message ?: resources.getString(R.string.alert_error))
                 setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->

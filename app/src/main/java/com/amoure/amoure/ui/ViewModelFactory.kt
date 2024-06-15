@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.di.Injection
 import com.amoure.amoure.ui.cart.CartViewModel
+import com.amoure.amoure.ui.designer.DesignerViewModel
+import com.amoure.amoure.ui.editprofile.EditProfileViewModel
 import com.amoure.amoure.ui.home.HomeViewModel
 import com.amoure.amoure.ui.login.LoginViewModel
 import com.amoure.amoure.ui.main.MainViewModel
+import com.amoure.amoure.ui.product.ProductViewModel
 import com.amoure.amoure.ui.profile.ProfileViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
 
@@ -35,6 +38,15 @@ class ViewModelFactory(private val repository: UserRepository) :
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
+                EditProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ProductViewModel::class.java) -> {
+                ProductViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DesignerViewModel::class.java) -> {
+                DesignerViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

@@ -6,6 +6,7 @@ import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
+import com.amoure.amoure.data.response.ProfileResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -33,8 +34,32 @@ interface ApiService {
         @Field("password") password: String
     ): Call<InitialResponse<LoginResponse>>
 
+    @GET("users/{userId}")
+    fun getProfile(
+        @Path("userId") userId: String,
+    ): Call<InitialResponse<ProfileResponse>>
+
+    @PUT("users/{userId}")
+    fun putProfile(
+        @Path("userId") userId: String,
+        @Field("fullName") fullName: String,
+        @Field("email") email: String,
+        @Field("addressDetail") addressDetail: String,
+        @Field("province") province: String,
+        @Field("city") city: String,
+        @Field("district") district: String,
+        @Field("postalCode") postalCode: String,
+        @Field("phoneNumber") phoneNumber: String,
+        @Field("birthDate") birthDate: String?,
+    ): Call<InitialResponse<IdResponse>>
+
     @GET("products")
     fun getProducts(): Call<InitialResponse<ProductsResponse>>
+
+    @GET("products/{ownerId}/owner")
+    fun getProductsByOwner(
+        @Path("ownerId") ownerId: String
+    ): Call<InitialResponse<ProductsResponse>>
 
     @GET("products/{productId}")
     fun getProductById(

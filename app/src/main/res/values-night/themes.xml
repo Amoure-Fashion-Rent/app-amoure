@@ -72,4 +72,19 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10dp</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.App.Card.CornerLeftOnly" parent="">
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.Card.CornerRightOnly" parent="">
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="Widget.App.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/navy_blue_700</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
 </resources>

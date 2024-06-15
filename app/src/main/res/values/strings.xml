@@ -59,4 +59,29 @@
 
     <string name="title_edit_profile">Edit Profile</string>
     <string name="title_your_rent">Your Rent</string>
+
+    <string name="designer_name">Designer Name</string>
+    <string name="address_detail">Address Detail</string>
+    <string name="province">Province</string>
+    <string name="city">City</string>
+    <string name="district">District</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="phone_num">Phone Number</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="save">Save</string>
+    <string name="phone_num_message">Do not use dialing code (+62), use 0 in front; example: 0812xxx</string>
+
+    <string name="available">Available</string>
+    <string name="not_available">Not Available</string>
+    <string name="retail_price">Rental Price:</string>
+    <string name="rent_price">Rent Price:</string>
+    <string name="rent_now">Rent Now</string>
+    <string name="try_on">Try On</string>
+    <string name="product_details">Product Details</string>
+    <string name="stylish_notes">Stylish Notes</string>
+    <string name="designer">Designer</string>
+    <string name="product_reviews">Product Reviews</string>
+    <string name="similar_items">Similar Items</string>
+    <string name="see_all_items">See all items</string>
+    <string name="see_all_reviews">See all reviews</string>
 </resources>
