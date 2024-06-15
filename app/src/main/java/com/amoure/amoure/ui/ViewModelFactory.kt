@@ -13,6 +13,8 @@ import com.amoure.amoure.ui.login.LoginViewModel
 import com.amoure.amoure.ui.main.MainViewModel
 import com.amoure.amoure.ui.product.ProductViewModel
 import com.amoure.amoure.ui.profile.ProfileViewModel
+import com.amoure.amoure.ui.renthistory.RentHistoryViewModel
+import com.amoure.amoure.ui.review.ReviewViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
 
 class ViewModelFactory(private val repository: UserRepository) :
@@ -47,6 +49,12 @@ class ViewModelFactory(private val repository: UserRepository) :
             }
             modelClass.isAssignableFrom(DesignerViewModel::class.java) -> {
                 DesignerViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ReviewViewModel::class.java) -> {
+                ReviewViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(RentHistoryViewModel::class.java) -> {
+                RentHistoryViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
