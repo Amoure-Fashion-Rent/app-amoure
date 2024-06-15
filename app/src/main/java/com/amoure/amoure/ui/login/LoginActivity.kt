@@ -60,10 +60,16 @@ class LoginActivity : AppCompatActivity() {
                 val email = edLoginEmail.text.toString()
                 if (email.isEmpty() || !isEmailValid(email)) {
                     edlLoginEmail.error = String.format(getString(R.string.input_required), "email")
+                    return@setOnClickListener
+                } else {
+                    edlLoginEmail.isErrorEnabled = false
                 }
                 val password = edLoginPassword.text.toString()
                 if (password.isEmpty() || !isPasswordValid(password)) {
                     edlLoginPassword.error = String.format(getString(R.string.input_required), "password")
+                    return@setOnClickListener
+                } else {
+                    edlLoginPassword.isErrorEnabled = false
                 }
                 Toast.makeText(baseContext, email+password, Toast.LENGTH_SHORT).show()
 //                loginViewModel.login(LoginRequest(email, password))
