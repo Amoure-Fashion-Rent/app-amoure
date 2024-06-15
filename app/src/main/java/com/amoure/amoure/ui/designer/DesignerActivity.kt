@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityDesignerBinding
+import com.amoure.amoure.getDummyProducts
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.product.ProductActivity
@@ -31,6 +32,10 @@ class DesignerActivity : AppCompatActivity() {
         binding = ActivityDesignerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+//        designerViewModel.getProducts(ownerId)
+        // TODO: Remove
+        setProducts(getDummyProducts())
+
         designerViewModel.products.observe(this) {
             it?.let {
                 setProducts(it)
@@ -44,11 +49,15 @@ class DesignerActivity : AppCompatActivity() {
         designerViewModel.isLoading.observe(this) {
             showLoading(it)
         }
+
+        binding.topAppBarSecond.setNavigationOnClickListener {
+            finish()
+        }
+        binding.topAppBarSecond.title = designerName
     }
 
     private fun setProducts(products: List<ProductItem?>) {
         binding.rvDesigner.layoutManager = GridLayoutManager(this, 2)
-        binding.topAppBarSecond.title = designerName
         val adapter = ProductMediumAdapter()
         adapter.submitList(products)
         binding.rvDesigner.adapter = adapter

@@ -36,7 +36,7 @@ class DesignerViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    private fun getProducts(ownerId: String) {
+    fun getProducts(ownerId: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).getProductsByOwner(ownerId)
         client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {

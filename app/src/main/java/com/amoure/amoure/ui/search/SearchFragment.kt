@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentSearchBinding
+import com.amoure.amoure.getDummyProducts
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
@@ -52,7 +53,8 @@ class SearchFragment : Fragment() {
 
         query = arguments?.getString(QUERY)
 //        query?.let { searchViewModel.getSearch(it) }
-
+        // TODO: Remove
+        setSearchResults(getDummyProducts())
 
         setSearchBar()
         setTopAppBar()

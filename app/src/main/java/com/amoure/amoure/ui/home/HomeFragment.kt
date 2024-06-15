@@ -14,23 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentHomeBinding
+import com.amoure.amoure.getDummyProducts
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ProductSmallAdapter
 import com.amoure.amoure.ui.ViewModelFactory
-import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.product.ProductActivity
 import com.amoure.amoure.ui.search.SearchFragment
-import com.amoure.amoure.ui.search.SearchViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val homeViewModel by viewModels<HomeViewModel> {
-        ViewModelFactory.getInstance(requireContext())
-    }
-    private val searchViewModel by viewModels<SearchViewModel> {
         ViewModelFactory.getInstance(requireContext())
     }
     private val binding get() = _binding!!
@@ -50,6 +45,9 @@ class HomeFragment : Fragment() {
                 setTrending(it)
             }
         }
+        // TODO: Remove!
+        setTrending(getDummyProducts())
+        setForYou(getDummyProducts())
 
         homeViewModel.forYouProducts.observe(viewLifecycleOwner) {
             it?.let {
@@ -62,11 +60,9 @@ class HomeFragment : Fragment() {
         }
 
         setSearchBar()
-        setTopAppBar()
         return root
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun setSearchBar() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
@@ -83,19 +79,6 @@ class HomeFragment : Fragment() {
                     }
                     false
                 }
-        }
-    }
-
-    private fun setTopAppBar() {
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.cart -> {
-                    val moveIntent = Intent(context, CartActivity::class.java)
-                    startActivity(moveIntent)
-                    true
-                }
-                else -> false
-            }
         }
     }
 
