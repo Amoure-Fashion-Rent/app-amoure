@@ -7,6 +7,8 @@ import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
 import com.amoure.amoure.data.response.ProfileResponse
+import com.amoure.amoure.data.response.RentResponse
+import com.amoure.amoure.data.response.ReviewResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -96,4 +98,29 @@ interface ApiService {
     fun getSearch(
         @Query("name") name: String
     ): Call<InitialResponse<ProductsResponse>>
+
+    @GET("reviews/{productId}")
+    fun getReviews(
+        @Path("productId") productId: String
+    ): Call<InitialResponse<ReviewResponse>>
+
+    @POST("reviews/{userId}/{productId}")
+    fun postReview(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String,
+        @Field("rating") rating: Int,
+        @Field("comment") comment: String,
+        @Field("createdAt") createdAt: String,
+    ): Call<InitialResponse<IdResponse>>
+
+    @DELETE("reviews/{userId}/{productId}")
+    fun deleteReview(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
+    @GET("rents/{userId}")
+    fun getRents(
+        @Path("userId") userId: String
+    ): Call<InitialResponse<RentResponse>>
 }
