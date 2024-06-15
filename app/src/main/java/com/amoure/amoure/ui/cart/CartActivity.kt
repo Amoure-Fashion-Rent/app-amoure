@@ -17,10 +17,13 @@ import com.amoure.amoure.data.request.PutCartRequest
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityCartBinding
 import com.amoure.amoure.ui.ViewModelFactory
+import com.amoure.amoure.withCurrencyFormat
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
+import kotlin.properties.Delegates
 
 
 class CartActivity : AppCompatActivity() {
@@ -30,6 +33,13 @@ class CartActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var req: PutCartRequest
+    private lateinit var product: ProductItem
+    private lateinit var productId: String
+    private lateinit var productName: String
+    private lateinit var ownerName: String
+    private lateinit var imageUrl: String
+    private var rentPrice by Delegates.notNull<Int>()
+    private lateinit var address: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +47,19 @@ class CartActivity : AppCompatActivity() {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvCart.layoutManager = LinearLayoutManager(this)
+
+        productId = intent.getStringExtra(PRODUCT_ID).toString()
+        productName = intent.getStringExtra(PRODUCT_NAME).toString()
+        ownerName = intent.getStringExtra(OWNER_NAME).toString()
+        rentPrice = intent.getStringExtra(RENT_PRICE).toString().toInt()
+        imageUrl = intent.getStringExtra(IMAGE_URL).toString()
+        product = ProductItem(ownerName = ownerName, id = productId, rentPrice = rentPrice, productName = productName, imgProduct = listOf(imageUrl))
+
         // TODO: Remove
         req = PutCartRequest("","", 4, "", 1, "", "", "")
 
         cartViewModel.carts.observe(this) {
+            // TODO: match with backend
 //            req = PutCartRequest(
 //                it.delivery,
 //                it.deliveryPrice,
@@ -53,8 +72,9 @@ class CartActivity : AppCompatActivity() {
 //            }
         }
 
-        cartViewModel.products.observe(this) {
-            setCarts(it)
+        cartViewModel.profile.observe(this) {
+            binding.tvAddress.text = it.addressDetail
+            address = it.addressDetail.toString()
         }
 
         cartViewModel.isError.observe(this) {
@@ -69,8 +89,49 @@ class CartActivity : AppCompatActivity() {
             finish()
         }
         putCartDetail()
+        setCarts(listOf(product))
     }
 
+    private fun postCart() {
+        with(binding) {
+            btCheckout.setOnClickListener {
+                // TODO: match with backend
+                val rentalPeriod = edRentalPeriod.text.toString()
+                if (rentalPeriod.isEmpty()) {
+                    showInputErrorMessage(edlRentalPeriod, "rental period")
+                    return@setOnClickListener
+                } else {
+                    edlRentalPeriod.isErrorEnabled = false
+                }
+                val ccNumber = edCcNumber.text.toString()
+                if (ccNumber.isEmpty()) {
+                    showInputErrorMessage(edlCcNumber, "cc number")
+                    return@setOnClickListener
+                } else {
+                    edlCcNumber.isErrorEnabled = false
+                }
+                val secCode = edSecCode.text.toString()
+                if (secCode.isEmpty()) {
+                    showInputErrorMessage(edlSecCode, "security code")
+                    return@setOnClickListener
+                } else {
+                    edlSecCode.isErrorEnabled = false
+                }
+                val expDate = edExpDate.text.toString()
+                if (expDate.isEmpty()) {
+                    showInputErrorMessage(edlExpDate, "expired date")
+                    return@setOnClickListener
+                } else {
+                    edlExpDate.isErrorEnabled = false
+                }
+                // req.delivery, req.deliveryPrice, address, productId
+            }
+        }
+    }
+
+    private fun showInputErrorMessage(edl: TextInputLayout, name: String) {
+        edl.error = String.format(getString(R.string.input_required_2), name)
+    }
 
     @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
     private fun putCartDetail() {
@@ -166,6 +227,7 @@ class CartActivity : AppCompatActivity() {
                 adapter.submitList(currentList)
             }
         })
+        binding.tvTotal.text = rentPrice.withCurrencyFormat()
     }
 
     private fun showToast(message: String) {
@@ -174,5 +236,13 @@ class CartActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        const val PRODUCT_ID = "product_id"
+        const val PRODUCT_NAME = "product_name"
+        const val OWNER_NAME = "owner_name"
+        const val RENT_PRICE = "rent_price"
+        const val IMAGE_URL = "image_url"
     }
 }

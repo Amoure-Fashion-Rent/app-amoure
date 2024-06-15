@@ -39,13 +39,9 @@ class CartAdapter : ListAdapter<ProductItem, CartAdapter.MyViewHolder>(DIFF_CALL
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_cart), product.rentPrice?.withCurrencyFormat())
                 tvName.text = product.productName
                 tvOwner.text = product.ownerName
-                tvColor.text = String.format(context.resources.getString(R.string.color_cart), product.color)
                 Glide.with(ivProduct.context)
                     .load(product.imgProduct?.get(0))
                     .into(ivProduct)
-                btRemove.setOnClickListener {
-                    product.id?.let { onItemClickCallback.onItemClicked(it) }
-                }
             }
         }
     }

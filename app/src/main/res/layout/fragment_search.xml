@@ -8,21 +8,24 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="12dp" />
+                android:paddingHorizontal="15dp"
+                android:paddingTop="10dp"
+                android:clipToPadding="false" />
 
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="47dp"
+        android:background="@color/gray_blue_100">
 
         <com.google.android.material.search.SearchBar
             android:id="@+id/search_bar"
@@ -59,7 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/app_icon"
             app:title="@string/app_name" />
 

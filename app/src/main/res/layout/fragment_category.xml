@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:title="@string/app_name"
-            app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/app_icon"
             style="@style/Widget.App.Toolbar" />
 
