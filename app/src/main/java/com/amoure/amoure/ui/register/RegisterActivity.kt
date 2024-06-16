@@ -9,7 +9,6 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.IdResponse
@@ -18,6 +17,7 @@ import com.amoure.amoure.databinding.ActivityRegisterBinding
 import com.amoure.amoure.isEmailValid
 import com.amoure.amoure.isPasswordValid
 import com.amoure.amoure.ui.login.LoginActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -61,20 +61,33 @@ class RegisterActivity : AppCompatActivity() {
                 val fullName = edRegisterName.text.toString()
                 if (fullName.isEmpty()) {
                     edlRegisterName.error = String.format(getString(R.string.input_required), "name")
+                    return@setOnClickListener
+                } else {
+                    edlRegisterName.isErrorEnabled = false
                 }
                 val email = edRegisterEmail.text.toString()
                 if (email.isEmpty() || !isEmailValid(email)) {
                     edlRegisterEmail.error = String.format(getString(R.string.input_required), "email")
+                    return@setOnClickListener
+                } else {
+                    edlRegisterEmail.isErrorEnabled = false
                 }
                 val password = edRegisterPassword.text.toString()
                 if (password.isEmpty() || !isPasswordValid(password)) {
                     edlRegisterPassword.error = String.format(getString(R.string.input_required), "password")
+                    return@setOnClickListener
+                } else {
+                    edlRegisterPassword.isErrorEnabled = false
                 }
                 val passwordConf = edRegisterPasswordConf.text.toString()
                 if (passwordConf.isEmpty() || !isPasswordValid(passwordConf)) {
                     edlRegisterPasswordConf.error = String.format(getString(R.string.input_required), "password")
+                    return@setOnClickListener
                 } else if (passwordConf != password) {
                     edlRegisterPasswordConf.error = getString(R.string.password_not_match_error)
+                    return@setOnClickListener
+                } else {
+                    edlRegisterPasswordConf.isErrorEnabled = false
                 }
                 val type = edRegisterType.text.toString().lowercase()
 
@@ -97,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
             val moveIntent = Intent(baseContext, LoginActivity::class.java)
             startActivity(moveIntent)
         } else {
-            AlertDialog.Builder(this).apply {
+            MaterialAlertDialogBuilder(this).apply {
                 setTitle(resources.getString(R.string.register_alert_title_error))
                 setMessage(response.message ?: resources.getString(R.string.alert_error))
                 setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->

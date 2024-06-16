@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:menu="@menu/top_app_bar"
+
             app:navigationIcon="@drawable/app_icon"
             app:title="@string/app_name" />
 

@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentSearchBinding
+import com.amoure.amoure.getDummyProducts
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
+import com.amoure.amoure.ui.product.ProductActivity
 
 class SearchFragment : Fragment() {
 
@@ -51,7 +53,8 @@ class SearchFragment : Fragment() {
 
         query = arguments?.getString(QUERY)
 //        query?.let { searchViewModel.getSearch(it) }
-
+        // TODO: Remove
+        setSearchResults(getDummyProducts())
 
         setSearchBar()
         setTopAppBar()
@@ -98,10 +101,9 @@ class SearchFragment : Fragment() {
         binding.rvSearch.adapter = adapter
         adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
-                // TODO: Go to product page
-//                val moveIntent = Intent(context, DetailActivity::class.java)
-//                moveIntent.putExtra(DetailActivity.ID, id)
-//                startActivity(moveIntent)
+                val moveIntent = Intent(context, ProductActivity::class.java)
+                moveIntent.putExtra(ProductActivity.ID, id)
+                startActivity(moveIntent)
             }
         })
     }

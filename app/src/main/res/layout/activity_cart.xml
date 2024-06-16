@@ -21,6 +21,7 @@
                 android:id="@+id/rv_cart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="20dp" />
 
             <TextView
@@ -39,7 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_rental_period"
@@ -64,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="8dp"
-                android:textSize="20sp"
                 android:text="@string/your_address"
                 style="@style/TextHeadline3" />
 
@@ -74,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="8dp"
+                android:textSize="12sp"
                 android:text="@string/lorem_ipsum" />
 
             <com.google.android.material.divider.MaterialDivider
@@ -89,7 +91,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="8dp"
-                android:textSize="20sp"
                 android:text="@string/payment_method"
                 style="@style/TextHeadline3" />
 
@@ -107,7 +108,8 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_cc_number"
@@ -133,7 +135,8 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_exp_date"
@@ -161,7 +164,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_sec_code"
@@ -185,7 +189,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="8dp"
-                android:textSize="20sp"
                 android:text="@string/delivery"
                 android:labelFor="@+id/ed_delivery"
                 style="@style/TextHeadline3" />
@@ -196,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="12dp"
-                app:endIconMinSize="20dp"
+                app:endIconMinSize="30dp"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                 <AutoCompleteTextView
@@ -222,7 +225,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="8dp"
-                android:textSize="20sp"
                 android:text="@string/total"
                 style="@style/TextHeadline3" />
 
@@ -233,6 +235,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/checkout"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
                 style="@style/Widget.App.Button"
                 />
 

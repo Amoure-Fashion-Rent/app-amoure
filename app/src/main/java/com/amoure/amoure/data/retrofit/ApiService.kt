@@ -7,6 +7,9 @@ import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
 import com.amoure.amoure.data.response.WishlistResponse
+import com.amoure.amoure.data.response.ProfileResponse
+import com.amoure.amoure.data.response.RentResponse
+import com.amoure.amoure.data.response.ReviewResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -34,8 +37,32 @@ interface ApiService {
         @Field("password") password: String
     ): Call<InitialResponse<LoginResponse>>
 
+    @GET("users/{userId}")
+    fun getProfile(
+        @Path("userId") userId: String,
+    ): Call<InitialResponse<ProfileResponse>>
+
+    @PUT("users/{userId}")
+    fun putProfile(
+        @Path("userId") userId: String,
+        @Field("fullName") fullName: String,
+        @Field("email") email: String,
+        @Field("addressDetail") addressDetail: String,
+        @Field("province") province: String,
+        @Field("city") city: String,
+        @Field("district") district: String,
+        @Field("postalCode") postalCode: String,
+        @Field("phoneNumber") phoneNumber: String,
+        @Field("birthDate") birthDate: String?,
+    ): Call<InitialResponse<IdResponse>>
+
     @GET("products")
     fun getProducts(): Call<InitialResponse<ProductsResponse>>
+
+    @GET("products/{ownerId}/owner")
+    fun getProductsByOwner(
+        @Path("ownerId") ownerId: String
+    ): Call<InitialResponse<ProductsResponse>>
 
     @GET("products/{productId}")
     fun getProductById(
@@ -73,6 +100,7 @@ interface ApiService {
         @Query("name") name: String
     ): Call<InitialResponse<ProductsResponse>>
 
+
     @GET("/wishlists/{userId}")
     fun getUserWishlist(
         @Path("userId") id: String
@@ -84,10 +112,35 @@ interface ApiService {
         @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
+    @GET("reviews/{productId}")
+    fun getReviews(
+    @Path("productId") productId: String
+    ): Call<InitialResponse<ReviewResponse>>
+
+    @POST("reviews/{userId}/{productId}")
+    fun postReview(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String,
+        @Field("rating") rating: Int,
+        @Field("comment") comment: String,
+        @Field("createdAt") createdAt: String,
+    ): Call<InitialResponse<IdResponse>>
+
+    @DELETE("reviews/{userId}/{productId}")
+    fun deleteReview(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
 
     @DELETE("/wishlists/{userId}/{productId}")
     fun deleteFromWishlist(
         @Path("userId") userId: String,
         @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
+
+    @GET("rents/{userId}")
+    fun getRents(
+        @Path("userId") userId: String
+    ): Call<InitialResponse<RentResponse>>
 }

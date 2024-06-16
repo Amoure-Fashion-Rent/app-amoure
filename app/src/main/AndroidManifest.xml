@@ -25,6 +25,24 @@
         android:theme="@style/Theme.Amoure"
         tools:targetApi="31">
         <activity
+            android:name=".ui.renthistory.RentHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.review.AddReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.review.ReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.designer.DesignerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.product.ProductActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.editprofile.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity

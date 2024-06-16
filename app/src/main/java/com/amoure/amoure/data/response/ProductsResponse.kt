@@ -53,5 +53,8 @@ data class ProductItem(
 	val imgProduct: List<String?>? = null,
 
 	@field:SerializedName("categoryId")
-	val categoryId: String? = null
+	val categoryId: String? = null,
+
+	@field:SerializedName("rating")
+	val rating: Double? = null
 )

@@ -60,8 +60,49 @@
     <string name="login_alert_title_error">There something wrong when login!</string>
     <string name="alert_ok">OK</string>
     <string name="input_required">Please input a valid %1$s!</string>
+    <string name="input_required_2">Please input %1$s!</string>
     <string name="password_not_match_error">Passwords do not match. Please ensure both password inputs are identical.</string>
 
     <string name="title_edit_profile">Edit Profile</string>
     <string name="title_your_rent">Your Rent</string>
+
+    <string name="designer_name">Designer Name</string>
+    <string name="address_detail">Address Detail</string>
+    <string name="province">Province</string>
+    <string name="city">City</string>
+    <string name="district">District</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="phone_num">Phone Number</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="save">Save</string>
+    <string name="phone_num_message">Do not use dialing code (+62), use 0 in front; example: 0812xxx</string>
+
+    <string name="available">Available</string>
+    <string name="not_available">Not Available</string>
+    <string name="retail_price">Retail Price:</string>
+    <string name="rent_price">Rent Price:</string>
+    <string name="rent_now">Rent Now</string>
+    <string name="try_on">Try On</string>
+    <string name="product_details">Product Details</string>
+    <string name="stylish_notes">Stylish Notes</string>
+    <string name="designer">Designer</string>
+    <string name="product_reviews">Product Reviews</string>
+    <string name="similar_items">Similar Items</string>
+    <string name="see_all_items">See all items</string>
+    <string name="see_all_reviews">See all reviews</string>
+
+    <string name="title_review">Review</string>
+    <string name="write_your_review">Write Your Review</string>
+    <string name="rating">Rating: %1$s</string>
+    <string name="star">Star</string>
+    <string name="comment">Comment: </string>
+    <string name="give_rating">Give Your Rating: </string>
+    <string name="review_message_1">Posting Your Review:</string>
+    <string name="review_message_2">Your Comments posted here may be used for advertising purposes.</string>
+    <string name="review_message_3">We cannot accept requests for posting advertisements including other brands, individuals, organizations. Also we cannot hold inventory neither sizes.</string>
+    <string name="post_review">Post Review</string>
+
+    <string name="arrives_by">Arrives by: %1$s</string>
+    <string name="return_on">Return on: %1$s</string>
+    <string name="status">Status: %1$s</string>
 </resources>

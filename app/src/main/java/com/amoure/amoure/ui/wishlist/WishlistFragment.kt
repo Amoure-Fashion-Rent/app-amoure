@@ -1,6 +1,5 @@
 package com.amoure.amoure.ui.wishlist
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+<<<<<<< HEAD
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
@@ -16,6 +16,9 @@ import com.amoure.amoure.databinding.FragmentWishlistBinding
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.cart.CartAdapter
+=======
+import com.amoure.amoure.databinding.FragmentWishlistBinding
+>>>>>>> be45a06e84f46d9412969b721e740b6c0838342d
 
 class WishlistFragment : Fragment() {
 
@@ -48,6 +51,7 @@ class WishlistFragment : Fragment() {
 //                edDelivery.setText(String.format(getString(R.string.delivery_item), it.delivery, it.deliveryPrice?.withCurrencyFormat()), false)
 //            }
         }
+<<<<<<< HEAD
 
         wishListViewModel.products.observe(viewLifecycleOwner) {
             it?.let {
@@ -82,6 +86,11 @@ class WishlistFragment : Fragment() {
             }
         }
     }
+=======
+        return root
+    }
+
+>>>>>>> be45a06e84f46d9412969b721e740b6c0838342d
 
     private fun SetWishlistResults(products: List<ProductItem?>) {
         val adapter = WishlistAdapter()

@@ -10,7 +10,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/sv_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -23,8 +24,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/RoundedSquare"
-                tools:src="@tools:sample/avatars" />
+                android:src="@drawable/home_page_thumbnail"
+                app:strokeColor="@color/gray_blue_100"
+                app:strokeWidth="3dp"
+                android:padding="3dp"
+                app:shapeAppearanceOverlay="@style/RoundedSquare" />
 
             <TextView
                 android:id="@+id/tv_trending"
@@ -39,7 +43,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_trending"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="15dp"
+                android:clipToPadding="false" />
 
             <TextView
                 android:id="@+id/tv_for_you"
@@ -54,8 +60,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_for_you"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="20dp" />
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="15dp"
+                android:clipToPadding="false" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
@@ -63,7 +70,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/gray_blue_100"
+        android:backgroundTint="@color/gray_blue_100">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
@@ -71,7 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/app_icon"
             app:title="@string/app_name" />
 
@@ -81,7 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/search_hint"
-            android:layout_marginTop="-10dp"
+            android:layout_marginTop="-1dp"
+            android:background="@color/gray_blue_100"
             app:backgroundTint="@color/gray_blue_200"
             app:navigationIconTint="@color/navy_blue_700"
             app:forceDefaultNavigationOnClickListener="false" />

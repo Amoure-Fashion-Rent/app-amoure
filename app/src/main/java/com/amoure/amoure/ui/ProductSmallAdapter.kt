@@ -37,7 +37,7 @@ class ProductSmallAdapter : ListAdapter<ProductItem, ProductSmallAdapter.MyViewH
                 tvName.text = product.productName
                 tvOwner.text = product.ownerName
                 Glide.with(ivProduct.context)
-                    .load(product.imgProduct)
+                    .load(product.imgProduct?.get(0))
                     .into(ivProduct)
                 itemProductSmall.setOnClickListener {
                     product.id?.let { onItemClickCallback.onItemClicked(it) }
