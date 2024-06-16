@@ -32,7 +32,7 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        profileViewModel.isError.observe(this) {
+        profileViewModel.isError.observe(viewLifecycleOwner) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 

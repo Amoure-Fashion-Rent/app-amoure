@@ -135,7 +135,7 @@ class ProductActivity : AppCompatActivity() {
             tvProductRentPrice.text = product.rentPrice?.withCurrencyFormat()
             tvProductDetails.text = product.description
             tvStylishNotes.text = product.stylishNotes
-            tvRatingReviewsCount.text = String.format(getString(R.string.rating_reviews_count), product.avgRating, product.reviewsCount)
+            tvRatingReviewsCount.text = String.format(getString(R.string.rating_reviews_count), product.avgRating.toString(), product.reviewsCount.toString())
             if (product.avgRating == null) {
                 return
             }
