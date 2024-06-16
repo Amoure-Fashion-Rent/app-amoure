@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amoure.amoure.data.UserRepository
+import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.response.ProductResponse
@@ -40,7 +41,7 @@ class ProductViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun getProduct(productId: String) {
+    fun getProduct(productId: Int) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).getProductById(productId)
         client.enqueue(object : Callback<InitialResponse<ProductResponse>> {
@@ -60,6 +61,25 @@ class ProductViewModel(private val repository: UserRepository) : ViewModel() {
             }
 
             override fun onFailure(call: Call<InitialResponse<ProductResponse>>, t: Throwable) {
+                _isError.value = true
+                _isLoading.value = false
+            }
+        })
+    }
+
+    fun postWishlist(productId: Int) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService(accessToken).postWishlist(productId)
+        client.enqueue(object : Callback<InitialResponse<IdResponse>> {
+            override fun onResponse(
+                call: Call<InitialResponse<IdResponse>>,
+                response: Response<InitialResponse<IdResponse>>
+            ) {
+                _isError.value = !response.isSuccessful
+                _isLoading.value = false
+            }
+
+            override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
                 _isError.value = true
                 _isLoading.value = false
             }

@@ -4,9 +4,11 @@ import android.content.Intent
 import android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
@@ -37,6 +39,7 @@ class ProductActivity : AppCompatActivity() {
 
         id = intent.getStringExtra(ID).toString().toInt()
 
+        productViewModel.getProduct(id)
         productViewModel.product.observe(this) {
             setProduct(it)
         }
@@ -88,6 +91,21 @@ class ProductActivity : AppCompatActivity() {
                 moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
                 startActivity(moveIntent)
             }
+
+            btAddWishlist.setOnClickListener {
+                productViewModel.postWishlist(id)
+            }
+
+            btRentNow.setOnClickListener {
+                // TODO: Try On Page
+//                val moveIntent = Intent(baseContext, CartActivity::class.java)
+//                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id.toString())
+//                moveIntent.putExtra(CartActivity.PRODUCT_NAME, thisProduct.name)
+//                moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.owner?.fullName)
+//                moveIntent.putExtra(CartActivity.RENT_PRICE, thisProduct.rentPrice.toString())
+//                moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
+//                startActivity(moveIntent)
+            }
         }
     }
 
@@ -117,7 +135,30 @@ class ProductActivity : AppCompatActivity() {
             tvProductRentPrice.text = product.rentPrice?.withCurrencyFormat()
             tvProductDetails.text = product.description
             tvStylishNotes.text = product.stylishNotes
+            tvRatingReviewsCount.text = String.format(getString(R.string.rating_reviews_count), product.avgRating, product.reviewsCount)
+            if (product.avgRating == null) {
+                return
+            }
+            if (product.avgRating >= 1.0) {
+                setStarColor(star1)
+            }
+            if (product.avgRating >= 2.0) {
+                setStarColor(star2)
+            }
+            if (product.avgRating >= 3.0) {
+                setStarColor(star3)
+            }
+            if (product.avgRating >= 4.0) {
+                setStarColor(star4)
+            }
+            if (product.avgRating >= 5.0) {
+                setStarColor(star5)
+            }
         }
+    }
+
+    private fun setStarColor(star: ImageView) {
+        star.setColorFilter(ContextCompat.getColor(baseContext, R.color.yellow_500))
     }
 
     private fun setSimilarItems(products: List<ProductItem?>) {

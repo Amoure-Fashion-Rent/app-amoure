@@ -354,6 +354,71 @@
                 app:layout_constraintTop_toBottomOf="@+id/d_reviews"
                 app:layout_constraintRight_toRightOf="parent" />
 
+            <ImageView
+                android:id="@+id/star_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star_24"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_reviews"
+                app:tint="@color/gray_200" />
+            <ImageView
+                android:id="@+id/star_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star_24"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@id/star_1"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_reviews"
+                app:tint="@color/gray_200" />
+            <ImageView
+                android:id="@+id/star_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star_24"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@id/star_2"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_reviews"
+                app:tint="@color/gray_200" />
+            <ImageView
+                android:id="@+id/star_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star_24"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@id/star_3"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_reviews"
+                app:tint="@color/gray_200" />
+            <ImageView
+                android:id="@+id/star_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star_24"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@id/star_4"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_reviews"
+                app:tint="@color/gray_200" />
+
+            <TextView
+                android:id="@+id/tv_rating_reviews_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/rating_reviews_count"
+                android:textSize="12sp"
+                android:gravity="bottom"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_reviews"
+                app:layout_constraintLeft_toRightOf="@+id/star_5" />
+
+
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/d_similar_items"
@@ -363,7 +428,7 @@
                 app:dividerInsetStart="20dp"
                 app:dividerInsetEnd="20dp"
                 app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_see_all_reviews"
+                app:layout_constraintTop_toBottomOf="@+id/tv_rating_reviews_count"
                 app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView

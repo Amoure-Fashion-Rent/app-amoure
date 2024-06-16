@@ -85,7 +85,7 @@ interface ApiService {
 
     @GET("products/{productId}")
     fun getProductById(
-        @Path("productId") id: String
+        @Path("productId") id: Int
     ): Call<InitialResponse<ProductResponse>>
 
     @GET("/carts/{userId}")
@@ -147,4 +147,9 @@ interface ApiService {
         @Query("page") page: Int? = null,
         @Query("take") take: Int? = null,
     ): InitialResponse<RentResponse>
+
+    @POST("wishlist")
+    fun postWishlist(
+        @Field("productId") productId: Int,
+    ): Call<InitialResponse<IdResponse>>
 }
