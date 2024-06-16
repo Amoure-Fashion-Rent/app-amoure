@@ -76,6 +76,7 @@ class ReviewActivity : AppCompatActivity() {
         with(binding) {
             tvName.text = productName
             tvOwner.text = ownerName
+            tvRating.text = String.format(getString(R.string.rating), rating)
             Glide.with(ivProduct.context)
                 .load(imageUrl)
                 .into(ivProduct)

@@ -85,6 +85,7 @@
     <string name="similar_items">Similar Items</string>
     <string name="see_all_items">See all items</string>
     <string name="see_all_reviews">See all reviews</string>
+    <string name="rating_reviews_count">%1$s (%2$s Reviews)</string>
 
     <string name="title_review">Review</string>
     <string name="write_your_review">Write Your Review</string>
