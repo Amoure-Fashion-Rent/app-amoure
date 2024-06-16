@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.databinding.ActivityReviewBinding
+import com.amoure.amoure.ui.LoadingStateAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.bumptech.glide.Glide
 import kotlin.properties.Delegates
@@ -22,7 +22,7 @@ class ReviewActivity : AppCompatActivity() {
     private val reviewViewModel by viewModels<ReviewViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private lateinit var productId: String
+    private var productId by Delegates.notNull<Int>()
     private lateinit var productName: String
     private lateinit var ownerName: String
     private lateinit var imageUrl: String
@@ -30,7 +30,7 @@ class ReviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        productId = intent.getStringExtra(PRODUCT_ID).toString()
+        productId = intent.getStringExtra(PRODUCT_ID).toString().toInt()
         productName = intent.getStringExtra(PRODUCT_NAME).toString()
         ownerName = intent.getStringExtra(OWNER_NAME).toString()
         rating = intent.getStringExtra(RATING).toString().toDouble()
@@ -40,13 +40,7 @@ class ReviewActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.rvReviews.layoutManager = LinearLayoutManager(this)
 
-//        reviewViewModel.getReviews(productId)
-        // TODO: Remove
-        setReviews(listOf(ReviewItem("1", 4.0, "lorem ipsum ajdpwaj aijdaj adwiojao awidjoad"), ReviewItem("1", 4.0, "lorem ipsum ajdpwaj aijdaj adwiojao awidjoad"), ReviewItem("1", 4.0, "lorem ipsum ajdpwaj aijdaj adwiojao awidjoad")))
-        reviewViewModel.reviews.observe(this) {
-            setReviews(it)
-        }
-
+        reviewViewModel.getReviews(productId)
         reviewViewModel.isError.observe(this) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
         }
@@ -56,6 +50,7 @@ class ReviewActivity : AppCompatActivity() {
         }
 
         setReview()
+        setReviews()
         setupAction()
     }
 
@@ -63,7 +58,7 @@ class ReviewActivity : AppCompatActivity() {
         with(binding) {
             btWriteReview.setOnClickListener {
                 val moveIntent = Intent(baseContext, AddReviewActivity::class.java)
-                moveIntent.putExtra(AddReviewActivity.PRODUCT_ID, productId)
+                moveIntent.putExtra(AddReviewActivity.PRODUCT_ID, productId.toString())
                 moveIntent.putExtra(AddReviewActivity.PRODUCT_NAME, productName)
                 moveIntent.putExtra(AddReviewActivity.OWNER_NAME, ownerName)
                 moveIntent.putExtra(AddReviewActivity.RATING, rating.toString())
@@ -84,19 +79,19 @@ class ReviewActivity : AppCompatActivity() {
             Glide.with(ivProduct.context)
                 .load(imageUrl)
                 .into(ivProduct)
-            if (rating >= 1) {
+            if (rating >= 1.0) {
                 setStarColor(star1)
             }
-            if (rating >= 2) {
+            if (rating >= 2.0) {
                 setStarColor(star2)
             }
-            if (rating >= 3) {
+            if (rating >= 3.0) {
                 setStarColor(star3)
             }
-            if (rating >= 4) {
+            if (rating >= 4.0) {
                 setStarColor(star4)
             }
-            if (rating >= 5) {
+            if (rating >= 5.0) {
                 setStarColor(star5)
             }
         }
@@ -104,7 +99,7 @@ class ReviewActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        reviewViewModel.getReviews(productId)
+        reviewViewModel.getReviews(productId)
     }
 
     private fun setStarColor(star: ImageView) {
@@ -119,10 +114,18 @@ class ReviewActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun setReviews(reviews: List<ReviewItem?>) {
+    private fun setReviews() {
         val adapter = ReviewAdapter()
-        adapter.submitList(reviews)
-        binding.rvReviews.adapter = adapter
+        binding.rvReviews.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+        reviewViewModel.reviews.observe(this) {
+            it?.let {
+                adapter.submitData(lifecycle, it)
+            }
+        }
     }
 
     companion object {

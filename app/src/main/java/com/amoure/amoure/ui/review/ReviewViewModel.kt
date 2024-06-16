@@ -4,21 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.amoure.amoure.data.ReviewRepository
 import com.amoure.amoure.data.UserRepository
+import com.amoure.amoure.data.pagingsource.ReviewPSParams
 import com.amoure.amoure.data.request.PostReviewRequest
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.ReviewItem
-import com.amoure.amoure.data.response.ReviewResponse
 import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.properties.Delegates
 
-class ReviewViewModel(private val repository: UserRepository) : ViewModel() {
-    private val _reviews = MutableLiveData<List<ReviewItem?>>()
-    val reviews: LiveData<List<ReviewItem?>> = _reviews
+class ReviewViewModel(private val userRepository: UserRepository, private val reviewRepository: ReviewRepository) : ViewModel() {
+    var reviews: LiveData<PagingData<ReviewItem>> = MutableLiveData()
 
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
@@ -27,11 +30,11 @@ class ReviewViewModel(private val repository: UserRepository) : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     private lateinit var accessToken: String
-    private lateinit var userId: String
+    private var userId by Delegates.notNull<Int>()
 
     init {
         viewModelScope.launch {
-            repository.getSession().collect {
+            userRepository.getSession().collect {
                 if (it.isLogin) {
                     accessToken = it.accessToken
                     userId = it.userId
@@ -40,61 +43,36 @@ class ReviewViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    fun getReviews(productId: String) {
-        _isLoading.value = true
-        val client = ApiConfig.getApiService(accessToken).getReviews(productId)
-        client.enqueue(object : Callback<InitialResponse<ReviewResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<ReviewResponse>>,
-                response: Response<InitialResponse<ReviewResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.data?.reviewResponse?.let {
-                        _reviews.value = it
-                    }
-                    _isError.value = false
-                } else {
-                    _isError.value = true
-                }
-                _isLoading.value = false
-            }
-
-            override fun onFailure(call: Call<InitialResponse<ReviewResponse>>, t: Throwable) {
-                _isError.value = true
-                _isLoading.value = false
-            }
-        })
+    fun getReviews(productId: Int) {
+        reviews = reviewRepository.getReviews(ReviewPSParams(productId = productId)).cachedIn(viewModelScope)
     }
 
-    fun postReview(productId: String, req: PostReviewRequest) {
+    fun postReview(req: PostReviewRequest) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).postReview(
-            userId,
-            productId,
+            req.productId,
             req.rating,
             req.comment,
-            req.createdAt
             )
-        client.enqueue(object : Callback<InitialResponse<IdResponse>> {
+        client.enqueue(object : Callback<InitialResponse<ReviewItem>> {
             override fun onResponse(
-                call: Call<InitialResponse<IdResponse>>,
-                response: Response<InitialResponse<IdResponse>>
+                call: Call<InitialResponse<ReviewItem>>,
+                response: Response<InitialResponse<ReviewItem>>
             ) {
                 _isError.value = !response.isSuccessful
                 _isLoading.value = false
             }
 
-            override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<InitialResponse<ReviewItem>>, t: Throwable) {
                 _isError.value = true
                 _isLoading.value = false
             }
         })
     }
 
-    fun deleteReview(productId: String) {
+    fun deleteReview(productId: Int) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).deleteReview(
-            userId,
             productId,
         )
         client.enqueue(object : Callback<InitialResponse<IdResponse>> {

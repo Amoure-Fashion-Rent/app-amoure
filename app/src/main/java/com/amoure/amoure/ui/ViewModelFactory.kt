@@ -3,7 +3,7 @@ package com.amoure.amoure.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.amoure.amoure.data.UserRepository
+import com.amoure.amoure.data.Repository
 import com.amoure.amoure.di.Injection
 import com.amoure.amoure.ui.cart.CartViewModel
 import com.amoure.amoure.ui.designer.DesignerViewModel
@@ -17,44 +17,44 @@ import com.amoure.amoure.ui.renthistory.RentHistoryViewModel
 import com.amoure.amoure.ui.review.ReviewViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
 
-class ViewModelFactory(private val repository: UserRepository) :
+class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(repository) as T
+                HomeViewModel(repository.userRepository, repository.productRepository) as T
             }
             modelClass.isAssignableFrom(CartViewModel::class.java) -> {
-                CartViewModel(repository) as T
+                CartViewModel(repository.userRepository) as T
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
-                SearchViewModel(repository) as T
+                SearchViewModel(repository.userRepository, repository.productRepository) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(repository) as T
+                LoginViewModel(repository.userRepository) as T
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
+                MainViewModel(repository.userRepository) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
-                ProfileViewModel(repository) as T
+                ProfileViewModel(repository.userRepository) as T
             }
             modelClass.isAssignableFrom(EditProfileViewModel::class.java) -> {
-                EditProfileViewModel(repository) as T
+                EditProfileViewModel(repository.userRepository) as T
             }
             modelClass.isAssignableFrom(ProductViewModel::class.java) -> {
-                ProductViewModel(repository) as T
+                ProductViewModel(repository.userRepository) as T
             }
             modelClass.isAssignableFrom(DesignerViewModel::class.java) -> {
-                DesignerViewModel(repository) as T
+                DesignerViewModel(repository.userRepository, repository.productRepository) as T
             }
             modelClass.isAssignableFrom(ReviewViewModel::class.java) -> {
-                ReviewViewModel(repository) as T
+                ReviewViewModel(repository.userRepository, repository.reviewRepository) as T
             }
             modelClass.isAssignableFrom(RentHistoryViewModel::class.java) -> {
-                RentHistoryViewModel(repository) as T
+                RentHistoryViewModel(repository.userRepository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

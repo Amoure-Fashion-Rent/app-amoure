@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.properties.Delegates
 
 class CartViewModel(private val repository: UserRepository) : ViewModel() {
     private val _profile = MutableLiveData<Profile>()
@@ -32,7 +33,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     private lateinit var accessToken: String
-    private lateinit var userId: String
+    private var userId by Delegates.notNull<Int>()
 
     init {
         viewModelScope.launch {
@@ -49,7 +50,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
         getCart(accessToken, userId)
     }
 
-    private fun getCart(token: String, id: String) {
+    private fun getCart(token: String, id: Int) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(token).getUserCart(id)
         client.enqueue(object : Callback<InitialResponse<CartResponse>> {
@@ -82,7 +83,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
         putFromCart(accessToken, userId, req)
     }
 
-    private fun putFromCart(token: String, id: String, req: PutCartRequest) {
+    private fun putFromCart(token: String, id: Int, req: PutCartRequest) {
         val client = ApiConfig.getApiService(token).putFromCart(
             id,
             req.rentalStartDate,
@@ -108,7 +109,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
         deleteFromCart(accessToken, userId, productId)
     }
 
-    private fun deleteFromCart(token: String, userId: String, productId: String) {
+    private fun deleteFromCart(token: String, userId: Int, productId: String) {
         val client = ApiConfig.getApiService(token).deleteFromCart(userId, productId)
         client.enqueue(object : Callback<InitialResponse<IdResponse>> {
             override fun onResponse(

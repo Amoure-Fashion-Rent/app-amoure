@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentHomeBinding
-import com.amoure.amoure.getDummyProducts
+import com.amoure.amoure.ui.LoadingStateAdapter
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ProductSmallAdapter
 import com.amoure.amoure.ui.ViewModelFactory
@@ -45,21 +45,13 @@ class HomeFragment : Fragment() {
                 setTrending(it)
             }
         }
-        // TODO: Remove!
-        setTrending(getDummyProducts())
-        setForYou(getDummyProducts())
-
-        homeViewModel.forYouProducts.observe(viewLifecycleOwner) {
-            it?.let {
-                setForYou(it)
-            }
-        }
 
         homeViewModel.isError.observe(viewLifecycleOwner) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 
         setSearchBar()
+        setForYou()
         return root
     }
 
@@ -87,22 +79,30 @@ class HomeFragment : Fragment() {
         adapter.submitList(products)
         binding.rvTrending.adapter = adapter
         adapter.setOnItemClickCallback(object : ProductSmallAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
+            override fun onItemClicked(id: Int) {
                 val moveIntent = Intent(context, ProductActivity::class.java)
-                moveIntent.putExtra(ProductActivity.ID, id)
+                moveIntent.putExtra(ProductActivity.ID, id.toString())
                 startActivity(moveIntent)
             }
         })
     }
 
-    private fun setForYou(products: List<ProductItem?>) {
+    private fun setForYou() {
         val adapter = ProductMediumAdapter()
-        adapter.submitList(products)
-        binding.rvForYou.adapter = adapter
+        binding.rvForYou.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+        homeViewModel.forYouProducts.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitData(lifecycle, it)
+            }
+        }
         adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
+            override fun onItemClicked(id: Int) {
                 val moveIntent = Intent(context, ProductActivity::class.java)
-                moveIntent.putExtra(ProductActivity.ID, id)
+                moveIntent.putExtra(ProductActivity.ID, id.toString())
                 startActivity(moveIntent)
             }
         })

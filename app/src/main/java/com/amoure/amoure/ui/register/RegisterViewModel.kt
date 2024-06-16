@@ -20,7 +20,7 @@ class RegisterViewModel : ViewModel() {
 
     fun register(request: RegisterRequest) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService("").register(request.fullName, request.email, request.password, request.userType)
+        val client = ApiConfig.getApiService("").register(request.fullName, request.email, request.password, request.role)
         client.enqueue(object : Callback<InitialResponse<IdResponse>> {
             override fun onResponse(
                 call: Call<InitialResponse<IdResponse>>,
@@ -31,7 +31,7 @@ class RegisterViewModel : ViewModel() {
 
             override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
                 _isLoading.value = false
-                _response.value = InitialResponse("error", "Please try again later\\! Server isn\\'t responding")
+                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
             }
         })
     }

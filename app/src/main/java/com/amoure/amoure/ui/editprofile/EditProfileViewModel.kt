@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.properties.Delegates
 
 class EditProfileViewModel(private val repository: UserRepository) : ViewModel() {
     private val _profile = MutableLiveData<Profile>()
@@ -27,7 +28,7 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
     val isLoading: LiveData<Boolean> = _isLoading
 
     private lateinit var accessToken: String
-    private lateinit var userId: String
+    private var userId by Delegates.notNull<Int>()
 
     init {
         viewModelScope.launch {

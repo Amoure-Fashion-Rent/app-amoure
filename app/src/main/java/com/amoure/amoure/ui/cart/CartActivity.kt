@@ -14,6 +14,7 @@ import com.amoure.amoure.R
 import com.amoure.amoure.afterTextChangedDelayed
 import com.amoure.amoure.currencyStringToInteger
 import com.amoure.amoure.data.request.PutCartRequest
+import com.amoure.amoure.data.response.Owner
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityCartBinding
 import com.amoure.amoure.ui.ViewModelFactory
@@ -34,7 +35,7 @@ class CartActivity : AppCompatActivity() {
     }
     private lateinit var req: PutCartRequest
     private lateinit var product: ProductItem
-    private lateinit var productId: String
+    private var productId by Delegates.notNull<Int>()
     private lateinit var productName: String
     private lateinit var ownerName: String
     private lateinit var imageUrl: String
@@ -48,12 +49,12 @@ class CartActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.rvCart.layoutManager = LinearLayoutManager(this)
 
-        productId = intent.getStringExtra(PRODUCT_ID).toString()
+        productId = intent.getStringExtra(PRODUCT_ID).toString().toInt()
         productName = intent.getStringExtra(PRODUCT_NAME).toString()
         ownerName = intent.getStringExtra(OWNER_NAME).toString()
         rentPrice = intent.getStringExtra(RENT_PRICE).toString().toInt()
         imageUrl = intent.getStringExtra(IMAGE_URL).toString()
-        product = ProductItem(ownerName = ownerName, id = productId, rentPrice = rentPrice, productName = productName, imgProduct = listOf(imageUrl))
+        product = ProductItem(owner = Owner(fullName = ownerName), id = productId, rentPrice = rentPrice, name = productName, images = listOf(imageUrl))
 
         // TODO: Remove
         req = PutCartRequest("","", 4, "", 1, "", "", "")
@@ -219,14 +220,6 @@ class CartActivity : AppCompatActivity() {
         val adapter = CartAdapter()
         adapter.submitList(products)
         binding.rvCart.adapter = adapter
-        adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
-                cartViewModel.deleteFromCart(id)
-                val currentList = adapter.currentList.toMutableList()
-                currentList.removeAt(currentList.indexOfFirst { it.id == id })
-                adapter.submitList(currentList)
-            }
-        })
         binding.tvTotal.text = rentPrice.withCurrencyFormat()
     }
 

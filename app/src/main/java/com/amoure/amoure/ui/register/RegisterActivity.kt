@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.amoure.amoure.R
+import com.amoure.amoure.data.request.RegisterRequest
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.databinding.ActivityRegisterBinding
@@ -91,8 +92,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 val type = edRegisterType.text.toString().lowercase()
 
-                Toast.makeText(baseContext, email+password+type, Toast.LENGTH_SHORT).show()
-//                registerViewModel.register(RegisterRequest(fullName, email, password, type))
+                registerViewModel.register(RegisterRequest(fullName, email, password, type))
             }
             btBack.setOnClickListener {
                 finish()
@@ -101,7 +101,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showAlert(response: InitialResponse<IdResponse>) {
-        if (response.status == "success") {
+        if (response.message == "OK") {
             Toast.makeText(
                 this,
                 resources.getString(R.string.register_alert_title_success),

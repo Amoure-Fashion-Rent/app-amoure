@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.amoure.amoure.R
+import com.amoure.amoure.data.request.LoginRequest
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.databinding.ActivityLoginBinding
@@ -71,8 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     edlLoginPassword.isErrorEnabled = false
                 }
-                Toast.makeText(baseContext, email+password, Toast.LENGTH_SHORT).show()
-//                loginViewModel.login(LoginRequest(email, password))
+                loginViewModel.login(LoginRequest(email, password))
             }
             btBack.setOnClickListener {
                 finish()
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showAlert(response: InitialResponse<LoginResponse>) {
-        if (response.status == "success") {
+        if (response.message == "OK") {
             Toast.makeText(
                 this,
                 resources.getString(R.string.login_alert_title_success),

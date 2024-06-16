@@ -5,10 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.TextView
-import com.amoure.amoure.data.response.ProductItem
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.regex.Pattern
@@ -61,98 +59,4 @@ fun isPasswordValid(password: String): Boolean {
 fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
     val formatter = SimpleDateFormat(format, locale)
     return formatter.format(this)
-}
-
-fun getCurrentDateTime(): Date {
-    return Calendar.getInstance().time
-}
-
-fun getDummyProducts(): List<ProductItem> {
-    return listOf(
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        ProductItem(
-            ownerName = "Red Boutique",
-            productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-            id = "1",
-            imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"),
-            rentPrice = 200000,
-        ),
-        )
-}
-
-fun getDummyProduct(): ProductItem {
-    return ProductItem("Red Boutique",
-        productName = "abfuehioajfp afhiafpajwfp apsdjpadp",
-        id = "1",
-        available = false,
-        styleNotes = "abfuehioajfp afhiafpajwfp apsdjpadp abfuehioajfp afhiafpajwfp apsdjpadp abfuehioajfp afhiafpajwfp apsdjpadp",
-        rating = 5.0,
-        rentPrice = 200000,
-        retailPrice = 10000000,
-        description = "abfuehioajfp afhiafpajwfp apsdjpadp abfuehioajfp afhiafpajwfp apsdjpadp abfuehioajfp afhiafpajwfp apsdjpadp aiodwjoiajfoawjf haoigfj fpa",
-        userId = "1",
-        imgProduct = listOf("https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png")
-    )
 }

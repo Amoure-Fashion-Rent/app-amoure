@@ -84,7 +84,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun setProfile(profile: Profile) {
         with(binding) {
             userType = profile.userType.toString()
-            if (profile.userType == "owner") {
+            if (profile.userType == "OWNER") {
                 tvProfileName.text = getString(R.string.designer_name)
                 tvProfileBirthDate.visibility = View.GONE
                 edlProfileBirthDate.visibility = View.GONE
@@ -167,7 +167,7 @@ class EditProfileActivity : AppCompatActivity() {
                     edlProfileBirthDate.isErrorEnabled = false
                 }
 
-                if (userType == "owner") {
+                if (userType == "OWNER") {
                     editProfileViewModel.putProfile(PutProfileRequest(name, email, province, city, district, postalCode, address, phoneNum))
                 } else {
                     editProfileViewModel.putProfile(PutProfileRequest(name, email, province, city, district, postalCode, address, phoneNum, birthDate))

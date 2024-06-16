@@ -3,8 +3,8 @@ package com.amoure.amoure.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
@@ -12,7 +12,7 @@ import com.amoure.amoure.databinding.ItemProductMediumBinding
 import com.amoure.amoure.withCurrencyFormat
 import com.bumptech.glide.Glide
 
-class ProductMediumAdapter : ListAdapter<ProductItem, ProductMediumAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class ProductMediumAdapter : PagingDataAdapter<ProductItem, ProductMediumAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -22,7 +22,9 @@ class ProductMediumAdapter : ListAdapter<ProductItem, ProductMediumAdapter.MyVie
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
-        holder.bind(user, onItemClickCallback, holder.itemView.context)
+        if (user != null) {
+            holder.bind(user, onItemClickCallback, holder.itemView.context)
+        }
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -34,10 +36,10 @@ class ProductMediumAdapter : ListAdapter<ProductItem, ProductMediumAdapter.MyVie
         fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
             with(binding) {
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_product), product.rentPrice?.withCurrencyFormat())
-                tvName.text = product.productName
-                tvOwner.text = product.ownerName
+                tvName.text = product.name
+                tvOwner.text = product.owner?.fullName
                 Glide.with(ivProduct.context)
-                    .load(product.imgProduct?.get(0))
+                    .load(product.images?.get(0))
                     .into(ivProduct)
                 itemProductSmall.setOnClickListener {
                     product.id?.let { onItemClickCallback.onItemClicked(it) }
@@ -47,7 +49,7 @@ class ProductMediumAdapter : ListAdapter<ProductItem, ProductMediumAdapter.MyVie
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(id: String)
+        fun onItemClicked(id: Int)
     }
 
     companion object {

@@ -34,10 +34,10 @@ class ProductSmallAdapter : ListAdapter<ProductItem, ProductSmallAdapter.MyViewH
         fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
             with(binding) {
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_product), product.rentPrice?.withCurrencyFormat())
-                tvName.text = product.productName
-                tvOwner.text = product.ownerName
+                tvName.text = product.name
+                tvOwner.text = product.owner?.fullName
                 Glide.with(ivProduct.context)
-                    .load(product.imgProduct?.get(0))
+                    .load(product.images?.get(0))
                     .into(ivProduct)
                 itemProductSmall.setOnClickListener {
                     product.id?.let { onItemClickCallback.onItemClicked(it) }
@@ -47,7 +47,7 @@ class ProductSmallAdapter : ListAdapter<ProductItem, ProductSmallAdapter.MyViewH
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(id: String)
+        fun onItemClicked(id: Int)
     }
 
     companion object {

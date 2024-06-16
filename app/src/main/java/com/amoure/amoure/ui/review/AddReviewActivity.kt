@@ -9,9 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.amoure.amoure.R
+import com.amoure.amoure.data.request.PostReviewRequest
 import com.amoure.amoure.databinding.ActivityAddReviewBinding
-import com.amoure.amoure.getCurrentDateTime
-import com.amoure.amoure.toString
 import com.amoure.amoure.ui.ViewModelFactory
 import com.bumptech.glide.Glide
 import kotlin.properties.Delegates
@@ -22,7 +21,7 @@ class AddReviewActivity : AppCompatActivity() {
     private val reviewViewModel by viewModels<ReviewViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private lateinit var productId: String
+    private var productId by Delegates.notNull<Int>()
     private lateinit var productName: String
     private lateinit var ownerName: String
     private lateinit var imageUrl: String
@@ -32,7 +31,7 @@ class AddReviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        productId = intent.getStringExtra(PRODUCT_ID).toString()
+        productId = intent.getStringExtra(PRODUCT_ID).toString().toInt()
         productName = intent.getStringExtra(PRODUCT_NAME).toString()
         ownerName = intent.getStringExtra(OWNER_NAME).toString()
         rating = intent.getStringExtra(RATING).toString().toDouble()
@@ -94,11 +93,7 @@ class AddReviewActivity : AppCompatActivity() {
                 } else {
                     edlReviewComment.isErrorEnabled = false
                 }
-
-                val date = getCurrentDateTime()
-                val dateInString = date.toString("yyyy/MM/dd HH:mm:ss")
-                showToast(putRating.toString()+comment+dateInString)
-//                reviewViewModel.postReview(productId, PostReviewRequest(putRating, comment, dateInString))
+                reviewViewModel.postReview(PostReviewRequest(productId, putRating, comment))
                 finish()
             }
         }

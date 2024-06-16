@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.databinding.ItemReviewBinding
 
-class ReviewAdapter : ListAdapter<ReviewItem, ReviewAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class ReviewAdapter : PagingDataAdapter<ReviewItem, ReviewAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
@@ -20,32 +20,33 @@ class ReviewAdapter : ListAdapter<ReviewItem, ReviewAdapter.MyViewHolder>(DIFF_C
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val review = getItem(position)
-        holder.bind(review, holder.itemView.context)
+        if (review != null) {
+            holder.bind(review, holder.itemView.context)
+        }
     }
 
     class MyViewHolder(private val binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(review: ReviewItem, context: Context) {
             with(binding) {
-                // TODO: Name of the reviewer?
-//                tvName.text =
+                tvName.text = review.user?.fullName
                 tvComment.text = review.comment.toString()
                 if (review.rating == null) {
                     return
                 }
-                if (review.rating >= 1) {
+                if (review.rating >= 1.0) {
                     setStarColor(star1, context)
                 }
-                if (review.rating >= 2) {
+                if (review.rating >= 2.0) {
                     setStarColor(star2, context)
                 }
-                if (review.rating >= 3) {
+                if (review.rating >= 3.0) {
                     setStarColor(star3, context)
                 }
-                if (review.rating >= 4) {
+                if (review.rating >= 4.0) {
                     setStarColor(star4, context)
                 }
-                if (review.rating >= 5) {
+                if (review.rating >= 5.0) {
                     setStarColor(star5, context)
                 }
             }

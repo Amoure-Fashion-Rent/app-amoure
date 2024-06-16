@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.amoure.amoure.R
 import com.amoure.amoure.databinding.FragmentProfileBinding
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.editprofile.EditProfileActivity
@@ -30,6 +32,10 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        profileViewModel.isError.observe(this) {
+            if (it == true) showToast(resources.getString(R.string.alert_error))
+        }
+
         setupAction()
         return root
     }
@@ -51,6 +57,10 @@ class ProfileFragment : Fragment() {
                 activity?.finish()
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

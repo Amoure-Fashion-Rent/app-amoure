@@ -8,7 +8,6 @@ import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.response.ProductResponse
-import com.amoure.amoure.data.response.ProductsResponse
 import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -70,26 +69,27 @@ class ProductViewModel(private val repository: UserRepository) : ViewModel() {
     private fun getSimilarItems() {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).getProducts()
-        client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<ProductsResponse>>,
-                response: Response<InitialResponse<ProductsResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.data?.products.let {
-                        _similarItems.value = it
-                    }
-                    _isError.value = false
-                } else {
-                    _isError.value = true
-                }
-                _isLoading.value = false
-            }
-
-            override fun onFailure(call: Call<InitialResponse<ProductsResponse>>, t: Throwable) {
-                _isError.value = true
-                _isLoading.value = false
-            }
-        })
+        // TODO: API ML
+//        client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {
+//            override fun onResponse(
+//                call: Call<InitialResponse<ProductsResponse>>,
+//                response: Response<InitialResponse<ProductsResponse>>
+//            ) {
+//                if (response.isSuccessful) {
+//                    response.body()?.data?.products.let {
+//                        _similarItems.value = it
+//                    }
+//                    _isError.value = false
+//                } else {
+//                    _isError.value = true
+//                }
+//                _isLoading.value = false
+//            }
+//
+//            override fun onFailure(call: Call<InitialResponse<ProductsResponse>>, t: Throwable) {
+//                _isError.value = true
+//                _isLoading.value = false
+//            }
+//        })
     }
 }

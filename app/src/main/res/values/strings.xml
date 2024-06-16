@@ -46,7 +46,7 @@
     <string name="password">Password</string>
     <string name="password_conf">Password Confirmation</string>
     <string name="your_name">Your Name</string>
-    <string name="user_type">User Type</string>
+    <string name="user_type">Role</string>
     <string name="password_message">Password must be at least 8 characters, and contain both letters and numbers. Only these symbols can be used -_.@</string>
 
     <string name="register_alert_title_success">Account registration is successful!</string>
@@ -100,4 +100,6 @@
     <string name="arrives_by">Arrives by: %1$s</string>
     <string name="return_on">Return on: %1$s</string>
     <string name="status">Status: %1$s</string>
+    <string name="timeout">Timeout</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.properties.Delegates
 
 class RentHistoryViewModel(private val repository: UserRepository) : ViewModel() {
     private val _rents = MutableLiveData<List<RentItem?>>()
@@ -25,7 +26,7 @@ class RentHistoryViewModel(private val repository: UserRepository) : ViewModel()
     val isLoading: LiveData<Boolean> = _isLoading
 
     private lateinit var accessToken: String
-    private lateinit var userId: String
+    private var userId by Delegates.notNull<Int>()
 
     init {
         viewModelScope.launch {
@@ -42,26 +43,6 @@ class RentHistoryViewModel(private val repository: UserRepository) : ViewModel()
     private fun getRents() {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).getRents(userId)
-        client.enqueue(object : Callback<InitialResponse<RentResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<RentResponse>>,
-                response: Response<InitialResponse<RentResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.data?.rent.let {
-                        _rents.value = it
-                    }
-                    _isError.value = false
-                } else {
-                    _isError.value = true
-                }
-                _isLoading.value = false
-            }
-
-            override fun onFailure(call: Call<InitialResponse<RentResponse>>, t: Throwable) {
-                _isError.value = true
-                _isLoading.value = false
-            }
-        })
+        // TODO: synchronize with backend
     }
 }

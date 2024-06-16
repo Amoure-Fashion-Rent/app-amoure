@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityProductBinding
-import com.amoure.amoure.getDummyProduct
-import com.amoure.amoure.getDummyProducts
 import com.amoure.amoure.ui.ProductSmallAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
@@ -21,13 +19,14 @@ import com.amoure.amoure.ui.review.ReviewActivity
 import com.amoure.amoure.withCurrencyFormat
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import kotlin.properties.Delegates
 
 class ProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductBinding
     private val productViewModel by viewModels<ProductViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private lateinit var id: String
+    private var id by Delegates.notNull<Int>()
     private lateinit var thisProduct: ProductItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,14 +35,11 @@ class ProductActivity : AppCompatActivity() {
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        id = intent.getStringExtra(ID).toString()
+        id = intent.getStringExtra(ID).toString().toInt()
 
         productViewModel.product.observe(this) {
             setProduct(it)
         }
-        // TODO: Remove!
-        setProduct(getDummyProduct())
-        setSimilarItems(getDummyProducts())
 
         productViewModel.similarItems.observe(this) {
             setSimilarItems(it)
@@ -68,28 +64,28 @@ class ProductActivity : AppCompatActivity() {
 
             btSeeAllReviews.setOnClickListener {
                 val moveIntent = Intent(baseContext, ReviewActivity::class.java)
-                moveIntent.putExtra(ReviewActivity.PRODUCT_ID, thisProduct.id)
-                moveIntent.putExtra(ReviewActivity.PRODUCT_NAME, thisProduct.productName)
-                moveIntent.putExtra(ReviewActivity.OWNER_NAME, thisProduct.ownerName)
-                moveIntent.putExtra(ReviewActivity.RATING, thisProduct.rating.toString())
-                moveIntent.putExtra(ReviewActivity.IMAGE_URL, thisProduct.imgProduct?.get(0))
+                moveIntent.putExtra(ReviewActivity.PRODUCT_ID, thisProduct.id.toString())
+                moveIntent.putExtra(ReviewActivity.PRODUCT_NAME, thisProduct.name)
+                moveIntent.putExtra(ReviewActivity.OWNER_NAME, thisProduct.owner?.fullName)
+                moveIntent.putExtra(ReviewActivity.RATING, thisProduct.avgRating.toString())
+                moveIntent.putExtra(ReviewActivity.IMAGE_URL, thisProduct.images?.get(0))
                 startActivity(moveIntent)
             }
 
             btSeeAllItems.setOnClickListener {
                 val moveIntent = Intent(baseContext, DesignerActivity::class.java)
-                moveIntent.putExtra(DesignerActivity.DESIGNER_NAME, thisProduct.ownerName)
-                moveIntent.putExtra(DesignerActivity.OWNER_ID, thisProduct.userId)
+                moveIntent.putExtra(DesignerActivity.DESIGNER_NAME, thisProduct.owner?.fullName)
+                moveIntent.putExtra(DesignerActivity.OWNER_ID, thisProduct.owner?.id.toString())
                 startActivity(moveIntent)
             }
 
             btRentNow.setOnClickListener {
                 val moveIntent = Intent(baseContext, CartActivity::class.java)
-                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id)
-                moveIntent.putExtra(CartActivity.PRODUCT_NAME, thisProduct.productName)
-                moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.ownerName)
+                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id.toString())
+                moveIntent.putExtra(CartActivity.PRODUCT_NAME, thisProduct.name)
+                moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.owner?.fullName)
                 moveIntent.putExtra(CartActivity.RENT_PRICE, thisProduct.rentPrice.toString())
-                moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.imgProduct?.get(0))
+                moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
                 startActivity(moveIntent)
             }
         }
@@ -104,12 +100,12 @@ class ProductActivity : AppCompatActivity() {
             val snapHelper = CarouselSnapHelper()
             snapHelper.attachToRecyclerView(rvProductImage)
             val productImageAdapter = ProductImageAdapter()
-            productImageAdapter.submitList(product.imgProduct)
+            productImageAdapter.submitList(product.images)
             rvProductImage.adapter = productImageAdapter
 
-            tvProductName.text = product.productName
-            tvProductOwner.text = product.ownerName
-            if (product.available == true) {
+            tvProductName.text = product.name
+            tvProductOwner.text = product.owner?.fullName
+            if (product.status == true) {
                 tvProductIsAvailable.text = getString(R.string.available)
                 tvProductIsAvailable.setTextColor(getColor(R.color.black))
             } else {
@@ -120,7 +116,7 @@ class ProductActivity : AppCompatActivity() {
             tvProductRetailPrice.paintFlags = tvProductRetailPrice.paintFlags or STRIKE_THRU_TEXT_FLAG
             tvProductRentPrice.text = product.rentPrice?.withCurrencyFormat()
             tvProductDetails.text = product.description
-            tvStylishNotes.text = product.styleNotes
+            tvStylishNotes.text = product.stylishNotes
         }
     }
 
@@ -130,9 +126,9 @@ class ProductActivity : AppCompatActivity() {
         productSmallAdapter.submitList(products)
         binding.rvSimilarItems.adapter = productSmallAdapter
         productSmallAdapter.setOnItemClickCallback(object : ProductSmallAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
+            override fun onItemClicked(id: Int) {
             val moveIntent = Intent(baseContext, ProductActivity::class.java)
-            moveIntent.putExtra(ID, id)
+            moveIntent.putExtra(ID, id.toString())
             startActivity(moveIntent)
             }
         })
