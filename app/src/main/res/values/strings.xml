@@ -105,4 +105,34 @@
     <string name="arrives_by">Arrives by: %1$s</string>
     <string name="return_on">Return on: %1$s</string>
     <string name="status">Status: %1$s</string>
+
+
+
+    <string name="addproduct_name">Designer Owner/House/Name</string>
+    <string name="addproduct_product">Product Name</string>
+    <string name="addproduct_details">Details</string>
+    <string name="addproduct_stylish">Stylish Notes</string>
+    <string name="addproduct_retail">Retail Price</string>
+    <string name="addproduct_rent">Rent Price</string>
+    <string name="addproduct_category">Category</string>
+    <string name="addproduct_upload1">Upload Image (Thumbnail)</string>
+
+    <string name="addproduct_upload2">Upload Images (Fashion Item)</string>
+
+    <string name="size_xs">XS</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="size_xl">XL</string>
+    <string name="size_xxl">XXL</string>
+
+    <string name="tryon_items">Items:</string>
+    <string name="tryon_message_1">Before using Try On:</string>
+    <string name="tryon_message_2">1. Ensure your pose mirrors the image above, with three-quarters of your body</string>
+    <string name="tryon_message_3">2. Please note that the size may not accurately reflect the actual size of the fashion item</string>
+    <string name="tryon_message_4">3. The User with free account are limited to only 10 try on’s</string>
+
+    <string name="cam">Camera</string>
+    <string name="img">Image</string>
+    <string name="retry">Try Again</string>
 </resources>

@@ -18,7 +18,7 @@ import com.amoure.amoure.ui.ProductMediumAdapter
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
-import com.amoure.amoure.ui.search.CategoryViewModel
+import com.amoure.amoure.ui.category.CategoryViewModel
 
 class CategoryFragmentClick : Fragment() {
 
@@ -95,10 +95,10 @@ class CategoryFragmentClick : Fragment() {
     }
 
     private fun setWishlistResults(products: List<ProductItem?>) {
-        val adapter = CategoryAdapter()
+        val adapter = ProductMediumAdapter()
         adapter.submitList(products)
         binding.rvCategory.adapter = adapter
-        adapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
+        adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
                 // TODO: Go to product page
 //                val moveIntent = Intent(context, DetailActivity::class.java)

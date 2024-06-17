@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,11 +13,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentCategoryBinding
-import com.amoure.amoure.ui.ProductMediumAdapter
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
-import com.amoure.amoure.ui.search.CategoryViewModel
+import com.amoure.amoure.ui.category.CategoryViewModel
 
 class CategoryFragment : Fragment() {
 
@@ -41,7 +39,7 @@ class CategoryFragment : Fragment() {
 
         CategoryViewModel.categoryResults.observe(viewLifecycleOwner) {
             it?.let {
-                setWishlistResults(it)
+                setCategoryResults(it)
             }
         }
 
@@ -94,7 +92,7 @@ class CategoryFragment : Fragment() {
         }
     }
 
-    private fun setWishlistResults(products: List<ProductItem?>) {
+    private fun setCategoryResults(products: List<ProductItem?>) {
         val adapter = CategoryAdapter()
         adapter.submitList(products)
         binding.rvCategory.adapter = adapter

@@ -1,4 +1,4 @@
-package com.amoure.amoure.ui.search
+package com.amoure.amoure.ui.category
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

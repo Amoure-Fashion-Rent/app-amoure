@@ -101,16 +101,12 @@ interface ApiService {
     ): Call<InitialResponse<ProductsResponse>>
 
 
-    @GET("/wishlists/{userId}")
-    fun getUserWishlist(
-        @Path("userId") id: String
-    ): Call<InitialResponse<WishlistResponse>>
+    /////get search by vissearch
+    @GET("products/search")
+    fun getSearchbyVisSearch(
+        @Query("name") name: String
+    ): Call<InitialResponse<ProductsResponse>>
 
-    @POST("/wishlists/{userId}/{productId}")
-    fun postToWishlist(
-        @Path("userId") userId: String,
-        @Path("productId") productId: String
-    ): Call<InitialResponse<IdResponse>>
 
     @GET("reviews/{productId}")
     fun getReviews(
@@ -133,14 +129,39 @@ interface ApiService {
     ): Call<InitialResponse<IdResponse>>
 
 
+    @GET("rents/{userId}")
+    fun getRents(
+        @Path("userId") userId: String
+    ): Call<InitialResponse<RentResponse>>
+
+    @GET("/wishlists/{userId}")
+    fun getUserWishlist(
+        @Path("userId") id: String
+    ): Call<InitialResponse<WishlistResponse>>
+
+    @POST("/wishlists/{userId}/{productId}")
+    fun postToWishlist(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
     @DELETE("/wishlists/{userId}/{productId}")
     fun deleteFromWishlist(
         @Path("userId") userId: String,
         @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
-    @GET("rents/{userId}")
-    fun getRents(
-        @Path("userId") userId: String
-    ): Call<InitialResponse<RentResponse>>
+    @PUT("users/{ownerId}")
+    fun putProduct(
+        @Path("ownerId") ownerId: String,
+        @Field("name") name: String,
+        @Field("product") product: String,
+        @Field("details") details: String,
+        @Field("notes") notes: String,
+        @Field("retail") retail: String,
+        @Field("rent") rent: String,
+        @Field("category") category: String,
+        @Field("sizes") sizes: String,
+        @Field("images") images: String,
+    ): Call<InitialResponse<IdResponse>>
 }

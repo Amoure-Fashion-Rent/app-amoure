@@ -39,7 +39,6 @@ class WishlistAdapter : ListAdapter<ProductItem, WishlistAdapter.MyViewHolder>(D
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_cart), product.rentPrice?.withCurrencyFormat())
                 tvOwner.text = product.ownerName
                 tvName.text = product.productName
-                tvSize.text = product.size
                 Glide.with(ivProduct.context)
                     .load(product.imgProduct)
                     .into(ivProduct)
