@@ -10,13 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentHomeBinding
 import com.amoure.amoure.ui.LoadingStateAdapter
 import com.amoure.amoure.ui.ProductMediumAdapter
-import com.amoure.amoure.ui.ProductSmallAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.product.ProductActivity
 import com.amoure.amoure.ui.search.SearchFragment
@@ -37,14 +34,7 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.rvTrending.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvForYou.layoutManager = GridLayoutManager(context, 2)
-
-        homeViewModel.trendingProducts.observe(viewLifecycleOwner) {
-            it?.let {
-                setTrending(it)
-            }
-        }
 
         homeViewModel.isError.observe(viewLifecycleOwner) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
@@ -53,6 +43,11 @@ class HomeFragment : Fragment() {
         setSearchBar()
         setForYou()
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.getForYou()
     }
 
     private fun setSearchBar() {
@@ -72,19 +67,6 @@ class HomeFragment : Fragment() {
                     false
                 }
         }
-    }
-
-    private fun setTrending(products: List<ProductItem?>) {
-        val adapter = ProductSmallAdapter()
-        adapter.submitList(products)
-        binding.rvTrending.adapter = adapter
-        adapter.setOnItemClickCallback(object : ProductSmallAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: Int) {
-                val moveIntent = Intent(context, ProductActivity::class.java)
-                moveIntent.putExtra(ProductActivity.ID, id.toString())
-                startActivity(moveIntent)
-            }
-        })
     }
 
     private fun setForYou() {

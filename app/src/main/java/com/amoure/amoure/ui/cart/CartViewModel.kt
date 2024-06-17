@@ -60,7 +60,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
             ) {
                 if (response.isSuccessful) {
 
-                    response.body()?.data?.cart?.let {
+                    response.body()?.data?.carts?.let {
                         _carts.value = it
                         _isLoading.value = false
                     }

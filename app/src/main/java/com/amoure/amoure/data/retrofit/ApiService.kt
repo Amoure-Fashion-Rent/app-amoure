@@ -71,18 +71,6 @@ interface ApiService {
         @Query("includeOwner") includeOwner: Boolean = true,
     ): InitialResponse<ProductsResponse>
 
-    @GET("products")
-    fun getProductsCall(
-        @Query("id") id: Int? = null,
-        @Query("ownerId") ownerId: Int? = null,
-        @Query("categoryId") categoryId: Int? = null,
-        @Query("search") search: String? = null,
-        @Query("page") page: Int? = null,
-        @Query("take") take: Int? = null,
-        @Query("includeCategory") includeCategory: Boolean = true,
-        @Query("includeOwner") includeOwner: Boolean = true,
-    ): Call<InitialResponse<ProductsResponse>>
-
     @GET("products/{productId}")
     fun getProductById(
         @Path("productId") id: Int
@@ -123,7 +111,6 @@ interface ApiService {
     fun getReviews(
         @Query("id") id: Int? = null,
         @Query("productId") productId: Int? = null,
-        @Query("userId") userId: Int? = null,
         @Query("page") page: Int? = null,
         @Query("take") take: Int? = null,
         @Query("includeUser") includeUser: Boolean = true,
@@ -141,7 +128,7 @@ interface ApiService {
         @Path("productId") productId: Int
     ): Call<InitialResponse<IdResponse>>
 
-    @GET("rents")
+    @GET("orders")
     fun getRents(
         @Query("userId") userId: Int? = null,
         @Query("page") page: Int? = null,

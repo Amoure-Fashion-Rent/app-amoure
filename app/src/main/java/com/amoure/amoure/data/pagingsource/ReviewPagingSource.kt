@@ -17,7 +17,6 @@ class ReviewPagingSource(private val apiService: ApiService, private val reviewP
             val responseData = apiService.getReviews(
                 reviewPsParams.id,
                 reviewPsParams.productId,
-                reviewPsParams.userId,
                 page,
                 params.loadSize).data?.reviews
             val responseData2: List<ReviewItem> = responseData?.filterNotNull() ?: emptyList()

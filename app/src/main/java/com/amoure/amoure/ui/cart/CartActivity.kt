@@ -14,6 +14,8 @@ import com.amoure.amoure.R
 import com.amoure.amoure.afterTextChangedDelayed
 import com.amoure.amoure.currencyStringToInteger
 import com.amoure.amoure.data.request.PutCartRequest
+import com.amoure.amoure.data.response.IdResponse
+import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Owner
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityCartBinding
@@ -22,6 +24,7 @@ import com.amoure.amoure.withCurrencyFormat
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import kotlin.properties.Delegates
@@ -91,6 +94,7 @@ class CartActivity : AppCompatActivity() {
         }
         putCartDetail()
         setCarts(listOf(product))
+        postCart()
     }
 
     private fun postCart() {
@@ -125,7 +129,32 @@ class CartActivity : AppCompatActivity() {
                 } else {
                     edlExpDate.isErrorEnabled = false
                 }
+                // add dialog silahkan tunggu barang sampe rumah
                 // req.delivery, req.deliveryPrice, address, productId
+                showAlert(InitialResponse("OK"))
+            }
+        }
+    }
+
+    private fun showAlert(response: InitialResponse<IdResponse>) {
+        if (response.message == "OK") {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(getString(R.string.title_dialog_cart))
+                setMessage(getString(R.string.message_dialog_cart))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                    finish()
+                }
+                create()
+                show()
+            }
+        } else {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(resources.getString(R.string.login_alert_title_error))
+                setMessage(response.message ?: resources.getString(R.string.alert_error))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                }
+                create()
+                show()
             }
         }
     }

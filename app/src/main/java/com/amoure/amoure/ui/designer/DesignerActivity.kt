@@ -38,6 +38,11 @@ class DesignerActivity : AppCompatActivity() {
         setProducts()
     }
 
+    override fun onResume() {
+        super.onResume()
+        designerViewModel.getProducts(ownerId)
+    }
+
     private fun setProducts() {
         binding.rvDesigner.layoutManager = GridLayoutManager(this, 2)
         val adapter = ProductMediumAdapter()

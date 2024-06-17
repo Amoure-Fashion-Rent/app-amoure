@@ -17,7 +17,7 @@ class RentHistoryPagingSource(private val apiService: ApiService, private val re
             val responseData = apiService.getRents(
                 rentHistoryPsParams.userId,
                 page,
-                params.loadSize).data?.rent
+                params.loadSize).data?.orders
             val responseData2: List<RentItem> = responseData?.filterNotNull() ?: emptyList()
 
             LoadResult.Page(

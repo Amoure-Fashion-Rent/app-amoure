@@ -18,7 +18,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_product_image"
                 android:layout_width="match_parent"
-                android:layout_height="300sp"
+                android:layout_height="420sp"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 app:layout_constraintLeft_toLeftOf="parent"

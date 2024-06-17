@@ -32,7 +32,7 @@ class RentHistoryRepository private constructor(
         }
     }
 
-    fun getReviews(params: RentHistoryPSParams): LiveData<PagingData<RentItem>> {
+    fun getRents(params: RentHistoryPSParams): LiveData<PagingData<RentItem>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 15

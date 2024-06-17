@@ -40,11 +40,14 @@ data class ProductItem(
 	@field:SerializedName("rentPrice")
 	val rentPrice: Int? = null,
 
+	@field:SerializedName("size")
+	val size: String? = null,
+
 	@field:SerializedName("color")
 	val color: String? = null,
 
 	@field:SerializedName("status")
-	val status: Boolean? = null,
+	val status: String? = null,
 
 	@field:SerializedName("category")
 	val category: Category? = null,

@@ -19,7 +19,7 @@
     <string name="product_image">Product Image</string>
 
     <string name="trending">Trending</string>
-    <string name="for_you">For You</string>
+    <string name="for_you">Recent Items</string>
     <string name="search_hint">Search fashion items…</string>
 
     <string name="alert_error">Please try again later\! Server isn\'t responding</string>
@@ -103,4 +103,6 @@
     <string name="status">Status: %1$s</string>
     <string name="timeout">Timeout</string>
     <string name="retry">Retry</string>
+    <string name="title_dialog_cart">Rent item successful!</string>
+    <string name="message_dialog_cart">Please wait for the rent item to arrive at your home.</string>
 </resources>

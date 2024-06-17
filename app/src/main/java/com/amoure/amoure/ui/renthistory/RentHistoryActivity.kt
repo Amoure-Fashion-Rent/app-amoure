@@ -1,15 +1,13 @@
 package com.amoure.amoure.ui.renthistory
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.amoure.amoure.R
-import com.amoure.amoure.data.response.RentItem
 import com.amoure.amoure.databinding.ActivityRentHistoryBinding
 import com.amoure.amoure.ui.ViewModelFactory
+import com.amoure.amoure.ui.product.ProductActivity
 
 class RentHistoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRentHistoryBinding
@@ -23,46 +21,32 @@ class RentHistoryActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.rvRents.layoutManager = LinearLayoutManager(this)
 
-        rentHistoryViewModel.rents.observe(this) {
-            it?.let {
-                setRents(it)
-            }
-        }
-
-        rentHistoryViewModel.isError.observe(this) {
-            if (it == true) showToast(resources.getString(R.string.alert_error))
-        }
-
-        rentHistoryViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
         binding.topAppBarSecond.setNavigationOnClickListener {
             finish()
         }
+        setRents()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        rentHistoryViewModel.getRents()
     }
 
 
-    private fun setRents(rents: List<RentItem?>) {
+    private fun setRents() {
         val adapter = RentHistoryAdapter()
-        adapter.submitList(rents)
         binding.rvRents.adapter = adapter
-        // TODO: match with backend is it possible to click the rent item or not
-//        adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
-//            override fun onItemClicked(id: String) {
-//                val moveIntent = Intent(this, ProductActivity::class.java)
-//                moveIntent.putExtra(ProductActivity.ID, id)
-//                startActivity(moveIntent)
-//            }
-//        })
+        rentHistoryViewModel.rents.observe(this) {
+            it?.let {
+                adapter.submitData(lifecycle, it)
+            }
+        }
+        adapter.setOnItemClickCallback(object : RentHistoryAdapter.OnItemClickCallback {
+            override fun onItemClicked(id: Int) {
+                val moveIntent = Intent(baseContext, ProductActivity::class.java)
+                moveIntent.putExtra(ProductActivity.ID, id)
+                startActivity(moveIntent)
+            }
+        })
     }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
 }

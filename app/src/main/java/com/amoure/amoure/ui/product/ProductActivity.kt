@@ -55,7 +55,6 @@ class ProductActivity : AppCompatActivity() {
         productViewModel.isLoading.observe(this) {
             showLoading(it)
         }
-
         setupAction()
     }
 
@@ -63,6 +62,16 @@ class ProductActivity : AppCompatActivity() {
         with(binding) {
             btBack.setOnClickListener {
                 finish()
+            }
+
+            btRentNow.setOnClickListener {
+                val moveIntent = Intent(baseContext, CartActivity::class.java)
+                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id.toString())
+                moveIntent.putExtra(CartActivity.PRODUCT_NAME, thisProduct.name)
+                moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.owner?.fullName)
+                moveIntent.putExtra(CartActivity.RENT_PRICE, thisProduct.rentPrice.toString())
+                moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
+                startActivity(moveIntent)
             }
 
             btSeeAllReviews.setOnClickListener {
@@ -82,21 +91,11 @@ class ProductActivity : AppCompatActivity() {
                 startActivity(moveIntent)
             }
 
-            btRentNow.setOnClickListener {
-                val moveIntent = Intent(baseContext, CartActivity::class.java)
-                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id.toString())
-                moveIntent.putExtra(CartActivity.PRODUCT_NAME, thisProduct.name)
-                moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.owner?.fullName)
-                moveIntent.putExtra(CartActivity.RENT_PRICE, thisProduct.rentPrice.toString())
-                moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
-                startActivity(moveIntent)
-            }
-
             btAddWishlist.setOnClickListener {
                 productViewModel.postWishlist(id)
             }
 
-            btRentNow.setOnClickListener {
+            btTryOn.setOnClickListener {
                 // TODO: Try On Page
 //                val moveIntent = Intent(baseContext, CartActivity::class.java)
 //                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id.toString())
@@ -123,7 +122,7 @@ class ProductActivity : AppCompatActivity() {
 
             tvProductName.text = product.name
             tvProductOwner.text = product.owner?.fullName
-            if (product.status == true) {
+            if (product.status == "AVAILABLE") {
                 tvProductIsAvailable.text = getString(R.string.available)
                 tvProductIsAvailable.setTextColor(getColor(R.color.black))
             } else {

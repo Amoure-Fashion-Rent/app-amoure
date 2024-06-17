@@ -54,7 +54,7 @@ class ViewModelFactory(private val repository: Repository) :
                 ReviewViewModel(repository.userRepository, repository.reviewRepository) as T
             }
             modelClass.isAssignableFrom(RentHistoryViewModel::class.java) -> {
-                RentHistoryViewModel(repository.userRepository) as T
+                RentHistoryViewModel(repository.userRepository, repository.rentHistoryRepository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
