@@ -13,10 +13,12 @@ import com.amoure.amoure.data.request.PutProfileRequest
 import com.amoure.amoure.data.response.Profile
 import com.amoure.amoure.databinding.ActivityEditProfileBinding
 import com.amoure.amoure.isEmailValid
+import com.amoure.amoure.isPhoneNumberValid
 import com.amoure.amoure.ui.ViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 
 class EditProfileActivity : AppCompatActivity() {
@@ -82,7 +84,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun setProfile(profile: Profile) {
         with(binding) {
             userType = profile.userType.toString()
-            if (profile.userType == "owner") {
+            if (profile.userType == "OWNER") {
                 tvProfileName.text = getString(R.string.designer_name)
                 tvProfileBirthDate.visibility = View.GONE
                 edlProfileBirthDate.visibility = View.GONE
@@ -104,25 +106,79 @@ class EditProfileActivity : AppCompatActivity() {
         with(binding) {
             btSave.setOnClickListener {
                 val name = edProfileName.text.toString()
+                if (name.isEmpty()) {
+                    showInputErrorMessage(edlProfileName, "name")
+                    return@setOnClickListener
+                } else {
+                    edlProfileName.isErrorEnabled = false
+                }
                 val email = edProfileEmail.text.toString()
                 if (email.isEmpty() || !isEmailValid(email)) {
-                    edProfileEmail.error = String.format(getString(R.string.input_required), "email")
+                    edlProfileEmail.error = String.format(getString(R.string.input_required), "email")
+                    return@setOnClickListener
+                } else {
+                    edlProfileEmail.isErrorEnabled = false
                 }
                 val province = edProfileProvince.text.toString()
+                if (province.isEmpty()) {
+                    showInputErrorMessage(edlProfileProvince, "province")
+                } else {
+                    edlProfileProvince.isErrorEnabled = false
+                }
                 val city = edProfileCity.text.toString()
+                if (city.isEmpty()) {
+                    showInputErrorMessage(edlProfileCity, "city")
+                } else {
+                    edlProfileCity.isErrorEnabled = false
+                }
                 val district = edProfileDistrict.text.toString()
+                if (district.isEmpty()) {
+                    showInputErrorMessage(edlProfileDistrict, "district")
+                    return@setOnClickListener
+                } else {
+                    edlProfileDistrict.isErrorEnabled = false
+                }
                 val postalCode = edProfilePostalCode.text.toString()
+                if (postalCode.isEmpty()) {
+                    showInputErrorMessage(edlProfilePostalCode, "postal code")
+                    return@setOnClickListener
+                } else {
+                    edlProfilePostalCode.isErrorEnabled = false
+                }
                 val address = edProfileAddress.text.toString()
+                if (address.isEmpty()) {
+                    showInputErrorMessage(edlProfileAddress, "address")
+                    return@setOnClickListener
+                } else {
+                    edlProfileAddress.isErrorEnabled = false
+                }
                 val phoneNum = edProfilePhoneNum.text.toString()
+                if (phoneNum.isEmpty() || !isPhoneNumberValid(phoneNum)) {
+                    edlProfilePhoneNum.error = String.format(getString(R.string.input_required), "phone number")
+                    return@setOnClickListener
+                } else {
+                    edlProfilePhoneNum.isErrorEnabled = false
+                }
                 val birthDate = edProfileBirthDate.text.toString()
+                if (birthDate.isEmpty()) {
+                    showInputErrorMessage(edlProfileBirthDate, "birth date")
+                    return@setOnClickListener
+                } else {
+                    edlProfileBirthDate.isErrorEnabled = false
+                }
 
-                if (userType == "owner") {
+                if (userType == "OWNER") {
                     editProfileViewModel.putProfile(PutProfileRequest(name, email, province, city, district, postalCode, address, phoneNum))
                 } else {
                     editProfileViewModel.putProfile(PutProfileRequest(name, email, province, city, district, postalCode, address, phoneNum, birthDate))
                 }
+                finish()
             }
         }
+    }
+
+    private fun showInputErrorMessage(edl: TextInputLayout, name: String) {
+        edl.error = String.format(getString(R.string.input_required_2), name)
     }
 
     private fun showToast(message: String) {

@@ -10,21 +10,21 @@ import com.amoure.amoure.data.response.Cart
 import com.amoure.amoure.data.response.CartResponse
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
-import com.amoure.amoure.data.response.ProductItem
-import com.amoure.amoure.data.response.ProductResponse
+import com.amoure.amoure.data.response.Profile
+import com.amoure.amoure.data.response.ProfileResponse
 import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.properties.Delegates
 
 class CartViewModel(private val repository: UserRepository) : ViewModel() {
+    private val _profile = MutableLiveData<Profile>()
+    val profile: LiveData<Profile> = _profile
+
     private val _carts = MutableLiveData<Cart>()
     val carts: LiveData<Cart> = _carts
-
-    private val _products = MutableLiveData<List<ProductItem>>()
-    val products: LiveData<List<ProductItem>> = _products
-    private var productArray: MutableList<ProductItem> = arrayListOf()
 
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
@@ -33,7 +33,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     private lateinit var accessToken: String
-    private lateinit var userId: String
+    private var userId by Delegates.notNull<Int>()
 
     init {
         viewModelScope.launch {
@@ -50,7 +50,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
         getCart(accessToken, userId)
     }
 
-    private fun getCart(token: String, id: String) {
+    private fun getCart(token: String, id: Int) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(token).getUserCart(id)
         client.enqueue(object : Callback<InitialResponse<CartResponse>> {
@@ -60,14 +60,8 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
             ) {
                 if (response.isSuccessful) {
 
-                    response.body()?.data?.cart?.let {
+                    response.body()?.data?.carts?.let {
                         _carts.value = it
-                        it.productId?.let { ids ->
-                            for (productId in ids) {
-                                getProduct(productId)
-                            }
-                        }
-                        _products.value = productArray
                         _isLoading.value = false
                     }
                     _isError.value = false
@@ -85,35 +79,11 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
         })
     }
 
-    private fun getProduct(id:String) {
-        val client = ApiConfig.getApiService(accessToken).getProductById(id)
-        client.enqueue(object : Callback<InitialResponse<ProductResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<ProductResponse>>,
-                response: Response<InitialResponse<ProductResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.data?.product?.let {
-                        productArray.add(it)
-                    }
-                    _isError.value = false
-                } else {
-                    _isError.value = true
-                }
-            }
-
-            override fun onFailure(call: Call<InitialResponse<ProductResponse>>, t: Throwable) {
-                _isError.value = true
-            }
-        })
-        return
-    }
-
     fun putFromCart(req: PutCartRequest) {
         putFromCart(accessToken, userId, req)
     }
 
-    private fun putFromCart(token: String, id: String, req: PutCartRequest) {
+    private fun putFromCart(token: String, id: Int, req: PutCartRequest) {
         val client = ApiConfig.getApiService(token).putFromCart(
             id,
             req.rentalStartDate,
@@ -139,7 +109,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
         deleteFromCart(accessToken, userId, productId)
     }
 
-    private fun deleteFromCart(token: String, userId: String, productId: String) {
+    private fun deleteFromCart(token: String, userId: Int, productId: String) {
         val client = ApiConfig.getApiService(token).deleteFromCart(userId, productId)
         client.enqueue(object : Callback<InitialResponse<IdResponse>> {
             override fun onResponse(
@@ -150,6 +120,33 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
             }
 
             override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
+                _isError.value = true
+            }
+        })
+    }
+
+    private fun getProfile() {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService(accessToken).getProfile(userId)
+        client.enqueue(object : Callback<InitialResponse<ProfileResponse>> {
+            override fun onResponse(
+                call: Call<InitialResponse<ProfileResponse>>,
+                response: Response<InitialResponse<ProfileResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.data?.user?.let {
+                        _profile.value = it
+                    }
+                    _isLoading.value = false
+                    _isError.value = false
+                } else {
+                    _isLoading.value = false
+                    _isError.value = true
+                }
+            }
+
+            override fun onFailure(call: Call<InitialResponse<ProfileResponse>>, t: Throwable) {
+                _isLoading.value = false
                 _isError.value = true
             }
         })

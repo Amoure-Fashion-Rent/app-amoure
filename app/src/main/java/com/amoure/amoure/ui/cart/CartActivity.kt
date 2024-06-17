@@ -14,13 +14,20 @@ import com.amoure.amoure.R
 import com.amoure.amoure.afterTextChangedDelayed
 import com.amoure.amoure.currencyStringToInteger
 import com.amoure.amoure.data.request.PutCartRequest
+import com.amoure.amoure.data.response.IdResponse
+import com.amoure.amoure.data.response.InitialResponse
+import com.amoure.amoure.data.response.Owner
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityCartBinding
 import com.amoure.amoure.ui.ViewModelFactory
+import com.amoure.amoure.withCurrencyFormat
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
+import kotlin.properties.Delegates
 
 
 class CartActivity : AppCompatActivity() {
@@ -30,6 +37,13 @@ class CartActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var req: PutCartRequest
+    private lateinit var product: ProductItem
+    private var productId by Delegates.notNull<Int>()
+    private lateinit var productName: String
+    private lateinit var ownerName: String
+    private lateinit var imageUrl: String
+    private var rentPrice by Delegates.notNull<Int>()
+    private lateinit var address: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +51,19 @@ class CartActivity : AppCompatActivity() {
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvCart.layoutManager = LinearLayoutManager(this)
+
+        productId = intent.getStringExtra(PRODUCT_ID).toString().toInt()
+        productName = intent.getStringExtra(PRODUCT_NAME).toString()
+        ownerName = intent.getStringExtra(OWNER_NAME).toString()
+        rentPrice = intent.getStringExtra(RENT_PRICE).toString().toInt()
+        imageUrl = intent.getStringExtra(IMAGE_URL).toString()
+        product = ProductItem(owner = Owner(fullName = ownerName), id = productId, rentPrice = rentPrice, name = productName, images = listOf(imageUrl))
+
         // TODO: Remove
         req = PutCartRequest("","", 4, "", 1, "", "", "")
 
         cartViewModel.carts.observe(this) {
+            // TODO: match with backend
 //            req = PutCartRequest(
 //                it.delivery,
 //                it.deliveryPrice,
@@ -53,8 +76,9 @@ class CartActivity : AppCompatActivity() {
 //            }
         }
 
-        cartViewModel.products.observe(this) {
-            setCarts(it)
+        cartViewModel.profile.observe(this) {
+            binding.tvAddress.text = it.addressDetail
+            address = it.addressDetail.toString()
         }
 
         cartViewModel.isError.observe(this) {
@@ -69,8 +93,75 @@ class CartActivity : AppCompatActivity() {
             finish()
         }
         putCartDetail()
+        setCarts(listOf(product))
+        postCart()
     }
 
+    private fun postCart() {
+        with(binding) {
+            btCheckout.setOnClickListener {
+                // TODO: match with backend
+                val rentalPeriod = edRentalPeriod.text.toString()
+                if (rentalPeriod.isEmpty()) {
+                    showInputErrorMessage(edlRentalPeriod, "rental period")
+                    return@setOnClickListener
+                } else {
+                    edlRentalPeriod.isErrorEnabled = false
+                }
+                val ccNumber = edCcNumber.text.toString()
+                if (ccNumber.isEmpty()) {
+                    showInputErrorMessage(edlCcNumber, "cc number")
+                    return@setOnClickListener
+                } else {
+                    edlCcNumber.isErrorEnabled = false
+                }
+                val secCode = edSecCode.text.toString()
+                if (secCode.isEmpty()) {
+                    showInputErrorMessage(edlSecCode, "security code")
+                    return@setOnClickListener
+                } else {
+                    edlSecCode.isErrorEnabled = false
+                }
+                val expDate = edExpDate.text.toString()
+                if (expDate.isEmpty()) {
+                    showInputErrorMessage(edlExpDate, "expired date")
+                    return@setOnClickListener
+                } else {
+                    edlExpDate.isErrorEnabled = false
+                }
+                // add dialog silahkan tunggu barang sampe rumah
+                // req.delivery, req.deliveryPrice, address, productId
+                showAlert(InitialResponse("OK"))
+            }
+        }
+    }
+
+    private fun showAlert(response: InitialResponse<IdResponse>) {
+        if (response.message == "OK") {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(getString(R.string.title_dialog_cart))
+                setMessage(getString(R.string.message_dialog_cart))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                    finish()
+                }
+                create()
+                show()
+            }
+        } else {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(resources.getString(R.string.login_alert_title_error))
+                setMessage(response.message ?: resources.getString(R.string.alert_error))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                }
+                create()
+                show()
+            }
+        }
+    }
+
+    private fun showInputErrorMessage(edl: TextInputLayout, name: String) {
+        edl.error = String.format(getString(R.string.input_required_2), name)
+    }
 
     @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
     private fun putCartDetail() {
@@ -158,14 +249,7 @@ class CartActivity : AppCompatActivity() {
         val adapter = CartAdapter()
         adapter.submitList(products)
         binding.rvCart.adapter = adapter
-        adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
-                cartViewModel.deleteFromCart(id)
-                val currentList = adapter.currentList.toMutableList()
-                currentList.removeAt(currentList.indexOfFirst { it.id == id })
-                adapter.submitList(currentList)
-            }
-        })
+        binding.tvTotal.text = rentPrice.withCurrencyFormat()
     }
 
     private fun showToast(message: String) {
@@ -174,5 +258,13 @@ class CartActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        const val PRODUCT_ID = "product_id"
+        const val PRODUCT_NAME = "product_name"
+        const val OWNER_NAME = "owner_name"
+        const val RENT_PRICE = "rent_price"
+        const val IMAGE_URL = "image_url"
     }
 }

@@ -13,15 +13,23 @@
         <item name="android:statusBarColor">@color/white</item>
         <item name="backgroundColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/white</item>
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/poppins</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.App.DatePicker</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="background">@color/gray_blue_100</item>
+        <item name="colorOnPrimary">@color/gray_blue_100</item>
     </style>
 
     <style name="TextHeadline3">
         <item name="fontFamily">@font/montserrat_bold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/navy_blue_700</item>
     </style>
 
@@ -46,6 +54,7 @@
         <item name="colorOnSecondaryContainer">@color/navy_blue_700</item>
         <item name="fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">16sp</item>
+        <item name="backgroundTint">@color/gray_blue_100</item>
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
@@ -53,10 +62,11 @@
     </style>
 
     <style name="ThemeOverlay.App.Toolbar" parent="">
-        <item name="colorSurface">@color/gray_200</item>
         <item name="colorOnSurface">@color/navy_blue_700</item>
         <item name="fontFamily">@font/montserrat_bold</item>
         <item name="titleTextColor">@color/navy_blue_700</item>
+        <item name="android:background">@color/gray_blue_100</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
@@ -86,5 +96,6 @@
     <style name="Widget.App.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/navy_blue_700</item>
         <item name="strokeWidth">2dp</item>
+        <item name="shapeAppearance">@style/MyShapeAppearance</item>
     </style>
 </resources>

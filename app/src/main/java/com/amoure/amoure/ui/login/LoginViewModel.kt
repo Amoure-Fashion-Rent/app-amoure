@@ -33,7 +33,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
                 _response.value = response.body()
                 if (response.isSuccessful) {
                     _response.value?.data?.let {
-                        saveSession(UserModel(it.accessToken, it.userId, true, it.userType))
+                        saveSession(UserModel(it.accessToken, it.user.id, true, it.user.role))
                     }
                 }
                 _isLoading.value = false
@@ -41,7 +41,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
             override fun onFailure(call: Call<InitialResponse<LoginResponse>>, t: Throwable) {
                 _isLoading.value = false
-                _response.value = InitialResponse("error", "Please try again later\\! Server isn\\'t responding")
+                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
             }
         })
     }

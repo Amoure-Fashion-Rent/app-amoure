@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:title="@string/app_name"
-            app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/app_icon"
             style="@style/Widget.App.Toolbar" />
 
@@ -39,6 +38,7 @@
         card_view:layout_constraintRight_toLeftOf="@+id/bt_your_rent"
         card_view:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
         card_view:cardCornerRadius="10dp"
+        card_view:cardBackgroundColor="@color/white"
         app:strokeColor="@color/navy_blue_700"
         app:strokeWidth="2dp">
 
@@ -64,7 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_icon_edit_profile"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/navy_blue_700"
                 android:gravity="center"
@@ -89,6 +89,7 @@
         card_view:layout_constraintRight_toRightOf="parent"
         card_view:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
         card_view:cardCornerRadius="10dp"
+        card_view:cardBackgroundColor="@color/white"
         app:strokeColor="@color/navy_blue_700"
         app:strokeWidth="2dp">
 
@@ -114,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_icon_your_rent"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/navy_blue_700"
                 android:gravity="center"

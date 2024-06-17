@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide
 
 
 class CartAdapter : ListAdapter<ProductItem, CartAdapter.MyViewHolder>(DIFF_CALLBACK) {
-    private lateinit var onItemClickCallback: OnItemClickCallback
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
@@ -24,35 +22,24 @@ class CartAdapter : ListAdapter<ProductItem, CartAdapter.MyViewHolder>(DIFF_CALL
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
-        holder.bind(user, onItemClickCallback, holder.itemView.context)
-    }
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
+        holder.bind(user, holder.itemView.context)
     }
 
     class MyViewHolder(private val binding: ItemCartBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
-        fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
+        fun bind(product: ProductItem, context: Context) {
             with(binding) {
                 tvPrice.text = String.format(context.resources.getString(R.string.rent_price_cart), product.rentPrice?.withCurrencyFormat())
-                tvName.text = product.productName
-                tvOwner.text = product.ownerName
-                tvColor.text = String.format(context.resources.getString(R.string.color_cart), product.color)
+                tvName.text = product.name
+                tvOwner.text = product.owner?.fullName
                 Glide.with(ivProduct.context)
-                    .load(product.imgProduct?.get(0))
+                    .load(product.images?.get(0))
                     .into(ivProduct)
-                btRemove.setOnClickListener {
-                    product.id?.let { onItemClickCallback.onItemClicked(it) }
-                }
             }
         }
     }
 
-    interface OnItemClickCallback {
-        fun onItemClicked(id: String)
-    }
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductItem>() {

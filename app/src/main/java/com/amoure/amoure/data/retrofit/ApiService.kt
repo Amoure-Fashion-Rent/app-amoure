@@ -7,6 +7,9 @@ import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
 import com.amoure.amoure.data.response.ProfileResponse
+import com.amoure.amoure.data.response.RentResponse
+import com.amoure.amoure.data.response.ReviewItem
+import com.amoure.amoure.data.response.ReviewResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -24,7 +27,7 @@ interface ApiService {
         @Field("fullName") fullName: String,
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("userType") userType: String
+        @Field("role") userType: String
     ): Call<InitialResponse<IdResponse>>
 
     @FormUrlEncoded
@@ -34,14 +37,17 @@ interface ApiService {
         @Field("password") password: String
     ): Call<InitialResponse<LoginResponse>>
 
+    @DELETE("auth/logout")
+    fun logout(): Call<InitialResponse<IdResponse>>
+
     @GET("users/{userId}")
     fun getProfile(
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
     ): Call<InitialResponse<ProfileResponse>>
 
     @PUT("users/{userId}")
     fun putProfile(
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
         @Field("fullName") fullName: String,
         @Field("email") email: String,
         @Field("addressDetail") addressDetail: String,
@@ -54,26 +60,30 @@ interface ApiService {
     ): Call<InitialResponse<IdResponse>>
 
     @GET("products")
-    fun getProducts(): Call<InitialResponse<ProductsResponse>>
-
-    @GET("products/{ownerId}/owner")
-    fun getProductsByOwner(
-        @Path("ownerId") ownerId: String
-    ): Call<InitialResponse<ProductsResponse>>
+    fun getProducts(
+        @Query("id") id: Int? = null,
+        @Query("ownerId") ownerId: Int? = null,
+        @Query("categoryId") categoryId: Int? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("take") take: Int? = null,
+        @Query("includeCategory") includeCategory: Boolean = true,
+        @Query("includeOwner") includeOwner: Boolean = true,
+    ): InitialResponse<ProductsResponse>
 
     @GET("products/{productId}")
     fun getProductById(
-        @Path("productId") id: String
+        @Path("productId") id: Int
     ): Call<InitialResponse<ProductResponse>>
 
     @GET("/carts/{userId}")
     fun getUserCart(
-        @Path("userId") id: String
+        @Path("userId") id: Int
     ): Call<InitialResponse<CartResponse>>
 
     @PUT("/carts/{userId}")
     fun putFromCart(
-        @Path("userId") id: String,
+        @Path("userId") id: Int,
         @Field("rentalStartDate") rentalStartDate: String,
         @Field("rentalEndDate") rentalEndDate: String,
         @Field("rentalDuration") rentalDuration: Int,
@@ -88,7 +98,7 @@ interface ApiService {
 
     @DELETE("/carts/{userId}/{productId}")
     fun deleteFromCart(
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
         @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
@@ -96,4 +106,37 @@ interface ApiService {
     fun getSearch(
         @Query("name") name: String
     ): Call<InitialResponse<ProductsResponse>>
+
+    @GET("reviews")
+    fun getReviews(
+        @Query("id") id: Int? = null,
+        @Query("productId") productId: Int? = null,
+        @Query("page") page: Int? = null,
+        @Query("take") take: Int? = null,
+        @Query("includeUser") includeUser: Boolean = true,
+    ): InitialResponse<ReviewResponse>
+
+    @POST("reviews")
+    fun postReview(
+        @Field("productId") productId: Int,
+        @Field("rating") rating: Int,
+        @Field("comment") comment: String,
+    ): Call<InitialResponse<ReviewItem>>
+
+    @DELETE("reviews/{productId}")
+    fun deleteReview(
+        @Path("productId") productId: Int
+    ): Call<InitialResponse<IdResponse>>
+
+    @GET("orders")
+    fun getRents(
+        @Query("userId") userId: Int? = null,
+        @Query("page") page: Int? = null,
+        @Query("take") take: Int? = null,
+    ): InitialResponse<RentResponse>
+
+    @POST("wishlist")
+    fun postWishlist(
+        @Field("productId") productId: Int,
+    ): Call<InitialResponse<IdResponse>>
 }

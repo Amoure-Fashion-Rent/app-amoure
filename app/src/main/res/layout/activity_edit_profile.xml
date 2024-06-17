@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_name"
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_email"
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_province"
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_city"
@@ -138,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_district"
@@ -164,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_postal_code"
@@ -191,7 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_address"
@@ -221,7 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="20dp">
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_phone_num"
@@ -259,7 +259,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                app:endIconMinSize="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_birth_date"

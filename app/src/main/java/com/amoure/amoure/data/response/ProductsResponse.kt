@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductsResponse(
 
+	@field:SerializedName("count")
+	val count: Int? = null,
+
 	@field:SerializedName("products")
 	val products: List<ProductItem?>? = null
 )
@@ -16,39 +19,63 @@ data class ProductResponse(
 
 data class ProductItem(
 
-	@field:SerializedName("ownerName")
-	val ownerName: String? = null,
+	@field:SerializedName("id")
+	val id: Int? = null,
 
-	@field:SerializedName("color")
-	val color: String? = null,
+	@field:SerializedName("name")
+	val name: String? = null,
 
-	@field:SerializedName("styleNotes")
-	val styleNotes: String? = null,
-
-	@field:SerializedName("available")
-	val available: Boolean? = null,
+	@field:SerializedName("images")
+	val images: List<String?>? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
 
-	@field:SerializedName("id")
-	val id: String? = null,
-
-	@field:SerializedName("rentPrice")
-	val rentPrice: Int? = null,
+	@field:SerializedName("stylishNotes")
+	val stylishNotes: String? = null,
 
 	@field:SerializedName("retailPrice")
 	val retailPrice: Int? = null,
 
-	@field:SerializedName("userId")
-	val userId: String? = null,
+	@field:SerializedName("rentPrice")
+	val rentPrice: Int? = null,
 
-	@field:SerializedName("productName")
-	val productName: String? = null,
+	@field:SerializedName("size")
+	val size: String? = null,
 
-	@field:SerializedName("imgProduct")
-	val imgProduct: List<String?>? = null,
+	@field:SerializedName("color")
+	val color: String? = null,
 
-	@field:SerializedName("categoryId")
-	val categoryId: String? = null
+	@field:SerializedName("status")
+	val status: String? = null,
+
+	@field:SerializedName("category")
+	val category: Category? = null,
+
+	@field:SerializedName("owner")
+	val owner: Owner? = null,
+
+	@field:SerializedName("avgRating")
+	val avgRating: Double? = null,
+
+	@field:SerializedName("reviewsCount")
+	val reviewsCount: Int? = null,
+)
+
+data class Owner(
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("fullName")
+	val fullName: String? = null
+)
+
+data class Category(
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null
 )

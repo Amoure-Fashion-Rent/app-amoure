@@ -7,12 +7,6 @@ data class InitialResponse<T>(
 	@field:SerializedName("message")
 	val message: String? = null,
 
-	@field:SerializedName("status")
-	val status: String? = null,
-
 	@field:SerializedName("data")
 	val data: T? = null,
-
-	@field:SerializedName("errors")
-	val errors: List<ErrorResponse>? = null
 )
