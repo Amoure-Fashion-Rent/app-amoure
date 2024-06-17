@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,12 +14,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.FragmentCategoryBinding
+import com.amoure.amoure.ui.ProductMediumAdapter
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.category.CategoryViewModel
 
-class CategoryFragment : Fragment() {
+class CategoryFragmentClick : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val CategoryViewModel by viewModels<CategoryViewModel>() {
@@ -39,7 +41,7 @@ class CategoryFragment : Fragment() {
 
         CategoryViewModel.categoryResults.observe(viewLifecycleOwner) {
             it?.let {
-                setCategoryResults(it)
+                setWishlistResults(it)
             }
         }
 
@@ -92,13 +94,13 @@ class CategoryFragment : Fragment() {
         }
     }
 
-    private fun setCategoryResults(products: List<ProductItem?>) {
-        val adapter = CategoryAdapter()
+    private fun setWishlistResults(products: List<ProductItem?>) {
+        val adapter = ProductMediumAdapter()
         adapter.submitList(products)
         binding.rvCategory.adapter = adapter
-        adapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
+        adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
-                // TODO: Go to list of category lists
+                // TODO: Go to product page
 //                val moveIntent = Intent(context, DetailActivity::class.java)
 //                moveIntent.putExtra(DetailActivity.ID, id)
 //                startActivity(moveIntent)

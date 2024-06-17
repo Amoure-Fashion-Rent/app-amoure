@@ -5,6 +5,23 @@
         <item>JNE Express (Rp 16.000)</item>
         <item>Gojek Sameday (Rp 20.000)</item>
     </string-array>
+    <string-array name="product_category" >
+        <item>Dresses</item>
+        <item>Accesories</item>
+        <item>Jackets</item>
+        <item>Jeans</item>
+        <item>ShirtsBlouse</item>
+        <item>Tops</item>
+        <item>Pants</item>
+        <item>ShortsSkirts</item>
+        <item>Skirts</item>
+        <item>Shoes</item>
+    </string-array>
+    <string-array name="try_on" >
+        <item>Half-Body</item>
+        <item>Lower-Body</item>
+        <item>Full-Body</item>
+    </string-array>
     <string-array name="user_type_items" >
         <item>User</item>
         <item>Owner</item>

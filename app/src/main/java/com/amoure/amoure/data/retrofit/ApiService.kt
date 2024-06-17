@@ -6,6 +6,7 @@ import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductResponse
 import com.amoure.amoure.data.response.ProductsResponse
+import com.amoure.amoure.data.response.WishlistResponse
 import com.amoure.amoure.data.response.ProfileResponse
 import com.amoure.amoure.data.response.RentResponse
 import com.amoure.amoure.data.response.ReviewItem
@@ -117,6 +118,15 @@ interface ApiService {
     ): InitialResponse<ReviewResponse>
 
     @POST("reviews")
+
+
+    /////get search by vissearch
+    @GET("products/search")
+    fun getSearchbyVisSearch(
+        @Query("name") name: String
+    ): Call<InitialResponse<ProductsResponse>>
+
+    @POST("reviews")
     fun postReview(
         @Field("productId") productId: Int,
         @Field("rating") rating: Int,
@@ -139,4 +149,28 @@ interface ApiService {
     fun postWishlist(
         @Field("productId") productId: Int,
     ): Call<InitialResponse<IdResponse>>
+
+    @GET("/wishlists/{userId}")
+    fun getUserWishlist(
+        @Path("userId") id: String
+    ): Call<InitialResponse<WishlistResponse>>
+
+    @DELETE("/wishlists/{userId}/{productId}")
+    fun deleteFromWishlist(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
+    @PUT("users/{ownerId}")
+    fun putProduct(
+        @Path("ownerId") ownerId: String,
+        @Field("name") name: String,
+        @Field("product") product: String,
+        @Field("details") details: String,
+        @Field("notes") notes: String,
+        @Field("retail") retail: String,
+        @Field("rent") rent: String,
+        @Field("category") category: String,
+        @Field("sizes") sizes: String,
+        @Field("images") images: String,
 }
