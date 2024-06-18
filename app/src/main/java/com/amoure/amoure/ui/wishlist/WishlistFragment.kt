@@ -37,16 +37,6 @@ class WishlistFragment : Fragment() {
         binding.rvWishlist.layoutManager = GridLayoutManager(context, 2)
 
         wishListViewModel.wishlist.observe(viewLifecycleOwner) {
-//            req = PutCartRequest(
-//                it.delivery,
-//                it.deliveryPrice,
-//                it.cardNumber,
-//                it.cardExpiry,
-//                it.cardCVV,
-//            )
-//            with (binding) {
-//                edDelivery.setText(String.format(getString(R.string.delivery_item), it.delivery, it.deliveryPrice?.withCurrencyFormat()), false)
-//            }
         }
 
         wishListViewModel.products.observe(viewLifecycleOwner) {
@@ -64,24 +54,11 @@ class WishlistFragment : Fragment() {
             showLoading(it)
         }
 
-        setTopAppBar()
+
         return root
     }
 
 
-
-    private fun setTopAppBar() {
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.cart -> {
-                    val moveIntent = Intent(context, CartActivity::class.java)
-                    startActivity(moveIntent)
-                    true
-                }
-                else -> false
-            }
-        }
-    }
 
     private fun SetWishlistResults(products: List<ProductItem?>) {
         val adapter = WishlistAdapter()

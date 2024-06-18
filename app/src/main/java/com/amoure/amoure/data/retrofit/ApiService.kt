@@ -1,5 +1,7 @@
 package com.amoure.amoure.data.retrofit
 
+import com.amoure.amoure.data.response.CartResponse
+import com.amoure.amoure.data.response.CategoryResponse
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
@@ -134,8 +136,8 @@ interface ApiService {
         @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
-    @PUT("users/{ownerId}")
-    fun putProduct(
+    @POST("users/{ownerId}")
+    fun postProduct(
         @Path("ownerId") ownerId: String,
         @Field("name") name: String,
         @Field("product") product: String,
@@ -147,4 +149,21 @@ interface ApiService {
         @Field("sizes") sizes: String,
         @Field("images") images: String,
     ): Call<InitialResponse<IdResponse>>
+
+    /////get search by vissearch
+    @GET("products/search")
+    fun getSearchbyVisSearch(
+        @Query("name") name: String
+    ): Call<InitialResponse<ProductsResponse>>
+
+    @GET("products/category")
+    fun getAllCategory(
+        @Query("name") name: String
+    ): Call<InitialResponse<CategoryResponse>>
+
+    @GET("products/{categoryId}")
+    fun getAllCategorybyId(
+        @Query("id") id: String
+    ): Call<InitialResponse<CategoryResponse>>
+
 }

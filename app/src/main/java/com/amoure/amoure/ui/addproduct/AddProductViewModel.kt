@@ -43,7 +43,7 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
 
     fun putProduct(profile: PutProductRequest) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(accessToken).putProduct(
+        val client = ApiConfig.getApiService(accessToken).postProduct(
             ownerId,
             profile.name,
             profile.product,

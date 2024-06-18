@@ -11,11 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.data.response.ProductItem
+import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.databinding.FragmentCategoryBinding
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
+import com.amoure.amoure.ui.category.CategoryViewModel
+import com.amoure.amoure.ui.search.SearchFragment
 
 class CategoryFragment : Fragment() {
 
@@ -54,25 +56,10 @@ class CategoryFragment : Fragment() {
             MaterialShapeDrawable.createWithElevationOverlay(activity)
 
         setSearchBar()
-        setTopAppBar()
         return root
     }
 
-    private fun setTopAppBar() {
-        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.cart -> {
-                    val moveIntent = Intent(context, CartActivity::class.java)
-                    startActivity(moveIntent)
-                    true
-                }
-                else -> false
-            }
-        }
-        binding.searchBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
+
 
     private fun setSearchBar() {
         with(binding) {
@@ -84,22 +71,24 @@ class CategoryFragment : Fragment() {
                     searchView.hide()
                     if (searchView.text.toString() != "") {
                         val query = searchView.text.toString()
-//                        searchViewModel.getSearch(query)
+                        val bundle = Bundle()
+                        bundle.putString(SearchFragment.QUERY, query)
+                        findNavController().navigate(R.id.action_navigation_home_to_navigation_search, bundle)
                     }
                     false
                 }
         }
     }
 
-    private fun setCategoryResults(products: List<ProductItem?>) {
+    private fun setCategoryResults(products: List<CategoryItem?>) {
         val adapter = CategoryAdapter()
         adapter.submitList(products)
         binding.rvCategory.adapter = adapter
         adapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
-                // TODO: Go to list of category lists
-//                val moveIntent = Intent(context, DetailActivity::class.java)
-//                moveIntent.putExtra(DetailActivity.ID, id)
+////                 TODO: Go to list of category lists
+//                val moveIntent = Intent(context, CategoryFragmentClick::class.java)
+//                moveIntent.putExtra(CategoryFragmentClick.ID, id)
 //                startActivity(moveIntent)
             }
         })
