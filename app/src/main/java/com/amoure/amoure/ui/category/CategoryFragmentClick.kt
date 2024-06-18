@@ -13,12 +13,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.ProductItem
+import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.databinding.FragmentCategoryBinding
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.category.CategoryViewModel
+import com.amoure.amoure.ui.product.ProductActivity
+import com.amoure.amoure.ui.search.SearchFragment
 
 class CategoryFragmentClick : Fragment() {
 
@@ -39,9 +42,9 @@ class CategoryFragmentClick : Fragment() {
 
         binding.rvCategory.layoutManager = GridLayoutManager(context, 2)
 
-        CategoryViewModel.categoryResults.observe(viewLifecycleOwner) {
+        CategoryViewModel.categoryClick.observe(viewLifecycleOwner) {
             it?.let {
-                setWishlistResults(it)
+                setCategoryResults(it)
             }
         }
 
@@ -87,23 +90,24 @@ class CategoryFragmentClick : Fragment() {
                     searchView.hide()
                     if (searchView.text.toString() != "") {
                         val query = searchView.text.toString()
-//                        searchViewModel.getSearch(query)
+                        val bundle = Bundle()
+                        bundle.putString(SearchFragment.QUERY, query)
+                        findNavController().navigate(R.id.action_navigation_home_to_navigation_search, bundle)
                     }
                     false
                 }
         }
     }
 
-    private fun setWishlistResults(products: List<ProductItem?>) {
+    private fun setCategoryResults(category: List<ProductItem?>) {
         val adapter = ProductMediumAdapter()
-        adapter.submitList(products)
+        adapter.submitList(category)
         binding.rvCategory.adapter = adapter
         adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
-                // TODO: Go to product page
-//                val moveIntent = Intent(context, DetailActivity::class.java)
-//                moveIntent.putExtra(DetailActivity.ID, id)
-//                startActivity(moveIntent)
+                val moveIntent = Intent(context, ProductActivity::class.java)
+                moveIntent.putExtra(ProductActivity.ID, id)
+                startActivity(moveIntent)
             }
         })
     }
@@ -120,4 +124,8 @@ class CategoryFragmentClick : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+//    companion object {
+//        const val ID = "id"
+//    }
 }

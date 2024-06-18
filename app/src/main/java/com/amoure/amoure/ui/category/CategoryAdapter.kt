@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.amoure.amoure.data.response.ProductItem
+import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.data.dataclass.Category
+import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ItemCategoryBinding
 import com.bumptech.glide.Glide
 
-class CategoryAdapter : ListAdapter<ProductItem, CategoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class CategoryAdapter : ListAdapter<CategoryItem, CategoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -32,12 +33,12 @@ class CategoryAdapter : ListAdapter<ProductItem, CategoryAdapter.MyViewHolder>(D
     class MyViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
-        fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
+        fun bind(category: CategoryItem, onItemClickCallback: OnItemClickCallback, context: Context) {
             with(binding) {
-                tvName.text = product.productName
-                Glide.with(ivProduct.context)
-                    .load(product.imgProduct)
-                    .into(ivProduct)
+                tvName.text = category.categoriesName.toString()
+//                Glide.with(ivProduct.context)
+//                    .load(category.imgProduct)
+//                    .into(ivProduct)
             }
         }
     }
@@ -47,12 +48,12 @@ class CategoryAdapter : ListAdapter<ProductItem, CategoryAdapter.MyViewHolder>(D
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductItem>() {
-            override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<CategoryItem>() {
+            override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+            override fun areContentsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {
                 return oldItem == newItem
             }
         }
