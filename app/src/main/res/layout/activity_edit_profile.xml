@@ -44,33 +44,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tv_profile_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/email"
-                android:textColor="@color/navy_blue_700"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/ed_profile_email" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_profile_email"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="30dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_profile_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:inputType="textEmailAddress"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
                 android:id="@+id/tv_profile_province"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,32 +63,6 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_profile_province"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/tv_profile_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/city"
-                android:textColor="@color/navy_blue_700"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/ed_profile_city" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edl_profile_city"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                app:endIconMinSize="30dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_profile_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"

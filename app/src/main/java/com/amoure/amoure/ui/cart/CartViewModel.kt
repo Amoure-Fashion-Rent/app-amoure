@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amoure.amoure.data.UserRepository
-import com.amoure.amoure.data.request.PutCartRequest
-import com.amoure.amoure.data.response.Cart
-import com.amoure.amoure.data.response.CartResponse
+import com.amoure.amoure.data.request.PostCartRequest
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Profile
@@ -23,8 +21,8 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
     private val _profile = MutableLiveData<Profile>()
     val profile: LiveData<Profile> = _profile
 
-    private val _carts = MutableLiveData<Cart>()
-    val carts: LiveData<Cart> = _carts
+    private val _response = MutableLiveData<InitialResponse<IdResponse>>()
+    val response: LiveData<InitialResponse<IdResponse>> = _response
 
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
@@ -41,93 +39,49 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
                 if (it.isLogin) {
                     accessToken = it.accessToken
                     userId = it.userId
-                    getCart(it.accessToken, it.userId)
+                    getProfile()
                 }
             }
         }
     }
-    fun getCart() {
-        getCart(accessToken, userId)
-    }
 
-    private fun getCart(token: String, id: Int) {
+    fun postFromCart(req: PostCartRequest) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(token).getUserCart(id)
-        client.enqueue(object : Callback<InitialResponse<CartResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<CartResponse>>,
-                response: Response<InitialResponse<CartResponse>>
-            ) {
-                if (response.isSuccessful) {
-
-                    response.body()?.data?.carts?.let {
-                        _carts.value = it
-                        _isLoading.value = false
-                    }
-                    _isError.value = false
-                } else {
-                    _isLoading.value = false
-                    _isError.value = true
-                }
-            }
-
-            override fun onFailure(call: Call<InitialResponse<CartResponse>>, t: Throwable) {
-
-                _isLoading.value = false
-                _isError.value = true
-            }
-        })
-    }
-
-    fun putFromCart(req: PutCartRequest) {
-        putFromCart(accessToken, userId, req)
-    }
-
-    private fun putFromCart(token: String, id: Int, req: PutCartRequest) {
-        val client = ApiConfig.getApiService(token).putFromCart(
-            id,
+        val client = ApiConfig.getApiService(accessToken).postToCart(
+            req.productId,
             req.rentalStartDate,
             req.rentalEndDate,
-            req.rentalDuration,
-            req.delivery
         )
         client.enqueue(object : Callback<InitialResponse<IdResponse>> {
             override fun onResponse(
                 call: Call<InitialResponse<IdResponse>>,
                 response: Response<InitialResponse<IdResponse>>
             ) {
-                _isError.value = !response.isSuccessful
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _response.value = it
+                    }
+                    _isLoading.value = false
+                    _isError.value = false
+                } else {
+                    _isLoading.value = false
+                    _isError.value = true
+                    _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
+                }
+
             }
 
             override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
                 _isError.value = true
-            }
-        })
-    }
-
-    fun deleteFromCart(productId: String) {
-        deleteFromCart(accessToken, userId, productId)
-    }
-
-    private fun deleteFromCart(token: String, userId: Int, productId: String) {
-        val client = ApiConfig.getApiService(token).deleteFromCart(userId, productId)
-        client.enqueue(object : Callback<InitialResponse<IdResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<IdResponse>>,
-                response: Response<InitialResponse<IdResponse>>
-            ) {
-                _isError.value = !response.isSuccessful
-            }
-
-            override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
-                _isError.value = true
+                _isLoading.value = false
+                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
             }
         })
     }
 
     private fun getProfile() {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(accessToken).getProfile(userId)
+        val client = ApiConfig.getApiService(accessToken).getProfile()
         client.enqueue(object : Callback<InitialResponse<ProfileResponse>> {
             override fun onResponse(
                 call: Call<InitialResponse<ProfileResponse>>,

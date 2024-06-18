@@ -21,6 +21,9 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
     private val _profile = MutableLiveData<Profile>()
     val profile: LiveData<Profile> = _profile
 
+    private val _response = MutableLiveData<InitialResponse<IdResponse>>()
+    val response: LiveData<InitialResponse<IdResponse>> = _response
+
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
@@ -44,7 +47,7 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
 
     private fun getProfile() {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(accessToken).getProfile(userId)
+        val client = ApiConfig.getApiService(accessToken).getProfile()
         client.enqueue(object : Callback<InitialResponse<ProfileResponse>> {
             override fun onResponse(
                 call: Call<InitialResponse<ProfileResponse>>,
@@ -72,12 +75,9 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
     fun putProfile(profile: PutProfileRequest) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).putProfile(
-            userId,
             profile.fullName,
-            profile.email,
             profile.addressDetail,
             profile.province,
-            profile.city,
             profile.district,
             profile.postalCode,
             profile.phoneNumber,
@@ -89,17 +89,22 @@ class EditProfileViewModel(private val repository: UserRepository) : ViewModel()
                 response: Response<InitialResponse<IdResponse>>
             ) {
                 if (response.isSuccessful) {
+                    response.body()?.let {
+                        _response.value = it
+                    }
                     _isLoading.value = false
                     _isError.value = false
                 } else {
                     _isLoading.value = false
                     _isError.value = true
+                    _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
                 }
             }
 
             override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
                 _isLoading.value = false
                 _isError.value = true
+                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
             }
         })
     }

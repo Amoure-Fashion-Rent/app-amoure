@@ -105,4 +105,7 @@
     <string name="retry">Retry</string>
     <string name="title_dialog_cart">Rent item successful!</string>
     <string name="message_dialog_cart">Please wait for the rent item to arrive at your home.</string>
+    <string name="title_dialog_edit_profile">Edit your profile successful!</string>
+    <string name="cart_alert_title_error">There something wrong when renting item!</string>
+    <string name="edit_profile_alert_title_error">There something wrong when edit profile!</string>
 </resources>

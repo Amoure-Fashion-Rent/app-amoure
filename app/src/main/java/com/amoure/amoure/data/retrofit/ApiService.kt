@@ -1,6 +1,5 @@
 package com.amoure.amoure.data.retrofit
 
-import com.amoure.amoure.data.response.CartResponse
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
@@ -15,8 +14,8 @@ import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -40,19 +39,14 @@ interface ApiService {
     @DELETE("auth/logout")
     fun logout(): Call<InitialResponse<IdResponse>>
 
-    @GET("users/{userId}")
-    fun getProfile(
-        @Path("userId") userId: Int,
-    ): Call<InitialResponse<ProfileResponse>>
+    @GET("auth/profile")
+    fun getProfile(): Call<InitialResponse<ProfileResponse>>
 
-    @PUT("users/{userId}")
+    @PATCH("auth/profile")
     fun putProfile(
-        @Path("userId") userId: Int,
         @Field("fullName") fullName: String,
-        @Field("email") email: String,
         @Field("addressDetail") addressDetail: String,
         @Field("province") province: String,
-        @Field("city") city: String,
         @Field("district") district: String,
         @Field("postalCode") postalCode: String,
         @Field("phoneNumber") phoneNumber: String,
@@ -76,30 +70,11 @@ interface ApiService {
         @Path("productId") id: Int
     ): Call<InitialResponse<ProductResponse>>
 
-    @GET("/carts/{userId}")
-    fun getUserCart(
-        @Path("userId") id: Int
-    ): Call<InitialResponse<CartResponse>>
-
-    @PUT("/carts/{userId}")
-    fun putFromCart(
-        @Path("userId") id: Int,
+    @POST("orders")
+    fun postToCart(
+        @Field("productId") productId: Int,
         @Field("rentalStartDate") rentalStartDate: String,
         @Field("rentalEndDate") rentalEndDate: String,
-        @Field("rentalDuration") rentalDuration: Int,
-        @Field("delivery") delivery: String,
-    ): Call<InitialResponse<IdResponse>>
-
-    @POST("/carts/{userId}/{productId}")
-    fun postToCart(
-        @Path("userId") userId: String,
-        @Path("productId") productId: String
-    ): Call<InitialResponse<IdResponse>>
-
-    @DELETE("/carts/{userId}/{productId}")
-    fun deleteFromCart(
-        @Path("userId") userId: Int,
-        @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
     @GET("products/search")
@@ -133,6 +108,7 @@ interface ApiService {
         @Query("userId") userId: Int? = null,
         @Query("page") page: Int? = null,
         @Query("take") take: Int? = null,
+        @Query("includeProduct") includeProduct: Boolean = true,
     ): InitialResponse<RentResponse>
 
     @POST("wishlist")

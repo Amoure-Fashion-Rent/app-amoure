@@ -11,14 +11,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.afterTextChangedDelayed
 import com.amoure.amoure.currencyStringToInteger
-import com.amoure.amoure.data.request.PutCartRequest
+import com.amoure.amoure.data.request.PostCartRequest
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Owner
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityCartBinding
+import com.amoure.amoure.formatCalendarToISO8601
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.withCurrencyFormat
 import com.google.android.material.datepicker.CalendarConstraints
@@ -36,7 +36,7 @@ class CartActivity : AppCompatActivity() {
     private val cartViewModel by viewModels<CartViewModel> {
         ViewModelFactory.getInstance(this)
     }
-    private lateinit var req: PutCartRequest
+    private lateinit var req: PostCartRequest
     private lateinit var product: ProductItem
     private var productId by Delegates.notNull<Int>()
     private lateinit var productName: String
@@ -57,23 +57,13 @@ class CartActivity : AppCompatActivity() {
         ownerName = intent.getStringExtra(OWNER_NAME).toString()
         rentPrice = intent.getStringExtra(RENT_PRICE).toString().toInt()
         imageUrl = intent.getStringExtra(IMAGE_URL).toString()
+        val size = intent.getStringExtra(SIZE).toString()
+        val color = intent.getStringExtra(COLOR).toString()
         product = ProductItem(owner = Owner(fullName = ownerName), id = productId, rentPrice = rentPrice, name = productName, images = listOf(imageUrl))
+        req = PostCartRequest(productId, productName, size, color, rentPrice, "", 0, rentPrice, "", "", 4)
 
-        // TODO: Remove
-        req = PutCartRequest("","", 4, "", 1, "", "", "")
-
-        cartViewModel.carts.observe(this) {
-            // TODO: match with backend
-//            req = PutCartRequest(
-//                it.delivery,
-//                it.deliveryPrice,
-//                it.cardNumber,
-//                it.cardExpiry,
-//                it.cardCVV,
-//            )
-//            with (binding) {
-//                edDelivery.setText(String.format(getString(R.string.delivery_item), it.delivery, it.deliveryPrice?.withCurrencyFormat()), false)
-//            }
+        cartViewModel.response.observe(this) {
+            showAlert(it)
         }
 
         cartViewModel.profile.observe(this) {
@@ -100,7 +90,6 @@ class CartActivity : AppCompatActivity() {
     private fun postCart() {
         with(binding) {
             btCheckout.setOnClickListener {
-                // TODO: match with backend
                 val rentalPeriod = edRentalPeriod.text.toString()
                 if (rentalPeriod.isEmpty()) {
                     showInputErrorMessage(edlRentalPeriod, "rental period")
@@ -129,9 +118,8 @@ class CartActivity : AppCompatActivity() {
                 } else {
                     edlExpDate.isErrorEnabled = false
                 }
-                // add dialog silahkan tunggu barang sampe rumah
-                // req.delivery, req.deliveryPrice, address, productId
-                showAlert(InitialResponse("OK"))
+                showToast(req.deliveryMethod+req.deliveryPrice+req.rentalStartDate+req.rentalEndDate)
+                cartViewModel.postFromCart(req)
             }
         }
     }
@@ -149,8 +137,8 @@ class CartActivity : AppCompatActivity() {
             }
         } else {
             MaterialAlertDialogBuilder(this).apply {
-                setTitle(resources.getString(R.string.login_alert_title_error))
-                setMessage(response.message ?: resources.getString(R.string.alert_error))
+                setTitle(resources.getString(R.string.cart_alert_title_error))
+                setMessage(resources.getString(R.string.alert_error))
                 setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
                 }
                 create()
@@ -192,17 +180,13 @@ class CartActivity : AppCompatActivity() {
                         val format = SimpleDateFormat("dd/MM/yyyy")
                         val formattedDate: String = format.format(cal.time)
                         binding.edlRentalPeriod.editText?.setText(formattedDate)
+                        req.rentalStartDate = cal.formatCalendarToISO8601()
+                        val newCal = cal.clone() as Calendar // Create a copy
+                        newCal.add(Calendar.DAY_OF_MONTH, 4)
+                        req.rentalEndDate = newCal.formatCalendarToISO8601()
                     }
                 }
                 false
-            }
-            edCcNumber.afterTextChangedDelayed {
-                req.cardNumber = edCcNumber.text.toString()
-                showToast(req.cardNumber)
-            }
-            edSecCode.afterTextChangedDelayed {
-                req.cardCVV = edSecCode.text.toString()
-                showToast(req.cardCVV)
             }
             edExpDate.setOnTouchListener { _, motionEvent ->
                 if (motionEvent.action == MotionEvent.ACTION_UP) {
@@ -226,21 +210,16 @@ class CartActivity : AppCompatActivity() {
                         val format = SimpleDateFormat("MM/yy")
                         val formattedDate: String = format.format(cal.time)
                         binding.edlExpDate.editText?.setText(formattedDate)
-                        req.cardExpiry = formattedDate
-                        showToast(req.cardExpiry)
                     }
-//                cartViewModel.putFromCart(req)
                 }
                 false
             }
             edDelivery.setOnItemClickListener { _, _, i, _ ->
                 val selectedValue = deliveryAdapter.getItem(i)?.split("(")
                 if (selectedValue != null) {
-                    req.delivery = selectedValue[0]
+                    req.deliveryMethod = selectedValue[0]
                     req.deliveryPrice = selectedValue[1].currencyStringToInteger()
                 }
-//                cartViewModel.putFromCart(req)
-                showToast(req.delivery + req.deliveryPrice.toString())
             }
         }
     }
@@ -266,5 +245,7 @@ class CartActivity : AppCompatActivity() {
         const val OWNER_NAME = "owner_name"
         const val RENT_PRICE = "rent_price"
         const val IMAGE_URL = "image_url"
+        const val SIZE = "size"
+        const val COLOR = "color"
     }
 }

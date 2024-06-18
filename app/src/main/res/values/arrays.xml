@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="delivery_items" >
-        <item>JNT (Rp 12.000)</item>
-        <item>JNE Express (Rp 16.000)</item>
-        <item>Gojek Sameday (Rp 20.000)</item>
+        <item>Free (Rp 0)</item>
     </string-array>
     <string-array name="user_type_items" >
         <item>User</item>

@@ -10,14 +10,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.amoure.amoure.R
 import com.amoure.amoure.data.request.PutProfileRequest
+import com.amoure.amoure.data.response.IdResponse
+import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Profile
 import com.amoure.amoure.databinding.ActivityEditProfileBinding
-import com.amoure.amoure.isEmailValid
 import com.amoure.amoure.isPhoneNumberValid
 import com.amoure.amoure.ui.ViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 
@@ -38,6 +40,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         editProfileViewModel.profile.observe(this) {
             setProfile(it)
+        }
+
+        editProfileViewModel.response.observe(this) {
+            showAlert(it)
         }
 
         editProfileViewModel.isError.observe(this) {
@@ -91,9 +97,7 @@ class EditProfileActivity : AppCompatActivity() {
                 edProfileBirthDate.visibility = View.GONE
             }
             edProfileName.setText(profile.fullName)
-            edProfileEmail.setText(profile.email)
             edProfileProvince.setText(profile.province)
-            edProfileCity.setText(profile.city)
             edProfileDistrict.setText(profile.district)
             edProfilePostalCode.setText(profile.postalCode)
             edProfileAddress.setText(profile.addressDetail)
@@ -112,24 +116,11 @@ class EditProfileActivity : AppCompatActivity() {
                 } else {
                     edlProfileName.isErrorEnabled = false
                 }
-                val email = edProfileEmail.text.toString()
-                if (email.isEmpty() || !isEmailValid(email)) {
-                    edlProfileEmail.error = String.format(getString(R.string.input_required), "email")
-                    return@setOnClickListener
-                } else {
-                    edlProfileEmail.isErrorEnabled = false
-                }
                 val province = edProfileProvince.text.toString()
                 if (province.isEmpty()) {
                     showInputErrorMessage(edlProfileProvince, "province")
                 } else {
                     edlProfileProvince.isErrorEnabled = false
-                }
-                val city = edProfileCity.text.toString()
-                if (city.isEmpty()) {
-                    showInputErrorMessage(edlProfileCity, "city")
-                } else {
-                    edlProfileCity.isErrorEnabled = false
                 }
                 val district = edProfileDistrict.text.toString()
                 if (district.isEmpty()) {
@@ -168,11 +159,32 @@ class EditProfileActivity : AppCompatActivity() {
                 }
 
                 if (userType == "OWNER") {
-                    editProfileViewModel.putProfile(PutProfileRequest(name, email, province, city, district, postalCode, address, phoneNum))
+                    editProfileViewModel.putProfile(PutProfileRequest(name, province, district, postalCode, address, phoneNum))
                 } else {
-                    editProfileViewModel.putProfile(PutProfileRequest(name, email, province, city, district, postalCode, address, phoneNum, birthDate))
+                    editProfileViewModel.putProfile(PutProfileRequest(name, province, district, postalCode, address, phoneNum, birthDate))
                 }
-                finish()
+            }
+        }
+    }
+
+    private fun showAlert(response: InitialResponse<IdResponse>) {
+        if (response.message == "OK") {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(getString(R.string.title_dialog_edit_profile))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                    finish()
+                }
+                create()
+                show()
+            }
+        } else {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(resources.getString(R.string.edit_profile_alert_title_error))
+                setMessage(resources.getString(R.string.alert_error))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                }
+                create()
+                show()
             }
         }
     }

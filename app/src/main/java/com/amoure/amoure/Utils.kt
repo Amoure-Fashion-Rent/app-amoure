@@ -1,5 +1,6 @@
 package com.amoure.amoure
 
+import android.icu.util.Calendar
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
@@ -87,6 +88,12 @@ fun String.removeUnderscoreAndCapitalize(): String {
     return this.replace(Regex("_(.)")) { matchResult ->
         matchResult.groupValues[1].uppercase()
     }
+}
+
+fun Calendar.formatCalendarToISO8601(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+    return dateFormat.format(this.time)
 }
 
 
