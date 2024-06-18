@@ -143,7 +143,7 @@ interface ApiService {
         @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
-    @PUT("users/{ownerId}")
+    @POST("users/{ownerId}")
     fun postProduct(
         @Path("ownerId") ownerId: String,
         @Field("name") name: String,
