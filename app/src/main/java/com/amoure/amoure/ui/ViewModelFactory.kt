@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.amoure.amoure.data.Repository
 import com.amoure.amoure.di.Injection
 import com.amoure.amoure.ui.cart.CartViewModel
+import com.amoure.amoure.ui.category.CategoryViewModel
 import com.amoure.amoure.ui.designer.DesignerViewModel
 import com.amoure.amoure.ui.editprofile.EditProfileViewModel
 import com.amoure.amoure.ui.home.HomeViewModel
@@ -55,6 +56,9 @@ class ViewModelFactory(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(RentHistoryViewModel::class.java) -> {
                 RentHistoryViewModel(repository.userRepository, repository.rentHistoryRepository) as T
+            }
+            modelClass.isAssignableFrom(CategoryViewModel::class.java) -> {
+                CategoryViewModel(repository.userRepository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

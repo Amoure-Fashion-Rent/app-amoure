@@ -5,24 +5,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
+import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.databinding.FragmentCategoryBinding
+import com.amoure.amoure.ui.ProductMediumAdapter
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.category.CategoryViewModel
+import com.amoure.amoure.ui.product.ProductActivity
 import com.amoure.amoure.ui.search.SearchFragment
 
-class CategoryFragment : Fragment() {
+class CategoryFragmentClick : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
-    private val categoryViewModel by viewModels<CategoryViewModel>() {
+    private val CategoryViewModel by viewModels<CategoryViewModel>() {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -38,17 +42,17 @@ class CategoryFragment : Fragment() {
 
         binding.rvCategory.layoutManager = GridLayoutManager(context, 2)
 
-        categoryViewModel.categoryResults.observe(viewLifecycleOwner) {
+        CategoryViewModel.categoryClick.observe(viewLifecycleOwner) {
             it?.let {
                 setCategoryResults(it)
             }
         }
 
-        categoryViewModel.isError.observe(viewLifecycleOwner) {
+        CategoryViewModel.isError.observe(viewLifecycleOwner) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 
-        categoryViewModel.isLoading.observe(viewLifecycleOwner) {
+        CategoryViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
@@ -56,10 +60,25 @@ class CategoryFragment : Fragment() {
             MaterialShapeDrawable.createWithElevationOverlay(activity)
 
         setSearchBar()
+        setTopAppBar()
         return root
     }
 
-
+    private fun setTopAppBar() {
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.cart -> {
+                    val moveIntent = Intent(context, CartActivity::class.java)
+                    startActivity(moveIntent)
+                    true
+                }
+                else -> false
+            }
+        }
+        binding.searchBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
 
     private fun setSearchBar() {
         with(binding) {
@@ -80,16 +99,15 @@ class CategoryFragment : Fragment() {
         }
     }
 
-    private fun setCategoryResults(products: List<CategoryItem?>) {
-        val adapter = CategoryAdapter()
-        adapter.submitList(products)
+    private fun setCategoryResults(category: List<ProductItem?>) {
+        val adapter = ProductMediumAdapter()
+        adapter.submitList(category)
         binding.rvCategory.adapter = adapter
-        adapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
+        adapter.setOnItemClickCallback(object : ProductMediumAdapter.OnItemClickCallback {
             override fun onItemClicked(id: String) {
-////                 TODO: Go to list of category lists
-//                val moveIntent = Intent(context, CategoryFragmentClick::class.java)
-//                moveIntent.putExtra(CategoryFragmentClick.ID, id)
-//                startActivity(moveIntent)
+                val moveIntent = Intent(context, ProductActivity::class.java)
+                moveIntent.putExtra(ProductActivity.ID, id)
+                startActivity(moveIntent)
             }
         })
     }
@@ -106,4 +124,8 @@ class CategoryFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+//    companion object {
+//        const val ID = "id"
+//    }
 }

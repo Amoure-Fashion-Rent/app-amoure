@@ -90,7 +90,7 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     edlRegisterPasswordConf.isErrorEnabled = false
                 }
-                val type = edRegisterType.text.toString().lowercase()
+                val type = edRegisterType.text.toString().uppercase()
 
                 registerViewModel.register(RegisterRequest(fullName, email, password, type))
             }

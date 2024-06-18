@@ -1,6 +1,7 @@
 package com.amoure.amoure.data.retrofit
 
 import com.amoure.amoure.data.response.CartResponse
+import com.amoure.amoure.data.response.CategoryResponse
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
@@ -10,11 +11,13 @@ import com.amoure.amoure.data.response.ProfileResponse
 import com.amoure.amoure.data.response.RentResponse
 import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.data.response.ReviewResponse
+import com.amoure.amoure.data.response.WishlistResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -40,19 +43,14 @@ interface ApiService {
     @DELETE("auth/logout")
     fun logout(): Call<InitialResponse<IdResponse>>
 
-    @GET("users/{userId}")
-    fun getProfile(
-        @Path("userId") userId: Int,
-    ): Call<InitialResponse<ProfileResponse>>
+    @GET("auth/profile")
+    fun getProfile(): Call<InitialResponse<ProfileResponse>>
 
-    @PUT("users/{userId}")
+    @PATCH("auth/profile")
     fun putProfile(
-        @Path("userId") userId: Int,
         @Field("fullName") fullName: String,
-        @Field("email") email: String,
         @Field("addressDetail") addressDetail: String,
         @Field("province") province: String,
-        @Field("city") city: String,
         @Field("district") district: String,
         @Field("postalCode") postalCode: String,
         @Field("phoneNumber") phoneNumber: String,
@@ -76,30 +74,11 @@ interface ApiService {
         @Path("productId") id: Int
     ): Call<InitialResponse<ProductResponse>>
 
-    @GET("/carts/{userId}")
-    fun getUserCart(
-        @Path("userId") id: Int
-    ): Call<InitialResponse<CartResponse>>
-
-    @PUT("/carts/{userId}")
-    fun putFromCart(
-        @Path("userId") id: Int,
+    @POST("orders")
+    fun postToCart(
+        @Field("productId") productId: Int,
         @Field("rentalStartDate") rentalStartDate: String,
         @Field("rentalEndDate") rentalEndDate: String,
-        @Field("rentalDuration") rentalDuration: Int,
-        @Field("delivery") delivery: String,
-    ): Call<InitialResponse<IdResponse>>
-
-    @POST("/carts/{userId}/{productId}")
-    fun postToCart(
-        @Path("userId") userId: String,
-        @Path("productId") productId: String
-    ): Call<InitialResponse<IdResponse>>
-
-    @DELETE("/carts/{userId}/{productId}")
-    fun deleteFromCart(
-        @Path("userId") userId: Int,
-        @Path("productId") productId: String
     ): Call<InitialResponse<IdResponse>>
 
     @GET("products/search")
@@ -115,6 +94,11 @@ interface ApiService {
         @Query("take") take: Int? = null,
         @Query("includeUser") includeUser: Boolean = true,
     ): InitialResponse<ReviewResponse>
+
+    @GET("products/search")
+    fun getSearchbyVisSearch(
+        @Query("name") name: String
+    ): Call<InitialResponse<ProductsResponse>>
 
     @POST("reviews")
     fun postReview(
@@ -133,10 +117,53 @@ interface ApiService {
         @Query("userId") userId: Int? = null,
         @Query("page") page: Int? = null,
         @Query("take") take: Int? = null,
+        @Query("includeProduct") includeProduct: Boolean = true,
     ): InitialResponse<RentResponse>
 
     @POST("wishlist")
     fun postWishlist(
         @Field("productId") productId: Int,
     ): Call<InitialResponse<IdResponse>>
+
+    @GET("/wishlists/{userId}")
+    fun getUserWishlist(
+        @Path("userId") id: String
+    ): Call<InitialResponse<WishlistResponse>>
+
+    @DELETE("/wishlists/{userId}/{productId}")
+    fun deleteFromWishlist(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
+    @POST("users/{ownerId}")
+    fun postProduct(
+        @Path("ownerId") ownerId: String,
+        @Field("name") name: String,
+        @Field("product") product: String,
+        @Field("details") details: String,
+        @Field("notes") notes: String,
+        @Field("retail") retail: String,
+        @Field("rent") rent: String,
+        @Field("category") category: String,
+        @Field("sizes") sizes: String,
+        @Field("images") images: String,
+    ): Call<InitialResponse<IdResponse>>
+
+    /////get search by vissearch
+    @GET("products/search")
+    fun getSearchbyVisSearch(
+        @Query("name") name: String
+    ): Call<InitialResponse<ProductsResponse>>
+
+    @GET("products/category")
+    fun getAllCategory(
+        @Query("name") name: String
+    ): Call<InitialResponse<CategoryResponse>>
+
+    @GET("products/{categoryId}")
+    fun getAllCategorybyId(
+        @Query("id") id: String
+    ): Call<InitialResponse<CategoryResponse>>
+
 }

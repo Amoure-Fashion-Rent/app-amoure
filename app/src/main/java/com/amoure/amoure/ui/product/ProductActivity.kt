@@ -71,6 +71,8 @@ class ProductActivity : AppCompatActivity() {
                 moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.owner?.fullName)
                 moveIntent.putExtra(CartActivity.RENT_PRICE, thisProduct.rentPrice.toString())
                 moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
+                moveIntent.putExtra(CartActivity.SIZE, thisProduct.size)
+                moveIntent.putExtra(CartActivity.COLOR, thisProduct.color)
                 startActivity(moveIntent)
             }
 
