@@ -16,12 +16,11 @@ import com.amoure.amoure.databinding.FragmentCategoryBinding
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
-import com.amoure.amoure.ui.category.CategoryViewModel
 
 class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
-    private val CategoryViewModel by viewModels<CategoryViewModel>() {
+    private val categoryViewModel by viewModels<CategoryViewModel>() {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -37,17 +36,17 @@ class CategoryFragment : Fragment() {
 
         binding.rvCategory.layoutManager = GridLayoutManager(context, 2)
 
-        CategoryViewModel.categoryResults.observe(viewLifecycleOwner) {
+        categoryViewModel.categoryResults.observe(viewLifecycleOwner) {
             it?.let {
                 setCategoryResults(it)
             }
         }
 
-        CategoryViewModel.isError.observe(viewLifecycleOwner) {
+        categoryViewModel.isError.observe(viewLifecycleOwner) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 
-        CategoryViewModel.isLoading.observe(viewLifecycleOwner) {
+        categoryViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 

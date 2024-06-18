@@ -146,4 +146,5 @@ interface ApiService {
         @Field("category") category: String,
         @Field("sizes") sizes: String,
         @Field("images") images: String,
+    ): Call<InitialResponse<IdResponse>>
 }
