@@ -29,5 +29,34 @@ class SearchViewModel(private val userRepository: UserRepository, private val pr
 
     fun getSearch(query: String) {
         searchResults = productRepository.getProducts(ProductPSParams(search = query)).cachedIn(viewModelScope)
+
+    fun getSearchbyVis(name: String) {
+        getSearchbyVis(accessToken, name)
+    }
+
+    private fun getSearchbyVis(token: String, name: String) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService(token).getSearchbyVisSearch(name)
+        client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {
+            override fun onResponse(
+                call: Call<InitialResponse<ProductsResponse>>,
+                response: Response<InitialResponse<ProductsResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.data?.products.let {
+                        _searchResults.value = it
+                    }
+                    _isError.value = false
+                } else {
+                    _isError.value = true
+                }
+                _isLoading.value = false
+            }
+
+            override fun onFailure(call: Call<InitialResponse<ProductsResponse>>, t: Throwable) {
+                _isError.value = true
+                _isLoading.value = false
+            }
+        })
     }
 }

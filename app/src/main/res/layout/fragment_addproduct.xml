@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.addproduct.AddProductFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addproduct_name"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_name" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_name"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addproduct_product"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_product" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_product"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addproduct_details"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_details" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_details"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:inputType="textPostalAddress|textMultiLine"
+                    android:maxLines="3"
+                    android:padding="5dp"
+                    android:gravity="top"
+                    android:scrollbars="vertical"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_profile_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addproduct_stylish"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_profile_notes" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_profile_notes"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ed_profile_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:inputType="textPostalAddress|textMultiLine"
+                    android:maxLines="3"
+                    android:padding="5dp"
+                    android:gravity="top"
+                    android:scrollbars="vertical"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_retail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addproduct_retail"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_retail_price" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_retail_price"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edl_retail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_rent_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/addproduct_rent"
+                android:textColor="@color/navy_blue_700"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:labelFor="@+id/ed_rent_price" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_rent_price"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMinSize="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edl_rent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="8dp"
+                android:text="@string/addproduct_category"
+                android:labelFor="@+id/ed_category"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edl_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="12dp"
+                app:endIconMinSize="30dp"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                <AutoCompleteTextView
+                    android:id="@+id/ed_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:padding="5dp"
+                    app:simpleItems="@array/product_category"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/bt_size_xs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/size_xs"
+                        android:textSize="12sp"
+                        style="@style/Widget.App.Button.Size"/>
+
+                    <Button
+                        android:id="@+id/bt_size_l"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/size_l"
+                        android:textSize="12sp"
+                        style="@style/Widget.App.Button.Size"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/bt_size_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/size_s"
+                        android:textSize="12sp"
+                        style="@style/Widget.App.Button.Size"/>
+
+                    <Button
+                        android:id="@+id/bt_size_xl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/size_xl"
+                        android:textSize="12sp"
+                        style="@style/Widget.App.Button.Size"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/bt_size_m"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/size_m"
+                        android:textSize="12sp"
+                        style="@style/Widget.App.Button.Size"/>
+
+                    <Button
+                        android:id="@+id/bt_size_xxl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="4dp"
+                        android:text="@string/size_xxl"
+                        android:textSize="12sp"
+                        style="@style/Widget.App.Button.Size"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_upload_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="8dp"
+                android:text="@string/addproduct_upload1"
+                android:labelFor="@+id/upload_images"
+                 />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item_product_small"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_product"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
+                tools:src="@tools:sample/avatars" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <Button
+                android:id="@+id/bt_add_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="12dp"
+                android:text="@string/title_add"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:title="@string/app_name"
+        app:navigationIcon="@drawable/app_icon"
+        style="@style/Widget.App.Toolbar" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/top_app_bar_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_marginTop="-20dp"
+        app:title="@string/back"
+        app:navigationIcon="@drawable/ic_arrow_back_24px"
+        style="@style/Widget.App.Toolbar" />
+</com.google.android.material.appbar.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/navy_blue_700"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

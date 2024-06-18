@@ -9,6 +9,7 @@ import com.amoure.amoure.data.response.ProfileResponse
 import com.amoure.amoure.data.response.RentResponse
 import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.data.response.ReviewResponse
+import com.amoure.amoure.data.response.WishlistResponse
 import retrofit2.Call
 import retrofit2.http.DELETE
 import retrofit2.http.Field
@@ -16,6 +17,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -91,6 +93,11 @@ interface ApiService {
         @Query("includeUser") includeUser: Boolean = true,
     ): InitialResponse<ReviewResponse>
 
+    @GET("products/search")
+    fun getSearchbyVisSearch(
+        @Query("name") name: String
+    ): Call<InitialResponse<ProductsResponse>>
+
     @POST("reviews")
     fun postReview(
         @Field("productId") productId: Int,
@@ -115,4 +122,28 @@ interface ApiService {
     fun postWishlist(
         @Field("productId") productId: Int,
     ): Call<InitialResponse<IdResponse>>
+
+    @GET("/wishlists/{userId}")
+    fun getUserWishlist(
+        @Path("userId") id: String
+    ): Call<InitialResponse<WishlistResponse>>
+
+    @DELETE("/wishlists/{userId}/{productId}")
+    fun deleteFromWishlist(
+        @Path("userId") userId: String,
+        @Path("productId") productId: String
+    ): Call<InitialResponse<IdResponse>>
+
+    @PUT("users/{ownerId}")
+    fun putProduct(
+        @Path("ownerId") ownerId: String,
+        @Field("name") name: String,
+        @Field("product") product: String,
+        @Field("details") details: String,
+        @Field("notes") notes: String,
+        @Field("retail") retail: String,
+        @Field("rent") rent: String,
+        @Field("category") category: String,
+        @Field("sizes") sizes: String,
+        @Field("images") images: String,
 }
