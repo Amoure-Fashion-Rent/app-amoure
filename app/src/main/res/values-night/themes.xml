@@ -97,5 +97,16 @@
         <item name="strokeColor">@color/navy_blue_700</item>
         <item name="strokeWidth">2dp</item>
         <item name="shapeAppearance">@style/MyShapeAppearance</item>
+        <item name="fontFamily">@font/montserrat_bold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+
+    <style name="Widget.App.Button.Size" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/navy_blue_700</item>
+        <item name="android:backgroundTint">@color/gray_blue_200</item>
+        <item name="android:background">@color/gray_blue_200</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 </resources>

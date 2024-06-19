@@ -13,7 +13,6 @@ import com.amoure.amoure.databinding.FragmentProfileBinding
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.editprofile.EditProfileActivity
 import com.amoure.amoure.ui.renthistory.RentHistoryActivity
-import com.amoure.amoure.ui.start.StartActivity
 
 class ProfileFragment : Fragment() {
 
@@ -52,9 +51,6 @@ class ProfileFragment : Fragment() {
             }
             btLogout.setOnClickListener {
                 profileViewModel.logout()
-                val intent = Intent(context, StartActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
             }
         }
     }

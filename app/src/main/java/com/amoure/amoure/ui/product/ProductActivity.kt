@@ -9,8 +9,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
+import com.amoure.amoure.data.response.IdResponse
+import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ActivityProductBinding
 import com.amoure.amoure.ui.ProductSmallAdapter
@@ -18,9 +21,11 @@ import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.cart.CartActivity
 import com.amoure.amoure.ui.designer.DesignerActivity
 import com.amoure.amoure.ui.review.ReviewActivity
+import com.amoure.amoure.ui.tryon.TryOnInfoActivity
 import com.amoure.amoure.withCurrencyFormat
 import com.google.android.material.carousel.CarouselLayoutManager
 import com.google.android.material.carousel.CarouselSnapHelper
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlin.properties.Delegates
 
 class ProductActivity : AppCompatActivity() {
@@ -36,12 +41,14 @@ class ProductActivity : AppCompatActivity() {
 
         binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setVisibility(false)
 
         id = intent.getStringExtra(ID).toString().toInt()
 
         productViewModel.getProduct(id)
         productViewModel.product.observe(this) {
             setProduct(it)
+            setVisibility(true)
         }
 
         productViewModel.similarItems.observe(this) {
@@ -55,7 +62,15 @@ class ProductActivity : AppCompatActivity() {
         productViewModel.isLoading.observe(this) {
             showLoading(it)
         }
+
+        productViewModel.wishlistResponse.observe(this) {
+            showAlertWishlist(it)
+        }
         setupAction()
+    }
+
+    private fun setVisibility(visible: Boolean) {
+        binding.svProduct.isVisible = visible
     }
 
     private fun setupAction() {
@@ -81,7 +96,7 @@ class ProductActivity : AppCompatActivity() {
                 moveIntent.putExtra(ReviewActivity.PRODUCT_ID, thisProduct.id.toString())
                 moveIntent.putExtra(ReviewActivity.PRODUCT_NAME, thisProduct.name)
                 moveIntent.putExtra(ReviewActivity.OWNER_NAME, thisProduct.owner?.fullName)
-                moveIntent.putExtra(ReviewActivity.RATING, thisProduct.avgRating.toString())
+                moveIntent.putExtra(ReviewActivity.RATING, thisProduct.avg?.rating?.toString() ?: "0.0")
                 moveIntent.putExtra(ReviewActivity.IMAGE_URL, thisProduct.images?.get(0))
                 startActivity(moveIntent)
             }
@@ -98,14 +113,34 @@ class ProductActivity : AppCompatActivity() {
             }
 
             btTryOn.setOnClickListener {
-                // TODO: Try On Page
-//                val moveIntent = Intent(baseContext, CartActivity::class.java)
-//                moveIntent.putExtra(CartActivity.PRODUCT_ID, thisProduct.id.toString())
-//                moveIntent.putExtra(CartActivity.PRODUCT_NAME, thisProduct.name)
-//                moveIntent.putExtra(CartActivity.OWNER_NAME, thisProduct.owner?.fullName)
-//                moveIntent.putExtra(CartActivity.RENT_PRICE, thisProduct.rentPrice.toString())
-//                moveIntent.putExtra(CartActivity.IMAGE_URL, thisProduct.images?.get(0))
-//                startActivity(moveIntent)
+                val moveIntent = Intent(baseContext, TryOnInfoActivity::class.java)
+                moveIntent.putExtra(TryOnInfoActivity.PRODUCT_ID, thisProduct.id.toString())
+                moveIntent.putExtra(TryOnInfoActivity.PRODUCT_NAME, thisProduct.name)
+                moveIntent.putExtra(TryOnInfoActivity.OWNER_NAME, thisProduct.owner?.fullName)
+                moveIntent.putExtra(TryOnInfoActivity.RENT_PRICE, thisProduct.rentPrice.toString())
+                moveIntent.putExtra(TryOnInfoActivity.RETAIL_PRICE, thisProduct.retailPrice.toString())
+                moveIntent.putExtra(TryOnInfoActivity.IMAGE_URL, thisProduct.images?.get(0))
+                startActivity(moveIntent)
+            }
+        }
+    }
+
+    private fun showAlertWishlist(response: InitialResponse<IdResponse>) {
+        if (response.message == "OK") {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(resources.getString(R.string.add_wishlist))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                }
+                create()
+                show()
+            }
+        } else {
+            MaterialAlertDialogBuilder(this).apply {
+                setTitle(resources.getString(R.string.add_wishlist_failed))
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                }
+                create()
+                show()
             }
         }
     }
@@ -121,6 +156,9 @@ class ProductActivity : AppCompatActivity() {
             val productImageAdapter = ProductImageAdapter()
             productImageAdapter.submitList(product.images)
             rvProductImage.adapter = productImageAdapter
+            if (product.status != "AVAILABLE") {
+                btRentNow.isEnabled = false
+            }
 
             tvProductName.text = product.name
             tvProductOwner.text = product.owner?.fullName
@@ -136,23 +174,23 @@ class ProductActivity : AppCompatActivity() {
             tvProductRentPrice.text = product.rentPrice?.withCurrencyFormat()
             tvProductDetails.text = product.description
             tvStylishNotes.text = product.stylishNotes
-            tvRatingReviewsCount.text = String.format(getString(R.string.rating_reviews_count), product.avgRating.toString(), product.reviewsCount.toString())
-            if (product.avgRating == null) {
+            tvRatingReviewsCount.text = String.format(getString(R.string.rating_reviews_count), product.avg?.rating?.toString() ?: "-", product.count.toString())
+            if (product.avg?.rating == null) {
                 return
             }
-            if (product.avgRating >= 1.0) {
+            if (product.avg.rating >= 1.0) {
                 setStarColor(star1)
             }
-            if (product.avgRating >= 2.0) {
+            if (product.avg.rating >= 2.0) {
                 setStarColor(star2)
             }
-            if (product.avgRating >= 3.0) {
+            if (product.avg.rating >= 3.0) {
                 setStarColor(star3)
             }
-            if (product.avgRating >= 4.0) {
+            if (product.avg.rating >= 4.0) {
                 setStarColor(star4)
             }
-            if (product.avgRating >= 5.0) {
+            if (product.avg.rating >= 5.0) {
                 setStarColor(star5)
             }
         }

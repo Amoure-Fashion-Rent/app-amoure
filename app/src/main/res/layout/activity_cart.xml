@@ -76,7 +76,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="8dp"
                 android:textSize="12sp"
-                android:text="@string/lorem_ipsum" />
+                android:text="@string/address" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"

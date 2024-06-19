@@ -49,25 +49,32 @@ class ReviewViewModel(private val userRepository: UserRepository, private val re
 
     fun postReview(req: PostReviewRequest) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(accessToken).postReview(
-            req.productId,
-            req.rating,
-            req.comment,
-            )
-        client.enqueue(object : Callback<InitialResponse<ReviewItem>> {
-            override fun onResponse(
-                call: Call<InitialResponse<ReviewItem>>,
-                response: Response<InitialResponse<ReviewItem>>
-            ) {
-                _isError.value = !response.isSuccessful
-                _isLoading.value = false
-            }
+        viewModelScope.launch {
+            userRepository.getSession().collect {
+                if (it.isLogin) {
+                    val client = ApiConfig.getApiService(it.accessToken).postReview(
+                        req
+                    )
+                    client.enqueue(object : Callback<InitialResponse<ReviewItem>> {
+                        override fun onResponse(
+                            call: Call<InitialResponse<ReviewItem>>,
+                            response: Response<InitialResponse<ReviewItem>>
+                        ) {
+                            _isError.value = !response.isSuccessful
+                            _isLoading.value = false
+                        }
 
-            override fun onFailure(call: Call<InitialResponse<ReviewItem>>, t: Throwable) {
-                _isError.value = true
-                _isLoading.value = false
+                        override fun onFailure(
+                            call: Call<InitialResponse<ReviewItem>>,
+                            t: Throwable
+                        ) {
+                            _isError.value = true
+                            _isLoading.value = false
+                        }
+                    })
+                }
             }
-        })
+        }
     }
 
     fun deleteReview(productId: Int) {

@@ -4,16 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.amoure.amoure.data.ProductRepository
 import com.amoure.amoure.data.UserRepository
-import com.amoure.amoure.data.pagingsource.ProductPSParams
+import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.ProductItem
+import com.amoure.amoure.data.response.ProductsResponse
+import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchViewModel(private val userRepository: UserRepository, private val productRepository: ProductRepository) : ViewModel() {
-    var searchResults: LiveData<PagingData<ProductItem>> = MutableLiveData()
+    private val _searchResults = MutableLiveData<List<ProductItem?>>()
+    val searchResults: LiveData<List<ProductItem?>> = _searchResults
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private lateinit var accessToken: String
 
@@ -28,15 +36,13 @@ class SearchViewModel(private val userRepository: UserRepository, private val pr
     }
 
     fun getSearch(query: String) {
-        searchResults = productRepository.getProducts(ProductPSParams(search = query)).cachedIn(viewModelScope)
-
-    fun getSearchbyVis(name: String) {
-        getSearchbyVis(accessToken, name)
+//        searchResults =
+//            productRepository.getProducts(ProductPSParams(search = query)).cachedIn(viewModelScope)
     }
 
-    private fun getSearchbyVis(token: String, name: String) {
+    fun postVisSearch(multipartBody: MultipartBody.Part) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(token).getSearchbyVisSearch(name)
+        val client = ApiConfig.getApiService(accessToken).postSearchByVisSearch(multipartBody)
         client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {
             override fun onResponse(
                 call: Call<InitialResponse<ProductsResponse>>,
@@ -46,15 +52,11 @@ class SearchViewModel(private val userRepository: UserRepository, private val pr
                     response.body()?.data?.products.let {
                         _searchResults.value = it
                     }
-                    _isError.value = false
-                } else {
-                    _isError.value = true
                 }
                 _isLoading.value = false
             }
 
             override fun onFailure(call: Call<InitialResponse<ProductsResponse>>, t: Throwable) {
-                _isError.value = true
                 _isLoading.value = false
             }
         })

@@ -10,23 +10,13 @@ import com.amoure.amoure.data.ProductRepository
 import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.data.pagingsource.ProductPSParams
 import com.amoure.amoure.data.response.ProductItem
-import kotlinx.coroutines.launch
+import com.amoure.amoure.data.retrofit.ApiService
 
 class DesignerViewModel(private val userRepository: UserRepository, private val productRepository: ProductRepository) : ViewModel() {
     var products: LiveData<PagingData<ProductItem>> = MutableLiveData()
-    private lateinit var accessToken: String
-
-    init {
-        viewModelScope.launch {
-            userRepository.getSession().collect {
-                if (it.isLogin) {
-                    accessToken = it.accessToken
-                }
-            }
-        }
-    }
+    private var apiService: ApiService? = null
 
     fun getProducts(ownerId: Int) {
-        products = productRepository.getProducts(ProductPSParams(ownerId = ownerId)).cachedIn(viewModelScope)
+        products = productRepository.getProducts(apiService, ProductPSParams(ownerId = ownerId)).cachedIn(viewModelScope)
     }
 }

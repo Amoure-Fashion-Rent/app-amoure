@@ -12,24 +12,19 @@ import com.amoure.amoure.data.pref.UserPreference
 import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.data.retrofit.ApiConfig
 import com.amoure.amoure.data.retrofit.ApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class ReviewRepository private constructor(
     private val userPreference: UserPreference
 ) {
-    fun getSession(): Flow<UserModel> {
-        return userPreference.getSession()
+    suspend fun getSession(): UserModel {
+        return userPreference.getSession().first()
     }
 
-    fun getApiService(): ApiService {
-        return runBlocking(Dispatchers.IO) {
-            getSession().first().let { session ->
-                return@runBlocking ApiConfig.getApiService(session.accessToken)
-            }
-        }
+    suspend fun getApiService(): ApiService {
+        val session = getSession()
+        return ApiConfig.getApiService(session.accessToken)
     }
 
     fun getReviews(params: ReviewPSParams): LiveData<PagingData<ReviewItem>> {
@@ -38,7 +33,7 @@ class ReviewRepository private constructor(
                 pageSize = 10
             ),
             pagingSourceFactory = {
-                ReviewPagingSource(getApiService(), params)
+                ReviewPagingSource(runBlocking { getApiService() }, params)
             }
         ).liveData
     }

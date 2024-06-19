@@ -1,11 +1,10 @@
-package com.amoure.amoure.ui.home
+package com.amoure.amoure.ui.category
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,20 +12,27 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.databinding.FragmentHomeBinding
+import com.amoure.amoure.databinding.FragmentCategoryClickBinding
 import com.amoure.amoure.ui.LoadingStateAdapter
 import com.amoure.amoure.ui.ProductMediumAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.product.ProductActivity
 import com.amoure.amoure.ui.search.SearchFragment
+import kotlin.properties.Delegates
 
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
-class HomeFragment : Fragment() {
+class CategoryClickFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val homeViewModel by viewModels<HomeViewModel> {
+    private var _binding: FragmentCategoryClickBinding? = null
+    private val categoryViewModel by viewModels<CategoryViewModel>() {
         ViewModelFactory.getInstance(requireContext())
     }
+    private var categoryId by Delegates.notNull<Int>()
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -34,16 +40,18 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryClickBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.rvForYou.layoutManager = GridLayoutManager(context, 2)
 
-        homeViewModel.isError.observe(viewLifecycleOwner) {
-            if (it == true) showToast(resources.getString(R.string.alert_error))
-        }
+        binding.rvCategory.layoutManager = GridLayoutManager(context, 2)
 
+        val idTemp = arguments?.getInt(ID)
+        idTemp?.let { categoryId = it }
+
+        categoryViewModel.getProductByCategory(categoryId)
+
+        setProduct()
         setSearchBar()
-        setForYou()
         return root
     }
 
@@ -66,9 +74,9 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setForYou() {
+    private fun setProduct() {
         val adapter = ProductMediumAdapter()
-        binding.rvForYou.adapter = adapter.withLoadStateFooter(
+        binding.rvCategory.adapter = adapter.withLoadStateFooter(
             footer = LoadingStateAdapter {
                 adapter.retry()
             }
@@ -76,7 +84,7 @@ class HomeFragment : Fragment() {
         adapter.addLoadStateListener { loadState ->
             binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
         }
-        homeViewModel.forYouProducts.observe(viewLifecycleOwner) {
+        categoryViewModel.productsCategory.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitData(lifecycle, it)
             }
@@ -90,12 +98,13 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    companion object {
+        const val ID = "id"
     }
 }

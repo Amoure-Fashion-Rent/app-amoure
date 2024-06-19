@@ -12,33 +12,28 @@ import com.amoure.amoure.data.pref.UserPreference
 import com.amoure.amoure.data.response.RentItem
 import com.amoure.amoure.data.retrofit.ApiConfig
 import com.amoure.amoure.data.retrofit.ApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class RentHistoryRepository private constructor(
     private val userPreference: UserPreference
 ) {
-    fun getSession(): Flow<UserModel> {
-        return userPreference.getSession()
+    suspend fun getSession(): UserModel {
+        return userPreference.getSession().first()
     }
 
-    fun getApiService(): ApiService {
-        return runBlocking(Dispatchers.IO) {
-            getSession().first().let { session ->
-                return@runBlocking ApiConfig.getApiService(session.accessToken)
-            }
-        }
+    suspend fun getApiService(): ApiService {
+        val session = getSession()
+        return ApiConfig.getApiService(session.accessToken)
     }
 
     fun getRents(params: RentHistoryPSParams): LiveData<PagingData<RentItem>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 15
+                pageSize = 10
             ),
             pagingSourceFactory = {
-                RentHistoryPagingSource(getApiService(), params)
+                RentHistoryPagingSource(runBlocking { getApiService() }, params)
             }
         ).liveData
     }

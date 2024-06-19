@@ -17,7 +17,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://.../v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://amoure-backend-awu2hmc2hq-et.a.run.app/\"")
     }
 
     buildTypes {

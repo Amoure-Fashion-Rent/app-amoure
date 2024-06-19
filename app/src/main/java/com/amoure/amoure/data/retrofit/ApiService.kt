@@ -1,25 +1,32 @@
 package com.amoure.amoure.data.retrofit
 
-import com.amoure.amoure.data.response.CartResponse
-import com.amoure.amoure.data.response.CategoryResponse
+import com.amoure.amoure.data.request.PostCartRequest
+import com.amoure.amoure.data.request.PostProductRequest
+import com.amoure.amoure.data.request.PostReviewRequest
+import com.amoure.amoure.data.request.PostWishlistRequest
+import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.data.response.IdResponse
+import com.amoure.amoure.data.response.ImageResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
-import com.amoure.amoure.data.response.ProductResponse
+import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.response.ProductsResponse
 import com.amoure.amoure.data.response.ProfileResponse
 import com.amoure.amoure.data.response.RentResponse
 import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.data.response.ReviewResponse
 import com.amoure.amoure.data.response.WishlistResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -58,7 +65,7 @@ interface ApiService {
     ): Call<InitialResponse<IdResponse>>
 
     @GET("products")
-    fun getProducts(
+    suspend fun getProducts(
         @Query("id") id: Int? = null,
         @Query("ownerId") ownerId: Int? = null,
         @Query("categoryId") categoryId: Int? = null,
@@ -72,22 +79,21 @@ interface ApiService {
     @GET("products/{productId}")
     fun getProductById(
         @Path("productId") id: Int
-    ): Call<InitialResponse<ProductResponse>>
+    ): Call<InitialResponse<ProductItem>>
 
     @POST("orders")
     fun postToCart(
-        @Field("productId") productId: Int,
-        @Field("rentalStartDate") rentalStartDate: String,
-        @Field("rentalEndDate") rentalEndDate: String,
+        @Body body: PostCartRequest
     ): Call<InitialResponse<IdResponse>>
 
+    // TODO: change path
     @GET("products/search")
     fun getSearch(
         @Query("name") name: String
     ): Call<InitialResponse<ProductsResponse>>
 
     @GET("reviews")
-    fun getReviews(
+    suspend fun getReviews(
         @Query("id") id: Int? = null,
         @Query("productId") productId: Int? = null,
         @Query("page") page: Int? = null,
@@ -95,16 +101,9 @@ interface ApiService {
         @Query("includeUser") includeUser: Boolean = true,
     ): InitialResponse<ReviewResponse>
 
-    @GET("products/search")
-    fun getSearchbyVisSearch(
-        @Query("name") name: String
-    ): Call<InitialResponse<ProductsResponse>>
-
     @POST("reviews")
     fun postReview(
-        @Field("productId") productId: Int,
-        @Field("rating") rating: Int,
-        @Field("comment") comment: String,
+        @Body review: PostReviewRequest,
     ): Call<InitialResponse<ReviewItem>>
 
     @DELETE("reviews/{productId}")
@@ -113,7 +112,7 @@ interface ApiService {
     ): Call<InitialResponse<IdResponse>>
 
     @GET("orders")
-    fun getRents(
+    suspend fun getRents(
         @Query("userId") userId: Int? = null,
         @Query("page") page: Int? = null,
         @Query("take") take: Int? = null,
@@ -122,48 +121,42 @@ interface ApiService {
 
     @POST("wishlist")
     fun postWishlist(
-        @Field("productId") productId: Int,
+        @Body body: PostWishlistRequest
     ): Call<InitialResponse<IdResponse>>
 
-    @GET("/wishlists/{userId}")
+    @GET("wishlist")
     fun getUserWishlist(
-        @Path("userId") id: String
+        @Query("includeProducts") includeProducts: Boolean = true,
     ): Call<InitialResponse<WishlistResponse>>
 
-    @DELETE("/wishlists/{userId}/{productId}")
-    fun deleteFromWishlist(
-        @Path("userId") userId: String,
-        @Path("productId") productId: String
-    ): Call<InitialResponse<IdResponse>>
-
-    @POST("users/{ownerId}")
+    @POST("products")
     fun postProduct(
-        @Path("ownerId") ownerId: String,
-        @Field("name") name: String,
-        @Field("product") product: String,
-        @Field("details") details: String,
-        @Field("notes") notes: String,
-        @Field("retail") retail: String,
-        @Field("rent") rent: String,
-        @Field("category") category: String,
-        @Field("sizes") sizes: String,
-        @Field("images") images: String,
-    ): Call<InitialResponse<IdResponse>>
+        @Body product: PostProductRequest
+    ): Call<InitialResponse<ProductItem>>
 
-    /////get search by vissearch
-    @GET("products/search")
-    fun getSearchbyVisSearch(
-        @Query("name") name: String
+    @Multipart
+    @POST("products/image/upload")
+    fun postProductImage(
+        @Part file: MultipartBody.Part,
+    ): Call<InitialResponse<ImageResponse>>
+
+
+    // TODO: change path
+    @Multipart
+    @POST("products/search")
+    fun postSearchByVisSearch(
+        @Part file: MultipartBody.Part,
     ): Call<InitialResponse<ProductsResponse>>
 
-    @GET("products/category")
-    fun getAllCategory(
-        @Query("name") name: String
-    ): Call<InitialResponse<CategoryResponse>>
+    // TODO: change path
+    @Multipart
+    @POST("process_dc")
+    fun postTryOn(
+        @Part("vton_img") vtonImage: MultipartBody.Part,
+        @Part("garm_img") garmIMage: MultipartBody.Part,
+        @Field("category") category: String,
+    ): Call<InitialResponse<String>>
 
-    @GET("products/{categoryId}")
-    fun getAllCategorybyId(
-        @Query("id") id: String
-    ): Call<InitialResponse<CategoryResponse>>
-
+    @GET("categories")
+    fun getAllCategory(): Call<InitialResponse<List<CategoryItem>>>
 }

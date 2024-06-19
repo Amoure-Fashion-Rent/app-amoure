@@ -10,28 +10,15 @@ import com.amoure.amoure.data.RentHistoryRepository
 import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.data.pagingsource.RentHistoryPSParams
 import com.amoure.amoure.data.response.RentItem
-import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 class RentHistoryViewModel(private val userRepository: UserRepository, private val rentHistoryRepository: RentHistoryRepository) : ViewModel() {
     var rents: LiveData<PagingData<RentItem>> = MutableLiveData()
 
-    private lateinit var accessToken: String
-    private var userId by Delegates.notNull<Int>()
-
     init {
-        viewModelScope.launch {
-            userRepository.getSession().collect {
-                if (it.isLogin) {
-                    accessToken = it.accessToken
-                    userId = it.userId
-                    getRents()
-                }
-            }
-        }
+        getRents()
     }
 
-    fun getRents() {
+    private fun getRents() {
         rents = rentHistoryRepository.getRents(RentHistoryPSParams()).cachedIn(viewModelScope)
     }
 }

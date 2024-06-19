@@ -19,7 +19,11 @@
         android:id="@+id/navigation_category"
         android:name="com.amoure.amoure.ui.category.CategoryFragment"
         android:label=""
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_navigation_category_to_navigation_category_click"
+            app:destination="@id/navigation_category_click" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_vis_search"
@@ -40,4 +44,13 @@
         android:id="@+id/navigation_search"
         android:name="com.amoure.amoure.ui.search.SearchFragment"
         android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/navigation_category_click"
+        android:name="com.amoure.amoure.ui.category.CategoryClickFragment"
+        android:label="CategoryFragmentClick" />
+    <fragment
+        android:id="@+id/navigation_add"
+        android:name="com.amoure.amoure.ui.addproduct.AddProductFragment"
+        android:label="fragment_addproduct"
+        tools:layout="@layout/fragment_addproduct" />
 </navigation>

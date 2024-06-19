@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.databinding.ActivityRentHistoryBinding
+import com.amoure.amoure.ui.LoadingStateAdapter
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.product.ProductActivity
 
@@ -27,15 +30,17 @@ class RentHistoryActivity : AppCompatActivity() {
         setRents()
     }
 
-    override fun onResume() {
-        super.onResume()
-        rentHistoryViewModel.getRents()
-    }
-
-
     private fun setRents() {
         val adapter = RentHistoryAdapter()
-        binding.rvRents.adapter = adapter
+        binding.rvRents.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+        adapter.addLoadStateListener { loadState ->
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+            binding.tvNoDataRent.isVisible = loadState.refresh is LoadState.NotLoading && adapter.itemCount == 0
+        }
         rentHistoryViewModel.rents.observe(this) {
             it?.let {
                 adapter.submitData(lifecycle, it)
@@ -44,7 +49,7 @@ class RentHistoryActivity : AppCompatActivity() {
         adapter.setOnItemClickCallback(object : RentHistoryAdapter.OnItemClickCallback {
             override fun onItemClicked(id: Int) {
                 val moveIntent = Intent(baseContext, ProductActivity::class.java)
-                moveIntent.putExtra(ProductActivity.ID, id)
+                moveIntent.putExtra(ProductActivity.ID, id.toString())
                 startActivity(moveIntent)
             }
         })

@@ -1,15 +1,13 @@
 package com.amoure.amoure.ui.category
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.amoure.amoure.categoryImages
 import com.amoure.amoure.data.response.CategoryItem
-import com.amoure.amoure.data.dataclass.Category
-import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.databinding.ItemCategoryBinding
 import com.bumptech.glide.Glide
 
@@ -32,19 +30,23 @@ class CategoryAdapter : ListAdapter<CategoryItem, CategoryAdapter.MyViewHolder>(
 
     class MyViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
         fun bind(category: CategoryItem, onItemClickCallback: OnItemClickCallback, context: Context) {
             with(binding) {
-                tvName.text = category.categoriesName.toString()
-//                Glide.with(ivProduct.context)
-//                    .load(category.imgProduct)
-//                    .into(ivProduct)
+                tvName.text = category.name.toString()
+                if (category.id != null) {
+                    Glide.with(ivProduct.context)
+                        .load(categoryImages()[category.id-1])
+                        .into(ivProduct)
+                }
+                itemProductSmall.setOnClickListener {
+                    category.id?.let { onItemClickCallback.onItemClicked(it) }
+                }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(id: String)
+        fun onItemClicked(id: Int)
     }
 
     companion object {

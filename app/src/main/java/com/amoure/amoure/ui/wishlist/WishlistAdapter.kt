@@ -2,18 +2,19 @@ package com.amoure.amoure.ui.wishlist
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.amoure.amoure.R
-import com.amoure.amoure.data.response.ProductItem
+import com.amoure.amoure.data.response.WishlistItem
 import com.amoure.amoure.databinding.ItemWishlistBinding
 import com.amoure.amoure.withCurrencyFormat
 import com.bumptech.glide.Glide
 
-class WishlistAdapter : ListAdapter<ProductItem, WishlistAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class WishlistAdapter : ListAdapter<WishlistItem, WishlistAdapter.MyViewHolder>(DIFF_CALLBACK) {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -33,33 +34,34 @@ class WishlistAdapter : ListAdapter<ProductItem, WishlistAdapter.MyViewHolder>(D
     class MyViewHolder(private val binding: ItemWishlistBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
-        fun bind(product: ProductItem, onItemClickCallback: OnItemClickCallback, context: Context) {
+        fun bind(wishlist: WishlistItem, onItemClickCallback: OnItemClickCallback, context: Context) {
+            val product = wishlist.product
             with(binding) {
-                tvRetailPrice.text = String.format(context.resources.getString(R.string.retail_price_cart), product.retailPrice?.withCurrencyFormat())
-                tvPrice.text = String.format(context.resources.getString(R.string.rent_price_cart), product.rentPrice?.withCurrencyFormat())
-                tvOwner.text = product.ownerName
-                tvName.text = product.productName
+                tvRetailPrice.paintFlags = tvRetailPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                tvRetailPrice.text = String.format(context.resources.getString(R.string.retail_price_cart), product?.retailPrice?.withCurrencyFormat())
+                tvPrice.text = String.format(context.resources.getString(R.string.rent_price_cart), product?.rentPrice?.withCurrencyFormat())
+                tvName.text = product?.name
                 Glide.with(ivProduct.context)
-                    .load(product.imgProduct)
+                    .load(product?.images?.get(0))
                     .into(ivProduct)
-                btRemove.setOnClickListener {
-                    product.id?.let { onItemClickCallback.onItemClicked(it) }
+                itemProductSmall.setOnClickListener {
+                    product?.id?.let { onItemClickCallback.onItemClicked(it) }
                 }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(id: String)
+        fun onItemClicked(id: Int)
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductItem>() {
-            override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<WishlistItem>() {
+            override fun areItemsTheSame(oldItem: WishlistItem, newItem: WishlistItem): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem): Boolean {
+            override fun areContentsTheSame(oldItem: WishlistItem, newItem: WishlistItem): Boolean {
                 return oldItem == newItem
             }
         }

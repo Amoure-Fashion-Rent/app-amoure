@@ -1,18 +1,30 @@
 package com.amoure.amoure.ui.addproduct
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.data.request.PutProductRequest
+import com.amoure.amoure.data.request.PostProductRequest
 import com.amoure.amoure.databinding.FragmentAddproductBinding
+import com.amoure.amoure.reduceFileImage
 import com.amoure.amoure.ui.ViewModelFactory
+import com.amoure.amoure.uriToFile
 import com.google.android.material.textfield.TextInputLayout
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 
 class AddProductFragment : Fragment() {
 
@@ -21,6 +33,12 @@ class AddProductFragment : Fragment() {
     private val addProductViewModel by viewModels<AddProductViewModel> {
         ViewModelFactory.getInstance(requireContext())
     }
+    private lateinit var galleryLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var imagesAdapter: ImageAddAdapter
+    private var images = mutableListOf<Uri>()
+    private var categories = mutableListOf<String>()
+    private var categoryIds = mutableListOf<Int>()
+    private var imagesToUpload = mutableListOf<MultipartBody.Part>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,8 +51,30 @@ class AddProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btAddProduct.setOnClickListener {
-            putProduct()
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(8)) { uris ->
+            if (uris.isNotEmpty()) {
+                images.addAll(uris)
+                setImages()
+            }
+        }
+        images.add("0".toUri())
+        setImages()
+
+        addProductViewModel.categoryResults.observe(viewLifecycleOwner) { list ->
+            list?.let { iList ->
+                categoryIds.clear()
+                categories.clear()
+                categoryIds.addAll(iList.mapNotNull { it?.id })
+                categories.addAll(iList.mapNotNull { it?.name })
+
+                context?.let {
+                    val categoryAdapter = ArrayAdapter(it, R.layout.list_item_delivery, categories)
+                    binding.edCategory.setAdapter(categoryAdapter)
+                    val size = resources.getStringArray(R.array.size)
+                    val sizeAdapter = ArrayAdapter(it, R.layout.list_item_delivery, size)
+                    binding.edSize.setAdapter(sizeAdapter)
+                }
+            }
         }
 
         addProductViewModel.isError.observe(viewLifecycleOwner) {
@@ -44,21 +84,45 @@ class AddProductFragment : Fragment() {
         addProductViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
+
+        postProduct()
     }
 
-    private fun putProduct() {
+    private fun setImages() {
+        binding.rvImages.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        imagesAdapter = ImageAddAdapter()
+        imagesAdapter.submitList(images)
+        binding.rvImages.adapter = imagesAdapter
+        imagesAdapter.setOnItemClickCallback(object : ImageAddAdapter.OnItemClickCallback {
+            override fun onItemClicked(flag: String) {
+                if (flag == "0") {
+                    galleryLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+            }
+        })
+    }
+
+    private fun postImage(imageUri: Uri) {
+        context?.let {
+            val uri = uriToFile(imageUri, it).reduceFileImage()
+            showLoading(true)
+
+            val requestImageFile = uri.asRequestBody("image/jpeg".toMediaType())
+            val image = MultipartBody.Part.createFormData(
+                "photo",
+                uri.name,
+                requestImageFile
+            )
+            imagesToUpload.add(image)
+        }
+    }
+
+    private fun postProduct() {
         with(binding) {
             btAddProduct.setOnClickListener {
-                val name = edProfileName.text.toString()
-                if (name.isEmpty()) {
-                    showInputErrorMessage(edlProfileName, "name")
-                    return@setOnClickListener
-                } else {
-                    edlProfileName.isErrorEnabled = false
-                }
                 val product = edProfileProduct.text.toString()
                 if (product.isEmpty()) {
-                    showInputErrorMessage(edlProfileProduct, "product")
+                    showInputErrorMessage(edlProfileProduct, "product name")
                     return@setOnClickListener
                 } else {
                     edlProfileProduct.isErrorEnabled = false
@@ -72,30 +136,25 @@ class AddProductFragment : Fragment() {
                 }
                 val notes = edProfileNotes.text.toString()
                 if (notes.isEmpty()) {
-                    showInputErrorMessage(edlProfileNotes, "notes")
+                    showInputErrorMessage(edlProfileNotes, "stylish notes")
                     return@setOnClickListener
                 } else {
                     edlProfileNotes.isErrorEnabled = false
                 }
-
-                // Fetching Retail Price
-                val retailPrice = edlRetailPrice.editText?.text.toString()
+                val retailPrice = edRetailPrice.text.toString()
                 if (retailPrice.isEmpty()) {
-                    showInputErrorMessage(edlRetailPrice, "Retail Price")
+                    showInputErrorMessage(edlRetailPrice, "retail price")
                     return@setOnClickListener
                 } else {
                     edlRetailPrice.isErrorEnabled = false
                 }
-
-                // Fetching Rent Price
-                val rentPrice = edlRentPrice.editText?.text.toString()
+                val rentPrice = edRentPrice.text.toString()
                 if (rentPrice.isEmpty()) {
-                    showInputErrorMessage(edlRentPrice, "Rent Price")
+                    showInputErrorMessage(edlRentPrice, "rent price")
                     return@setOnClickListener
                 } else {
                     edlRentPrice.isErrorEnabled = false
                 }
-
                 val category = edCategory.text.toString()
                 if (category.isEmpty()) {
                     showInputErrorMessage(edlCategory, "category")
@@ -104,16 +163,40 @@ class AddProductFragment : Fragment() {
                     edlCategory.isErrorEnabled = false
                 }
 
-                // Collect selected sizes
-                val selectedSizes = mutableListOf<String>()
-                if (btSizeXs.isSelected) selectedSizes.add("XS")
-                if (btSizeS.isSelected) selectedSizes.add("S")
-                if (btSizeM.isSelected) selectedSizes.add("M")
-                if (btSizeL.isSelected) selectedSizes.add("L")
-                if (btSizeXl.isSelected) selectedSizes.add("XL")
-                if (btSizeXxl.isSelected) selectedSizes.add("XXL")
+                val size = edSize.text.toString()
+                if (size.isEmpty()) {
+                    showInputErrorMessage(edlSize, "size")
+                    return@setOnClickListener
+                } else {
+                    edlSize.isErrorEnabled = false
+                }
 
-//                finish()
+                for (i in images.indices) {
+                    postImage(images[i])
+                }
+
+                val productRequest = PostProductRequest(
+                    product,
+                    emptyList(),
+                    details,
+                    retailPrice.toInt(),
+                    rentPrice.toInt(),
+                    size,
+                    "",
+                    "AVAILABLE",
+                    notes,
+                    categoryIds[categories.indexOf(category)]
+                )
+                addProductViewModel.postProductWithImages(imagesToUpload, productRequest)
+                images.clear()
+                imagesToUpload.clear()
+                images.add("0".toUri())
+                imagesAdapter.submitList(images)
+                edProfileProduct.setText("")
+                edProfileDetails.setText("")
+                edProfileNotes.setText("")
+                edRetailPrice.setText("")
+                edRentPrice.setText("")
             }
         }
     }

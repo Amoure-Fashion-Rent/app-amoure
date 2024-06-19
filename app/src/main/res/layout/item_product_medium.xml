@@ -6,13 +6,14 @@
     android:id="@+id/item_product_small"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:maxHeight="280dp"
     android:paddingBottom="5dp"
     android:paddingHorizontal="5dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_product"
-        android:layout_width="wrap_content"
-        android:layout_height="180dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

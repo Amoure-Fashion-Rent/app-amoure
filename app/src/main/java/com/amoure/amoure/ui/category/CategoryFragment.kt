@@ -1,6 +1,5 @@
 package com.amoure.amoure.ui.category
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.databinding.FragmentCategoryBinding
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.amoure.amoure.ui.ViewModelFactory
-import com.amoure.amoure.ui.cart.CartActivity
-import com.amoure.amoure.ui.category.CategoryViewModel
 import com.amoure.amoure.ui.search.SearchFragment
 
 class CategoryFragment : Fragment() {
@@ -52,14 +48,9 @@ class CategoryFragment : Fragment() {
             showLoading(it)
         }
 
-        binding.appBarLayout.statusBarForeground =
-            MaterialShapeDrawable.createWithElevationOverlay(activity)
-
         setSearchBar()
         return root
     }
-
-
 
     private fun setSearchBar() {
         with(binding) {
@@ -85,11 +76,10 @@ class CategoryFragment : Fragment() {
         adapter.submitList(products)
         binding.rvCategory.adapter = adapter
         adapter.setOnItemClickCallback(object : CategoryAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
-////                 TODO: Go to list of category lists
-//                val moveIntent = Intent(context, CategoryFragmentClick::class.java)
-//                moveIntent.putExtra(CategoryFragmentClick.ID, id)
-//                startActivity(moveIntent)
+            override fun onItemClicked(id: Int) {
+                val bundle = Bundle()
+                bundle.putInt(CategoryClickFragment.ID, id)
+                findNavController().navigate(R.id.action_navigation_category_to_navigation_category_click, bundle)
             }
         })
     }

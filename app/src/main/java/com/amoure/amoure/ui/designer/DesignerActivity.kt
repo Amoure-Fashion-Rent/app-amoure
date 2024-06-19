@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.amoure.amoure.databinding.ActivityDesignerBinding
 import com.amoure.amoure.ui.LoadingStateAdapter
@@ -38,11 +40,6 @@ class DesignerActivity : AppCompatActivity() {
         setProducts()
     }
 
-    override fun onResume() {
-        super.onResume()
-        designerViewModel.getProducts(ownerId)
-    }
-
     private fun setProducts() {
         binding.rvDesigner.layoutManager = GridLayoutManager(this, 2)
         val adapter = ProductMediumAdapter()
@@ -51,6 +48,9 @@ class DesignerActivity : AppCompatActivity() {
                     adapter.retry()
                 }
         )
+        adapter.addLoadStateListener { loadState ->
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+        }
         designerViewModel.products.observe(this) {
             it?.let {
                 adapter.submitData(lifecycle, it)

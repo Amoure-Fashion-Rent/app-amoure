@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.databinding.ActivityReviewBinding
@@ -98,11 +100,6 @@ class ReviewActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        reviewViewModel.getReviews(productId)
-    }
-
     private fun setStarColor(star: ImageView) {
         star.setColorFilter(ContextCompat.getColor(baseContext, R.color.yellow_500))
     }
@@ -122,6 +119,9 @@ class ReviewActivity : AppCompatActivity() {
                 adapter.retry()
             }
         )
+        adapter.addLoadStateListener { loadState ->
+            binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+        }
         reviewViewModel.reviews.observe(this) {
             it?.let {
                 adapter.submitData(lifecycle, it)

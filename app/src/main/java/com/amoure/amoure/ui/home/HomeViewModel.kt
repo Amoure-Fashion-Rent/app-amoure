@@ -10,7 +10,7 @@ import com.amoure.amoure.data.ProductRepository
 import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.data.pagingsource.ProductPSParams
 import com.amoure.amoure.data.response.ProductItem
-import kotlinx.coroutines.launch
+import com.amoure.amoure.data.retrofit.ApiService
 
 class HomeViewModel(private val userRepository: UserRepository, private val productRepository: ProductRepository) : ViewModel() {
     var forYouProducts: LiveData<PagingData<ProductItem>> = MutableLiveData()
@@ -18,20 +18,13 @@ class HomeViewModel(private val userRepository: UserRepository, private val prod
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
 
-    private lateinit var accessToken: String
+    private var apiService: ApiService? = null
 
     init {
-        viewModelScope.launch {
-            userRepository.getSession().collect {
-                if (it.isLogin) {
-                    accessToken = it.accessToken
-                    forYouProducts = productRepository.getProducts(ProductPSParams()).cachedIn(viewModelScope)
-                }
-            }
-        }
+        getForYouProducts()
     }
 
-    fun getForYou() {
-        forYouProducts = productRepository.getProducts(ProductPSParams()).cachedIn(viewModelScope)
+    private fun getForYouProducts() {
+        forYouProducts = productRepository.getProducts(apiService, ProductPSParams()).cachedIn(viewModelScope)
     }
 }

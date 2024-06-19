@@ -12,33 +12,28 @@ import com.amoure.amoure.data.pref.UserPreference
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.retrofit.ApiConfig
 import com.amoure.amoure.data.retrofit.ApiService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 class ProductRepository private constructor(
     private val userPreference: UserPreference
 ) {
-    fun getSession(): Flow<UserModel> {
-        return userPreference.getSession()
+    suspend fun getSession(): UserModel {
+        return userPreference.getSession().first()
     }
 
-    fun getApiService(): ApiService {
-        return runBlocking(Dispatchers.IO) {
-            getSession().first().let { session ->
-                return@runBlocking ApiConfig.getApiService(session.accessToken)
-            }
-        }
+    suspend fun getApiService(): ApiService {
+        val session = getSession()
+        return ApiConfig.getApiService(session.accessToken)
     }
 
-    fun getProducts(params: ProductPSParams): LiveData<PagingData<ProductItem>> {
+    fun getProducts(apiService: ApiService?, params: ProductPSParams): LiveData<PagingData<ProductItem>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20
+                pageSize = 10
             ),
             pagingSourceFactory = {
-                ProductPagingSource(getApiService(), params)
+                ProductPagingSource(runBlocking { getApiService() }, params)
             }
         ).liveData
     }

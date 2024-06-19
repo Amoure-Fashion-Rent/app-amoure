@@ -15,7 +15,6 @@ import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.databinding.ActivityLoginBinding
 import com.amoure.amoure.isEmailValid
-import com.amoure.amoure.isPasswordValid
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.ui.main.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -66,11 +65,9 @@ class LoginActivity : AppCompatActivity() {
                     edlLoginEmail.isErrorEnabled = false
                 }
                 val password = edLoginPassword.text.toString()
-                if (password.isEmpty() || !isPasswordValid(password)) {
+                if (password.isEmpty()) {
                     edlLoginPassword.error = String.format(getString(R.string.input_required), "password")
                     return@setOnClickListener
-                } else {
-                    edlLoginPassword.isErrorEnabled = false
                 }
                 loginViewModel.login(LoginRequest(email, password))
             }

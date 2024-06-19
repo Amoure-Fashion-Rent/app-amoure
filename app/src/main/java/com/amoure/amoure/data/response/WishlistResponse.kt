@@ -5,18 +5,21 @@ import com.google.gson.annotations.SerializedName
 
 data class WishlistResponse(
 
-    @field:SerializedName("cart")
-    val wishlist: Wishlist? = null
+    @field:SerializedName("count")
+    val count: Int? = null,
+
+    @field:SerializedName("wishlist")
+    val wishlist: List<WishlistItem?>? = null
 )
 
-data class Wishlist(
-    @field:SerializedName("productId")
-    val productId: List<String>? = null,
+data class WishlistItem(
 
-    @field:SerializedName("id")
-    val id: String? = null,
+    @field:SerializedName("productId")
+    val productId: Int? = null,
 
     @field:SerializedName("userId")
-    val userId: String? = null,
+    val userId: Int? = null,
 
+    @field:SerializedName("product")
+    val product: ProductItem? = null
 )

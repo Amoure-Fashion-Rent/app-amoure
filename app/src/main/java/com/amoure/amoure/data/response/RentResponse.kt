@@ -12,40 +12,40 @@ data class RentItem(
 	@SerializedName("id")
 	val id: Int? = null,
 
-	@SerializedName("user_id")
+	@SerializedName("userId")
 	val userId: Int? = null,
 
-	@SerializedName("product_id")
+	@SerializedName("productId")
 	val productId: Int? = null,
 
-	@SerializedName("product_name")
+	@SerializedName("productName")
 	val productName: String? = null,
 
-	@SerializedName("size")
+	@SerializedName("productSize")
 	val productSize: String? = null,
 
-	@SerializedName("color")
+	@SerializedName("productColor")
 	val productColor: String? = null,
 
-	@SerializedName("rent_price")
+	@SerializedName("rentPrice")
 	val rentPrice: Int? = null,
 
-	@SerializedName("delivery_method")
+	@SerializedName("deliveryMethod")
 	val deliveryMethod: String? = null,
 
-	@SerializedName("delivery_price")
+	@SerializedName("deliveryPrice")
 	val deliveryPrice: Int? = null,
 
-	@SerializedName("total_price")
+	@SerializedName("totalPrice")
 	val totalPrice: Int? = null,
 
-	@SerializedName("rental_start_date")
+	@SerializedName("rentalStartDate")
 	val rentalStartDate: String? = null,
 
-	@SerializedName("rental_end_date")
+	@SerializedName("rentalEndDate")
 	val rentalEndDate: String? = null,
 
-	@SerializedName("rental_duration")
+	@SerializedName("rentalDuration")
 	val rentalDuration: Int? = null,
 
 	@SerializedName("status")

@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.data.response.ProductItem
-import com.amoure.amoure.data.response.Wishlist
+import com.amoure.amoure.data.response.WishlistItem
 import com.amoure.amoure.databinding.FragmentWishlistBinding
 import com.amoure.amoure.ui.ViewModelFactory
-import com.amoure.amoure.ui.cart.CartActivity
-import com.amoure.amoure.ui.cart.CartAdapter
+import com.amoure.amoure.ui.product.ProductActivity
 
 class WishlistFragment : Fragment() {
 
@@ -34,17 +33,13 @@ class WishlistFragment : Fragment() {
     ): View {
         _binding = FragmentWishlistBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.rvWishlist.layoutManager = GridLayoutManager(context, 2)
-
-        wishListViewModel.wishlist.observe(viewLifecycleOwner) {
-        }
+        binding.rvWishlist.layoutManager = LinearLayoutManager(context)
 
         wishListViewModel.products.observe(viewLifecycleOwner) {
             it?.let {
-                SetWishlistResults(it)
+                setWishlistResults(it)
             }
         }
-
 
         wishListViewModel.isError.observe(viewLifecycleOwner) {
             if (it == true) showToast(resources.getString(R.string.alert_error))
@@ -54,22 +49,23 @@ class WishlistFragment : Fragment() {
             showLoading(it)
         }
 
-
         return root
     }
 
 
 
-    private fun SetWishlistResults(products: List<ProductItem?>) {
+    private fun setWishlistResults(products: List<WishlistItem?>) {
+        if (products.isEmpty()) {
+            binding.tvNoDataRent.isVisible = true
+        }
         val adapter = WishlistAdapter()
         adapter.submitList(products)
         binding.rvWishlist.adapter = adapter
         adapter.setOnItemClickCallback(object : WishlistAdapter.OnItemClickCallback {
-            override fun onItemClicked(id: String) {
-                wishListViewModel.deleteFromWishlist(id)
-                val currentList = adapter.currentList.toMutableList()
-                currentList.removeAt(currentList.indexOfFirst { it.id == id })
-                adapter.submitList(currentList)
+            override fun onItemClicked(id: Int) {
+                val moveIntent = Intent(context, ProductActivity::class.java)
+                moveIntent.putExtra(ProductActivity.ID, id.toString())
+                startActivity(moveIntent)
             }
         })
     }

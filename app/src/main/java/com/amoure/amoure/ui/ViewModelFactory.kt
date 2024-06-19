@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.amoure.amoure.data.Repository
 import com.amoure.amoure.di.Injection
+import com.amoure.amoure.ui.addproduct.AddProductViewModel
 import com.amoure.amoure.ui.cart.CartViewModel
 import com.amoure.amoure.ui.category.CategoryViewModel
 import com.amoure.amoure.ui.designer.DesignerViewModel
@@ -16,7 +17,9 @@ import com.amoure.amoure.ui.product.ProductViewModel
 import com.amoure.amoure.ui.profile.ProfileViewModel
 import com.amoure.amoure.ui.renthistory.RentHistoryViewModel
 import com.amoure.amoure.ui.review.ReviewViewModel
+import com.amoure.amoure.ui.review.TryOnViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
+import com.amoure.amoure.ui.wishlist.WishlistViewModel
 
 class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -58,7 +61,16 @@ class ViewModelFactory(private val repository: Repository) :
                 RentHistoryViewModel(repository.userRepository, repository.rentHistoryRepository) as T
             }
             modelClass.isAssignableFrom(CategoryViewModel::class.java) -> {
-                CategoryViewModel(repository.userRepository) as T
+                CategoryViewModel(repository.userRepository, repository.productRepository) as T
+            }
+            modelClass.isAssignableFrom(WishlistViewModel::class.java) -> {
+                WishlistViewModel(repository.userRepository) as T
+            }
+            modelClass.isAssignableFrom(TryOnViewModel::class.java) -> {
+                TryOnViewModel(repository.userRepository) as T
+            }
+            modelClass.isAssignableFrom(AddProductViewModel::class.java) -> {
+                AddProductViewModel(repository.userRepository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

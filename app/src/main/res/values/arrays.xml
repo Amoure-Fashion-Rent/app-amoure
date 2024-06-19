@@ -20,6 +20,14 @@
         <item>Lower-Body</item>
         <item>Full-Body</item>
     </string-array>
+    <string-array name="size" >
+        <item>XS</item>
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+        <item>XXL</item>
+    </string-array>
     <string-array name="user_type_items" >
         <item>User</item>
         <item>Owner</item>

@@ -6,10 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_product_small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_product"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tv_vis_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/navy_blue_700"
+                android:text="@string/vis_search_message"
+                android:gravity="center"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@id/iv_product"
+                app:layout_constraintTop_toTopOf="@id/iv_product"
+                app:layout_constraintBottom_toBottomOf="@id/iv_product"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="@string/vis_search_message" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search"
@@ -17,9 +52,11 @@
                 android:layout_height="match_parent"
                 android:paddingHorizontal="15dp"
                 android:paddingTop="10dp"
-                android:clipToPadding="false" />
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

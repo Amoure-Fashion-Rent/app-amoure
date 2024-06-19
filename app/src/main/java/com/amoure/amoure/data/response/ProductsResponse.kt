@@ -10,13 +10,6 @@ data class ProductsResponse(
 	@field:SerializedName("products")
 	val products: List<ProductItem?>? = null
 )
-
-data class ProductResponse(
-
-	@field:SerializedName("product")
-	val product: ProductItem? = null
-)
-
 data class ProductItem(
 
 	@field:SerializedName("id")
@@ -60,6 +53,17 @@ data class ProductItem(
 
 	@field:SerializedName("reviewsCount")
 	val reviewsCount: Int? = null,
+
+	@field:SerializedName("_avg")
+	val avg: Rating? = null,
+
+	@field:SerializedName("_count")
+	val count: Int? = null,
+)
+
+data class Rating(
+	@field:SerializedName("rating")
+	val rating: Double? = null,
 )
 
 data class Owner(

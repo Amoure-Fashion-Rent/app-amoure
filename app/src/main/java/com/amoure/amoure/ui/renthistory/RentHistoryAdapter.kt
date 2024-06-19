@@ -35,7 +35,6 @@ class RentHistoryAdapter : PagingDataAdapter<RentItem, RentHistoryAdapter.MyView
         fun bind(rent: RentItem, onItemClickCallback: OnItemClickCallback) {
             with(binding) {
                 tvName.text = rent.productName.toString()
-                tvOwner.text = rent.product?.owner?.fullName.toString()
                 tvStatus.text = rent.status?.removeUnderscoreAndCapitalize()
                 tvArrives.text = rent.rentalStartDate?.formatDate()
                 tvReturn.text = rent.rentalEndDate?.formatDate()

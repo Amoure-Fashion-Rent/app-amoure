@@ -121,9 +121,8 @@
     <string name="addproduct_retail">Retail Price</string>
     <string name="addproduct_rent">Rent Price</string>
     <string name="addproduct_category">Category</string>
-    <string name="addproduct_upload1">Upload Image (Thumbnail)</string>
-
-    <string name="addproduct_upload2">Upload Images (Fashion Item)</string>
+    <string name="addproduct_size">Size</string>
+    <string name="addproduct_upload">Upload Image</string>
 
     <string name="size_xs">XS</string>
     <string name="size_s">S</string>
@@ -134,10 +133,22 @@
 
     <string name="tryon_items">Items:</string>
     <string name="tryon_message_1">Before using Try On:</string>
-    <string name="tryon_message_2">1. Ensure your pose mirrors the image above, with three-quarters of your body</string>
+    <string name="tryon_message_2">1. Ensure your pose straight to the camera</string>
     <string name="tryon_message_3">2. Please note that the size may not accurately reflect the actual size of the fashion item</string>
     <string name="tryon_message_4">3. The User with free account are limited to only 10 try on’s</string>
 
     <string name="cam">Camera</string>
     <string name="img">Image</string>
+    <string name="run">Run</string>
+    <string name="empty_image_error">Image has not been added</string>
+    <string name="address">Jl Wijaya Kusuma 15 A, DKI Jakarta</string>
+    <string name="vis_search_message">Do you want to look more in the “%1$s” Section</string>
+    <string name="input_image_message">The first image to be used as the thumbnail. The last image is for product image.</string>
+
+    <string name="permission_granted">Permission request granted</string>
+    <string name="permission_denied">Permission request denied</string>
+    <string name="no_data_rent">You don\'t have any item in rent!. Explore our available items in to see what\'s new. Happy renting!</string>
+    <string name="no_data_wishlist">You don\'t have any item in wishlist!. Explore our available items in to see what\'s new!</string>
+    <string name="add_wishlist">Item added to your wishlist!</string>
+    <string name="add_wishlist_failed">Item already added to your wishlist!</string>
 </resources>

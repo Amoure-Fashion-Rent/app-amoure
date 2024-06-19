@@ -11,7 +11,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
-import com.amoure.amoure.currencyStringToInteger
 import com.amoure.amoure.data.request.PostCartRequest
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
@@ -60,7 +59,7 @@ class CartActivity : AppCompatActivity() {
         val size = intent.getStringExtra(SIZE).toString()
         val color = intent.getStringExtra(COLOR).toString()
         product = ProductItem(owner = Owner(fullName = ownerName), id = productId, rentPrice = rentPrice, name = productName, images = listOf(imageUrl))
-        req = PostCartRequest(productId, productName, size, color, rentPrice, "", 0, rentPrice, "", "", 4)
+        req = PostCartRequest(productId, "",  "", )
 
         cartViewModel.response.observe(this) {
             showAlert(it)
@@ -118,7 +117,6 @@ class CartActivity : AppCompatActivity() {
                 } else {
                     edlExpDate.isErrorEnabled = false
                 }
-                showToast(req.deliveryMethod+req.deliveryPrice+req.rentalStartDate+req.rentalEndDate)
                 cartViewModel.postFromCart(req)
             }
         }
@@ -178,12 +176,13 @@ class CartActivity : AppCompatActivity() {
                         val cal = Calendar.getInstance()
                         cal.timeInMillis = it
                         val format = SimpleDateFormat("dd/MM/yyyy")
-                        val formattedDate: String = format.format(cal.time)
-                        binding.edlRentalPeriod.editText?.setText(formattedDate)
+                        val formattedStartDate: String = format.format(cal.time)
                         req.rentalStartDate = cal.formatCalendarToISO8601()
-                        val newCal = cal.clone() as Calendar // Create a copy
+                        val newCal = cal.clone() as Calendar
                         newCal.add(Calendar.DAY_OF_MONTH, 4)
+                        val formattedEndDate: String = format.format(newCal.time)
                         req.rentalEndDate = newCal.formatCalendarToISO8601()
+                        binding.edlRentalPeriod.editText?.setText("${formattedStartDate} - ${formattedEndDate}")
                     }
                 }
                 false
@@ -217,8 +216,8 @@ class CartActivity : AppCompatActivity() {
             edDelivery.setOnItemClickListener { _, _, i, _ ->
                 val selectedValue = deliveryAdapter.getItem(i)?.split("(")
                 if (selectedValue != null) {
-                    req.deliveryMethod = selectedValue[0]
-                    req.deliveryPrice = selectedValue[1].currencyStringToInteger()
+//                    req.deliveryMethod = selectedValue[0]
+//                    req.deliveryPrice = selectedValue[1].currencyStringToInteger()
                 }
             }
         }

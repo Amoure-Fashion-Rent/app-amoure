@@ -32,23 +32,28 @@ class ProfileViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun logout() {
         viewModelScope.launch {
-            repository.logout()
-        }
-        val client = ApiConfig.getApiService(accessToken).logout()
-        client.enqueue(object : Callback<InitialResponse<IdResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<IdResponse>>,
-                response: Response<InitialResponse<IdResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    _isError.value = false
-                }
-                _isError.value = true
-            }
+            repository.getSession().collect {
+                if (it.isLogin) {
+                    accessToken = it.accessToken
+                    val client = ApiConfig.getApiService(it.accessToken).logout()
+                    client.enqueue(object : Callback<InitialResponse<IdResponse>> {
+                        override fun onResponse(
+                            call: Call<InitialResponse<IdResponse>>,
+                            response: Response<InitialResponse<IdResponse>>
+                        ) {
+                            _isError.value = !response.isSuccessful
+                        }
 
-            override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
-                _isError.value = true
+                        override fun onFailure(
+                            call: Call<InitialResponse<IdResponse>>,
+                            t: Throwable
+                        ) {
+                            _isError.value = true
+                        }
+                    })
+                    repository.logout()
+                }
             }
-        })
+        }
     }
 }

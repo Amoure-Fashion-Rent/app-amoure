@@ -47,36 +47,43 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun postFromCart(req: PostCartRequest) {
         _isLoading.value = true
-        val client = ApiConfig.getApiService(accessToken).postToCart(
-            req.productId,
-            req.rentalStartDate,
-            req.rentalEndDate,
-        )
-        client.enqueue(object : Callback<InitialResponse<IdResponse>> {
-            override fun onResponse(
-                call: Call<InitialResponse<IdResponse>>,
-                response: Response<InitialResponse<IdResponse>>
-            ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        _response.value = it
-                    }
-                    _isLoading.value = false
-                    _isError.value = false
-                } else {
-                    _isLoading.value = false
-                    _isError.value = true
-                    _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
+        viewModelScope.launch {
+            repository.getSession().collect {
+                if (it.isLogin) {
+                    val client = ApiConfig.getApiService(it.accessToken).postToCart(
+                        req
+                    )
+                    client.enqueue(object : Callback<InitialResponse<IdResponse>> {
+                        override fun onResponse(
+                            call: Call<InitialResponse<IdResponse>>,
+                            response: Response<InitialResponse<IdResponse>>
+                        ) {
+                            if (response.isSuccessful) {
+                                _response.value = InitialResponse("OK")
+                                _isLoading.value = false
+                                _isError.value = false
+                            } else {
+                                _isLoading.value = false
+                                _isError.value = true
+                                _response.value =
+                                    InitialResponse("Please try again later\\! Server isn\\'t responding")
+                            }
+
+                        }
+
+                        override fun onFailure(
+                            call: Call<InitialResponse<IdResponse>>,
+                            t: Throwable
+                        ) {
+                            _isError.value = true
+                            _isLoading.value = false
+                            _response.value =
+                                InitialResponse("Please try again later\\! Server isn\\'t responding")
+                        }
+                    })
                 }
-
             }
-
-            override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
-                _isError.value = true
-                _isLoading.value = false
-                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
             }
-        })
     }
 
     private fun getProfile() {
