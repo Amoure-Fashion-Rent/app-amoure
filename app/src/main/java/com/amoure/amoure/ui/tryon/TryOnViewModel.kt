@@ -1,7 +1,5 @@
 package com.amoure.amoure.ui.tryon
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,15 +10,14 @@ import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
 class TryOnViewModel(private val repository: UserRepository) : ViewModel() {
-    private val _tryOn = MutableLiveData<Bitmap>()
-    val tryOn: LiveData<Bitmap> = _tryOn
+    private val _tryOn = MutableLiveData<String>()
+    val tryOn: LiveData<String> = _tryOn
 
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> = _isError
@@ -79,14 +76,14 @@ class TryOnViewModel(private val repository: UserRepository) : ViewModel() {
     fun postTryOn(vton: String, productId: Int, category: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).tryOn(vton, productId, category)
-        client.enqueue(object : Callback<InitialResponse<ResponseBody>> {
+        client.enqueue(object : Callback<InitialResponse<ImageResponse>> {
             override fun onResponse(
-                call: Call<InitialResponse<ResponseBody>>,
-                response: Response<InitialResponse<ResponseBody>>
+                call: Call<InitialResponse<ImageResponse>>,
+                response: Response<InitialResponse<ImageResponse>>
             ) {
                 if (response.isSuccessful) {
-                    response.body()?.data?.let {
-                        _tryOn.value = BitmapFactory.decodeStream(it.byteStream())
+                    response.body()?.data?.imageUrl?.let {
+                        _tryOn.value = it
                     }
                     _isError.value = false
                 } else {
@@ -95,7 +92,7 @@ class TryOnViewModel(private val repository: UserRepository) : ViewModel() {
                 _isLoading.value = false
             }
 
-            override fun onFailure(call: Call<InitialResponse<ResponseBody>>, t: Throwable) {
+            override fun onFailure(call: Call<InitialResponse<ImageResponse>>, t: Throwable) {
                 _isLoading.value = false
                 _isError.value = true
             }

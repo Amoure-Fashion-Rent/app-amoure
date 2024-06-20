@@ -20,7 +20,6 @@ import com.amoure.amoure.data.response.SearchResponse
 import com.amoure.amoure.data.response.VisSearchResponse
 import com.amoure.amoure.data.response.WishlistResponse
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -147,7 +146,7 @@ interface ApiService {
         @Query("vtonUrl") vtonUrl: String,
         @Query("productId") productId: Int,
         @Query("category") category: String,
-    ): Call<InitialResponse<ResponseBody>>
+    ): Call<InitialResponse<ImageResponse>>
 
     @GET("categories")
     fun getAllCategory(): Call<InitialResponse<List<CategoryItem>>>

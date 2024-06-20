@@ -1,6 +1,5 @@
 package com.amoure.amoure.ui.addproduct
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,18 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.amoure.amoure.data.UserRepository
 import com.amoure.amoure.data.request.PostProductRequest
 import com.amoure.amoure.data.response.CategoryItem
+import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.ImageResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Profile
 import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -28,7 +29,8 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
     private val _profile = MutableLiveData<Profile>()
     val profile: LiveData<Profile> = _profile
 
-    private val imageList = CopyOnWriteArrayList<String>()
+    private val _addProduct = MutableLiveData<InitialResponse<IdResponse>>()
+    val addProduct: LiveData<InitialResponse<IdResponse>> = _addProduct
 
     private val _categoryResults = MutableLiveData<List<CategoryItem?>>()
     val categoryResults: LiveData<List<CategoryItem?>> = _categoryResults
@@ -56,16 +58,14 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val uploadedImageUrls = mutableListOf<String>()
-
-                for (image in imagesToUpload) {
-                    val imageUrl = postImage(image)
-                    uploadedImageUrls.add(imageUrl)
-                }
+                val uploadedImageUrls = imagesToUpload.map {
+                    async {
+                        postImage(it)
+                    }
+                }.awaitAll()
                 productRequest.images = uploadedImageUrls
                 postProduct(productRequest)
             } catch (e: Exception) {
-                Log.d("Add5", e.toString())
                 _isLoading.value = false
                 _isError.value = true
             }
@@ -86,7 +86,6 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
                             response.body()?.data?.imageUrl?.let {
                                 continuation.resume(it)
                             }
-                            _isError.value = false
                         } else {
                             _isError.value = true
                             _isLoading.value = false
@@ -101,7 +100,6 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
                     }
                 })
             } catch (e: Exception) {
-                Log.d("Add7", e.toString())
                 continuation.resumeWithException(e)
             }
         }
@@ -112,16 +110,14 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
         withContext(Dispatchers.IO) {
             try {
                 val response = ApiConfig.getApiService(accessToken).postProduct(req).execute()
-                Log.d("Add9", response.body().toString())
                 if (response.isSuccessful) {
                     _isLoading.postValue(false)
-                    _isError.postValue(false)
+                    _addProduct.postValue(InitialResponse("Your product successfully added!"))
                 } else {
                     _isLoading.postValue(false)
                     _isError.postValue(true)
                 }
             } catch (e: Exception) {
-                Log.d("Add8", e.toString())
                 _isLoading.postValue(false)
                 _isError.postValue(true)
             }

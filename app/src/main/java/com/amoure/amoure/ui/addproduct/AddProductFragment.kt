@@ -18,10 +18,13 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amoure.amoure.R
 import com.amoure.amoure.data.request.PostProductRequest
+import com.amoure.amoure.data.response.IdResponse
+import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.databinding.FragmentAddproductBinding
 import com.amoure.amoure.reduceFileImage
 import com.amoure.amoure.ui.ViewModelFactory
 import com.amoure.amoure.uriToFile
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -86,6 +89,10 @@ class AddProductFragment : Fragment() {
             showLoading(it)
         }
 
+        addProductViewModel.addProduct.observe(viewLifecycleOwner) {
+            showAlert(it)
+        }
+
         postProduct()
     }
 
@@ -115,6 +122,18 @@ class AddProductFragment : Fragment() {
                 requestImageFile
             )
             imagesToUpload.add(image)
+        }
+    }
+
+    private fun showAlert(response: InitialResponse<IdResponse>) {
+        context?.let {
+            MaterialAlertDialogBuilder(it).apply {
+                setTitle(response.message)
+                setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->
+                }
+                create()
+                show()
+            }
         }
     }
 
@@ -203,6 +222,8 @@ class AddProductFragment : Fragment() {
                     edProfileNotes.setText("")
                     edRetailPrice.setText("")
                     edRentPrice.setText("")
+                    edCategory.setText("")
+                    edSize.setText("")
                 } catch (e: Exception) {
                     Log.d("Add4", e.toString())
                 }
