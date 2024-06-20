@@ -79,14 +79,14 @@ class TryOnViewModel(private val repository: UserRepository) : ViewModel() {
     fun postTryOn(vton: String, productId: Int, category: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).tryOn(vton, productId, category)
-        client.enqueue(object : Callback<ResponseBody> {
+        client.enqueue(object : Callback<InitialResponse<ResponseBody>> {
             override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
+                call: Call<InitialResponse<ResponseBody>>,
+                response: Response<InitialResponse<ResponseBody>>
             ) {
                 if (response.isSuccessful) {
                     _tryOn.value = BitmapFactory.decodeStream(
-                        response.body()!!.byteStream()
+                        response.body()!!.data?.byteStream()
                     )
                 } else {
                     _isError.value = true
@@ -94,7 +94,7 @@ class TryOnViewModel(private val repository: UserRepository) : ViewModel() {
                 _isLoading.value = false
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<InitialResponse<ResponseBody>>, t: Throwable) {
                 _isLoading.value = false
                 _isError.value = true
             }
