@@ -26,6 +26,11 @@ class RegisterViewModel : ViewModel() {
                 call: Call<InitialResponse<IdResponse>>,
                 response: Response<InitialResponse<IdResponse>>
             ) {
+                if (response.isSuccessful) {
+                    _response.value = InitialResponse("OK")
+                } else {
+                    _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
+                }
                 _isLoading.value = false
             }
 
