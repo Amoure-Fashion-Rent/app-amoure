@@ -3,6 +3,7 @@ package com.amoure.amoure.ui.addproduct
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,7 +110,7 @@ class AddProductFragment : Fragment() {
 
             val requestImageFile = uri.asRequestBody("image/jpeg".toMediaType())
             val image = MultipartBody.Part.createFormData(
-                "photo",
+                "file",
                 uri.name,
                 requestImageFile
             )
@@ -171,32 +172,40 @@ class AddProductFragment : Fragment() {
                     edlSize.isErrorEnabled = false
                 }
 
-                for (i in images.indices) {
-                    postImage(images[i])
-                }
+                try {
+                    images.remove("0".toUri())
+                    for (i in images.indices) {
+                        postImage(images[i])
+                    }
+                    Log.d("Add", images.toString())
+                    Log.d("Add2", imagesToUpload.toString())
 
-                val productRequest = PostProductRequest(
-                    product,
-                    emptyList(),
-                    details,
-                    retailPrice.toInt(),
-                    rentPrice.toInt(),
-                    size,
-                    "",
-                    "AVAILABLE",
-                    notes,
-                    categoryIds[categories.indexOf(category)]
-                )
-                addProductViewModel.postProductWithImages(imagesToUpload, productRequest)
-                images.clear()
-                imagesToUpload.clear()
-                images.add("0".toUri())
-                imagesAdapter.submitList(images)
-                edProfileProduct.setText("")
-                edProfileDetails.setText("")
-                edProfileNotes.setText("")
-                edRetailPrice.setText("")
-                edRentPrice.setText("")
+                    val productRequest = PostProductRequest(
+                        product,
+                        emptyList(),
+                        details,
+                        retailPrice.toInt(),
+                        rentPrice.toInt(),
+                        size,
+                        "",
+                        "AVAILABLE",
+                        notes,
+                        categoryIds[categories.indexOf(category)]
+                    )
+                    Log.d("Add4", categoryIds[categories.indexOf(category)].toString())
+                    addProductViewModel.postProductWithImages(imagesToUpload, productRequest)
+                    images.clear()
+                    imagesToUpload.clear()
+                    images.add("0".toUri())
+                    imagesAdapter.submitList(images)
+                    edProfileProduct.setText("")
+                    edProfileDetails.setText("")
+                    edProfileNotes.setText("")
+                    edRetailPrice.setText("")
+                    edRentPrice.setText("")
+                } catch (e: Exception) {
+                    Log.d("Add4", e.toString())
+                }
             }
         }
     }

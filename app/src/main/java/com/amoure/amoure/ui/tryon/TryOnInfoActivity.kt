@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,12 +46,18 @@ class TryOnInfoActivity : AppCompatActivity() {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 imageUri = result.data?.data
+                Glide.with(binding.ivPhoto.context)
+                    .load(imageUri)
+                    .into(binding.ivPhoto)
             }
         }
 
         galleryLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
                 imageUri = uri
+                Glide.with(binding.ivPhoto.context)
+                    .load(imageUri)
+                    .into(binding.ivPhoto)
             }
         }
 
@@ -75,8 +82,16 @@ class TryOnInfoActivity : AppCompatActivity() {
             setItem()
 
             btRun.setOnClickListener {
+                if (imageUri == null) {
+                    showToast("Need to upload first!")
+                    return@setOnClickListener
+                }
                 val category = edCategory.text.toString()
                 val moveIntent = Intent(baseContext, TryOnResultActivity::class.java)
+                if (category.isEmpty()) {
+                    showToast("Need to choose category first!")
+                    return@setOnClickListener
+                }
                 moveIntent.putExtra(TryOnResultActivity.PRODUCT_ID, productId.toString())
                 moveIntent.putExtra(TryOnResultActivity.PRODUCT_NAME, productName)
                 moveIntent.putExtra(TryOnResultActivity.OWNER_NAME, ownerName)
@@ -105,6 +120,11 @@ class TryOnInfoActivity : AppCompatActivity() {
                 .into(ivProduct)
         }
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 
     companion object {
         const val PRODUCT_ID = "product_id"

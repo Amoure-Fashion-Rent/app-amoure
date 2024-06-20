@@ -16,9 +16,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProductViewModel(private val repository: UserRepository) : ViewModel() {
-    private val _similarItems = MutableLiveData<List<ProductItem?>>()
-    val similarItems: LiveData<List<ProductItem?>> = _similarItems
-
     private val _product = MutableLiveData<ProductItem>()
     val product: LiveData<ProductItem> = _product
 
@@ -38,7 +35,6 @@ class ProductViewModel(private val repository: UserRepository) : ViewModel() {
             repository.getSession().collect {
                 if (it.isLogin) {
                     accessToken = it.accessToken
-                    getSimilarItems()
                 }
             }
         }
@@ -111,32 +107,5 @@ class ProductViewModel(private val repository: UserRepository) : ViewModel() {
                 }
             }
         }
-    }
-
-    private fun getSimilarItems() {
-        _isLoading.value = true
-//        val client = ApiConfig.getApiService(accessToken).getProducts()
-        // TODO: API ML
-//        client.enqueue(object : Callback<InitialResponse<ProductsResponse>> {
-//            override fun onResponse(
-//                call: Call<InitialResponse<ProductsResponse>>,
-//                response: Response<InitialResponse<ProductsResponse>>
-//            ) {
-//                if (response.isSuccessful) {
-//                    response.body()?.data?.products.let {
-//                        _similarItems.value = it
-//                    }
-//                    _isError.value = false
-//                } else {
-//                    _isError.value = true
-//                }
-//                _isLoading.value = false
-//            }
-//
-//            override fun onFailure(call: Call<InitialResponse<ProductsResponse>>, t: Throwable) {
-//                _isError.value = true
-//                _isLoading.value = false
-//            }
-//        })
     }
 }

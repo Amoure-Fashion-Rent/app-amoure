@@ -59,6 +59,9 @@ data class ProductItem(
 
 	@field:SerializedName("_count")
 	val count: Int? = null,
+
+	@field:SerializedName("similarProducts")
+	val similarProducts: ProductsResponse? = null,
 )
 
 data class Rating(

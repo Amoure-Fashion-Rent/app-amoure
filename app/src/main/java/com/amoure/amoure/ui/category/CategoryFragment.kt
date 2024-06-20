@@ -64,7 +64,7 @@ class CategoryFragment : Fragment() {
                         val query = searchView.text.toString()
                         val bundle = Bundle()
                         bundle.putString(SearchFragment.QUERY, query)
-                        findNavController().navigate(R.id.action_navigation_home_to_navigation_search, bundle)
+                        findNavController().navigate(R.id.action_navigation_category_to_navigation_search, bundle)
                     }
                     false
                 }

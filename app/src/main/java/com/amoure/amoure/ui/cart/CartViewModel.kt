@@ -9,7 +9,6 @@ import com.amoure.amoure.data.request.PostCartRequest
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Profile
-import com.amoure.amoure.data.response.ProfileResponse
 import com.amoure.amoure.data.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -83,19 +82,19 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
                     })
                 }
             }
-            }
+        }
     }
 
     private fun getProfile() {
         _isLoading.value = true
         val client = ApiConfig.getApiService(accessToken).getProfile()
-        client.enqueue(object : Callback<InitialResponse<ProfileResponse>> {
+        client.enqueue(object : Callback<InitialResponse<Profile>> {
             override fun onResponse(
-                call: Call<InitialResponse<ProfileResponse>>,
-                response: Response<InitialResponse<ProfileResponse>>
+                call: Call<InitialResponse<Profile>>,
+                response: Response<InitialResponse<Profile>>
             ) {
                 if (response.isSuccessful) {
-                    response.body()?.data?.user?.let {
+                    response.body()?.data?.let {
                         _profile.value = it
                     }
                     _isLoading.value = false
@@ -106,7 +105,7 @@ class CartViewModel(private val repository: UserRepository) : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<InitialResponse<ProfileResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<InitialResponse<Profile>>, t: Throwable) {
                 _isLoading.value = false
                 _isError.value = true
             }

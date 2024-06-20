@@ -43,7 +43,7 @@
             android:background="@color/gray_blue_100"
             app:backgroundTint="@color/gray_blue_200"
             app:navigationIconTint="@color/navy_blue_700"
-            app:navigationIcon="@drawable/ic_search"
+            app:navigationIcon="@drawable/ic_arrow_back_24px"
             app:forceDefaultNavigationOnClickListener="false" />
 
     </com.google.android.material.appbar.AppBarLayout>

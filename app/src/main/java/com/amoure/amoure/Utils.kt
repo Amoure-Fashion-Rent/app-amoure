@@ -164,6 +164,20 @@ fun Calendar.formatCalendarToISO8601(): String {
     return dateFormat.format(this.time)
 }
 
+fun String.formatCalendarToISO8601(): String {
+    val initialFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
+    val date: Date? = initialFormat.parse(this)
+
+    date?.let {
+        val newFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        newFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        return newFormat.format(it)
+    } ?: run {
+        return "Failed to parse the date"
+    }
+}
+
 fun categoryImages(): List<String> {
     return listOf(
         "https://storage.googleapis.com/img-product-amoure/13_0.jpg",

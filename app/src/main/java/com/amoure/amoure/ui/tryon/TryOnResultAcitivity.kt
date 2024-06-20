@@ -4,6 +4,7 @@ import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
@@ -60,9 +61,13 @@ class TryOnResultActivity : AppCompatActivity() {
         tryOnActivity.tryOn.observe(this) {
             it?.let {
                 Glide.with(binding.ivResult.context)
-                    .load(imageUrl)
+                    .load(it)
                     .into(binding.ivResult)
             }
+        }
+
+        tryOnActivity.isError.observe(this) {
+            if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 
         tryOnActivity.isLoading.observe(this) {
@@ -86,23 +91,14 @@ class TryOnResultActivity : AppCompatActivity() {
 
     private fun postSearchVis(imageUri: Uri) {
         val vtonImageFile = uriToFile(imageUri, this).reduceFileImage()
-        val garmImageFile = uriToFile(Uri.parse(imageUrl), this).reduceFileImage()
-        showLoading(true)
 
         val requestVtonImageFile = vtonImageFile.asRequestBody("image/jpeg".toMediaType())
         val vtonImage = MultipartBody.Part.createFormData(
-            "photo",
-            garmImageFile.name,
+            "file",
+            vtonImageFile.name,
             requestVtonImageFile
         )
-
-        val requestGarmImageFile = garmImageFile.asRequestBody("image/jpeg".toMediaType())
-        val garmImage = MultipartBody.Part.createFormData(
-            "photo",
-            garmImageFile.name,
-            requestGarmImageFile
-        )
-        tryOnActivity.postTryOn(vtonImage, garmImage, category)
+        tryOnActivity.tryOn(vtonImage, productId, category)
     }
 
     private fun setItem() {
@@ -121,6 +117,11 @@ class TryOnResultActivity : AppCompatActivity() {
     private fun showLoading(show: Boolean) {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 
     companion object {
         const val IMAGE_URI = "image_uri"

@@ -14,10 +14,11 @@ import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.Profile
 import com.amoure.amoure.databinding.ActivityEditProfileBinding
+import com.amoure.amoure.formatCalendarToISO8601
+import com.amoure.amoure.formatDate
 import com.amoure.amoure.isPhoneNumberValid
 import com.amoure.amoure.ui.ViewModelFactory
 import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -63,7 +64,6 @@ class EditProfileActivity : AppCompatActivity() {
                 val constraintsBuilder =
                     CalendarConstraints.Builder()
                         .setFirstDayOfWeek(Calendar.MONDAY)
-                        .setValidator(DateValidatorPointForward.now())
 
                 val datePicker =
                     MaterialDatePicker.Builder.datePicker()
@@ -77,7 +77,7 @@ class EditProfileActivity : AppCompatActivity() {
                 datePicker.addOnPositiveButtonClickListener {
                     val cal = Calendar.getInstance()
                     cal.timeInMillis = it
-                    val format = SimpleDateFormat("dd/MM/yyyy")
+                    val format = SimpleDateFormat("EEEE, dd MMMM yyyy")
                     val formattedDate: String = format.format(cal.time)
                     binding.edlProfileBirthDate.editText?.setText(formattedDate)
                 }
@@ -89,8 +89,8 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun setProfile(profile: Profile) {
         with(binding) {
-            userType = profile.userType.toString()
-            if (profile.userType == "OWNER") {
+            userType = profile.role.toString()
+            if (profile.role == "OWNER") {
                 tvProfileName.text = getString(R.string.designer_name)
                 tvProfileBirthDate.visibility = View.GONE
                 edlProfileBirthDate.visibility = View.GONE
@@ -102,7 +102,7 @@ class EditProfileActivity : AppCompatActivity() {
             edProfilePostalCode.setText(profile.postalCode)
             edProfileAddress.setText(profile.addressDetail)
             edProfilePhoneNum.setText(profile.phoneNumber)
-            edProfileBirthDate.setText(profile.birthDate)
+            edProfileBirthDate.setText(profile.birthDate?.formatDate())
         }
     }
 
@@ -150,7 +150,7 @@ class EditProfileActivity : AppCompatActivity() {
                 } else {
                     edlProfilePhoneNum.isErrorEnabled = false
                 }
-                val birthDate = edProfileBirthDate.text.toString()
+                val birthDate = edProfileBirthDate.text.toString().formatCalendarToISO8601()
                 if (birthDate.isEmpty()) {
                     showInputErrorMessage(edlProfileBirthDate, "birth date")
                     return@setOnClickListener
@@ -168,7 +168,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun showAlert(response: InitialResponse<IdResponse>) {
-        if (response.message == "OK") {
+        if (response.message == "Profile updated successfully") {
             MaterialAlertDialogBuilder(this).apply {
                 setTitle(getString(R.string.title_dialog_edit_profile))
                 setPositiveButton(resources.getString(R.string.alert_ok)) { _, _ ->

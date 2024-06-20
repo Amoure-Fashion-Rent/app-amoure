@@ -2,12 +2,6 @@ package com.amoure.amoure.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ProfileResponse(
-
-	@field:SerializedName("user")
-	val user: Profile? = null
-)
-
 data class Profile(
 
 	@field:SerializedName("addressDetail")
@@ -18,9 +12,6 @@ data class Profile(
 
 	@field:SerializedName("province")
 	val province: String? = null,
-
-	@field:SerializedName("city")
-	val city: String? = null,
 
 	@field:SerializedName("district")
 	val district: String? = null,
@@ -34,8 +25,8 @@ data class Profile(
 	@field:SerializedName("id")
 	val id: String? = null,
 
-	@field:SerializedName("userType")
-	val userType: String? = null,
+	@field:SerializedName("role")
+	val role: String? = null,
 
 	@field:SerializedName("birthDate")
 	val birthDate: String? = null,

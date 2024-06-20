@@ -49,10 +49,7 @@ class ProductActivity : AppCompatActivity() {
         productViewModel.product.observe(this) {
             setProduct(it)
             setVisibility(true)
-        }
-
-        productViewModel.similarItems.observe(this) {
-            setSimilarItems(it)
+            it.similarProducts?.products?.let { it1 -> setSimilarItems(it1) }
         }
 
         productViewModel.isError.observe(this) {

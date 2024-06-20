@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.amoure.amoure.databinding.FragmentSearchBinding
 import com.amoure.amoure.reduceFileImage
 import com.amoure.amoure.ui.ProductMedium2Adapter
 import com.amoure.amoure.ui.ViewModelFactory
+import com.amoure.amoure.ui.category.CategoryClickFragment
 import com.amoure.amoure.ui.product.ProductActivity
 import com.amoure.amoure.uriToFile
 import com.bumptech.glide.Glide
@@ -52,12 +54,8 @@ class SearchFragment : Fragment() {
             searchViewModel.getSearch(it)
         }
         imageUri?.let {
-//            binding.itemProductSmall.visibility = View.GONE
-            binding.itemProductSmall.visibility = View.VISIBLE
-            Glide.with(binding.ivProduct.context)
-                .load(imageUri)
-                .into(binding.ivProduct)
-//            postSearchVis(it)
+            binding.itemProductSmall.visibility = View.GONE
+            postSearchVis(it)
         }
 
         searchViewModel.searchResults.observe(viewLifecycleOwner) {
@@ -69,12 +67,36 @@ class SearchFragment : Fragment() {
                 Glide.with(binding.ivProduct.context)
                     .load(imageUri)
                     .into(binding.ivProduct)
-                // TODO: Get prediction category
-                binding.tvVisSearch.text = String.format(getString(R.string.vis_search_message), "")
-                binding.tvVisSearch.setOnClickListener {
-                    findNavController().navigate(R.id.navigation_category_click)
+            }
+        }
+
+        searchViewModel.combinedVariables.observe(viewLifecycleOwner) { (categories, category) ->
+            val category2 = if (category == "jumpsuits_and_rompers") {
+                "Jumpsuits & Rompers"
+            } else {
+                category.replaceFirstChar { it.uppercase() }
+            }
+            binding.tvVisSearch.text = String.format(getString(R.string.vis_search_message), category2)
+
+            fun getCategoryIDByName(categoryName: String): Int? {
+                return categories.firstOrNull { it1 ->
+                    it1?.name == categoryName
+                }?.id
+            }
+
+            binding.tvVisSearch.setOnClickListener {
+                val bundle = Bundle()
+                getCategoryIDByName(category2)?.let { it1 ->
+                    bundle.putInt(CategoryClickFragment.ID,
+                        it1
+                    )
+                    findNavController().navigate(R.id.action_navigation_search_to_navigation_category_click, bundle)
                 }
             }
+        }
+
+        searchViewModel.isError.observe(this) {
+            if (it == true) showToast(resources.getString(R.string.alert_error))
         }
 
         searchViewModel.isLoading.observe(viewLifecycleOwner) {
@@ -119,7 +141,7 @@ class SearchFragment : Fragment() {
 
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
             val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
+                "file",
                 imageFile.name,
                 requestImageFile
             )
@@ -142,6 +164,10 @@ class SearchFragment : Fragment() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

@@ -10,13 +10,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            app:contentScrim="@color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item_product_small"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="20dp">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="10dp"
+            app:contentScrim="@color/white">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_product"
@@ -58,23 +61,6 @@
 
         </LinearLayout>
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
-        android:background="@color/gray_blue_100">
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="@string/search_hint"
-            app:backgroundTint="@color/gray_blue_200"
-            app:navigationIconTint="@color/navy_blue_700"
-            app:navigationIcon="@drawable/ic_arrow_back_24px"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <com.google.android.material.search.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
@@ -88,10 +74,11 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:liftOnScroll="true">
+        android:background="@color/gray_blue_100"
+        android:backgroundTint="@color/gray_blue_100"
+        app:scrimAnimationDuration="0"
+        android:animateLayoutChanges="false"
+        android:stateListAnimator="@null">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
@@ -100,7 +87,24 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="@drawable/app_icon"
-            app:title="@string/app_name" />
+            app:title="@string/app_name"
+            app:scrimAnimationDuration="0"
+            android:animateLayoutChanges="false" />
+
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/search_hint"
+            android:layout_marginTop="-1dp"
+            android:background="@color/gray_blue_100"
+            app:backgroundTint="@color/gray_blue_200"
+            app:navigationIconTint="@color/navy_blue_700"
+            app:navigationIcon="@drawable/ic_arrow_back_24px"
+            app:forceDefaultNavigationOnClickListener="false"
+            app:scrimAnimationDuration="0"
+            android:animateLayoutChanges="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

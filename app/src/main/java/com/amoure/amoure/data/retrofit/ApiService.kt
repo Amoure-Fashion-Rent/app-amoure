@@ -4,6 +4,7 @@ import com.amoure.amoure.data.request.PostCartRequest
 import com.amoure.amoure.data.request.PostProductRequest
 import com.amoure.amoure.data.request.PostReviewRequest
 import com.amoure.amoure.data.request.PostWishlistRequest
+import com.amoure.amoure.data.request.PutProfileRequest
 import com.amoure.amoure.data.response.CategoryItem
 import com.amoure.amoure.data.response.IdResponse
 import com.amoure.amoure.data.response.ImageResponse
@@ -11,12 +12,15 @@ import com.amoure.amoure.data.response.InitialResponse
 import com.amoure.amoure.data.response.LoginResponse
 import com.amoure.amoure.data.response.ProductItem
 import com.amoure.amoure.data.response.ProductsResponse
-import com.amoure.amoure.data.response.ProfileResponse
+import com.amoure.amoure.data.response.Profile
 import com.amoure.amoure.data.response.RentResponse
 import com.amoure.amoure.data.response.ReviewItem
 import com.amoure.amoure.data.response.ReviewResponse
+import com.amoure.amoure.data.response.SearchResponse
+import com.amoure.amoure.data.response.VisSearchResponse
 import com.amoure.amoure.data.response.WishlistResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -51,17 +55,11 @@ interface ApiService {
     fun logout(): Call<InitialResponse<IdResponse>>
 
     @GET("auth/profile")
-    fun getProfile(): Call<InitialResponse<ProfileResponse>>
+    fun getProfile(): Call<InitialResponse<Profile>>
 
     @PATCH("auth/profile")
     fun putProfile(
-        @Field("fullName") fullName: String,
-        @Field("addressDetail") addressDetail: String,
-        @Field("province") province: String,
-        @Field("district") district: String,
-        @Field("postalCode") postalCode: String,
-        @Field("phoneNumber") phoneNumber: String,
-        @Field("birthDate") birthDate: String?,
+        @Body profile: PutProfileRequest
     ): Call<InitialResponse<IdResponse>>
 
     @GET("products")
@@ -86,11 +84,10 @@ interface ApiService {
         @Body body: PostCartRequest
     ): Call<InitialResponse<IdResponse>>
 
-    // TODO: change path
-    @GET("products/search")
-    fun getSearch(
-        @Query("name") name: String
-    ): Call<InitialResponse<ProductsResponse>>
+    @GET("ml/search")
+    fun searchByQuery(
+        @Query("query") name: String
+    ): Call<InitialResponse<SearchResponse>>
 
     @GET("reviews")
     suspend fun getReviews(
@@ -140,23 +137,23 @@ interface ApiService {
         @Part file: MultipartBody.Part,
     ): Call<InitialResponse<ImageResponse>>
 
+    @GET("ml/image/search")
+    fun searchByImage(
+        @Query("imageUrl") name: String
+    ): Call<InitialResponse<VisSearchResponse>>
 
-    // TODO: change path
-    @Multipart
-    @POST("products/search")
-    fun postSearchByVisSearch(
-        @Part file: MultipartBody.Part,
-    ): Call<InitialResponse<ProductsResponse>>
-
-    // TODO: change path
-    @Multipart
-    @POST("process_dc")
-    fun postTryOn(
-        @Part("vton_img") vtonImage: MultipartBody.Part,
-        @Part("garm_img") garmIMage: MultipartBody.Part,
-        @Field("category") category: String,
-    ): Call<InitialResponse<String>>
+    @GET("ml/vton")
+    fun tryOn(
+        @Query("vtonUrl") vtonUrl: String,
+        @Query("productId") productId: Int,
+        @Query("category") category: String,
+    ): Call<InitialResponse<ResponseBody>>
 
     @GET("categories")
     fun getAllCategory(): Call<InitialResponse<List<CategoryItem>>>
+    @Multipart
+    @POST("ml/image/upload")
+    fun postMlImage(
+        @Part file: MultipartBody.Part,
+    ): Call<InitialResponse<ImageResponse>>
 }

@@ -16,9 +16,9 @@
         <item>Shoes</item>
     </string-array>
     <string-array name="try_on" >
-        <item>Half-Body</item>
-        <item>Lower-Body</item>
-        <item>Full-Body</item>
+        <item>Upper-body</item>
+        <item>Lower-body</item>
+        <item>Dresses</item>
     </string-array>
     <string-array name="size" >
         <item>XS</item>

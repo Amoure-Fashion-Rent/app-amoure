@@ -52,7 +52,14 @@ class CategoryClickFragment : Fragment() {
 
         setProduct()
         setSearchBar()
+        setTopAppBar()
         return root
+    }
+
+    private fun setTopAppBar() {
+        binding.searchBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setSearchBar() {
@@ -67,7 +74,7 @@ class CategoryClickFragment : Fragment() {
                         val query = searchView.text.toString()
                         val bundle = Bundle()
                         bundle.putString(SearchFragment.QUERY, query)
-                        findNavController().navigate(R.id.action_navigation_home_to_navigation_search, bundle)
+                        findNavController().navigate(R.id.action_navigation_category_click_to_navigation_search, bundle)
                     }
                     false
                 }
