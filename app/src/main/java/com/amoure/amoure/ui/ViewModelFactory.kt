@@ -17,7 +17,7 @@ import com.amoure.amoure.ui.product.ProductViewModel
 import com.amoure.amoure.ui.profile.ProfileViewModel
 import com.amoure.amoure.ui.renthistory.RentHistoryViewModel
 import com.amoure.amoure.ui.review.ReviewViewModel
-import com.amoure.amoure.ui.review.TryOnViewModel
+import com.amoure.amoure.ui.tryon.TryOnViewModel
 import com.amoure.amoure.ui.search.SearchViewModel
 import com.amoure.amoure.ui.wishlist.WishlistViewModel
 

@@ -26,17 +26,13 @@ class RegisterViewModel : ViewModel() {
                 call: Call<InitialResponse<IdResponse>>,
                 response: Response<InitialResponse<IdResponse>>
             ) {
-                if (response.isSuccessful) {
-                    _response.value = InitialResponse("OK")
-                } else {
-                    _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
-                }
+                _response.value = response.body()
                 _isLoading.value = false
             }
 
             override fun onFailure(call: Call<InitialResponse<IdResponse>>, t: Throwable) {
                 _isLoading.value = false
-                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
+                _response.value = InitialResponse("Please try again later! Server isn't responding")
             }
         })
     }

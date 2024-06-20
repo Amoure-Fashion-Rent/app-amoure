@@ -41,7 +41,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
             override fun onFailure(call: Call<InitialResponse<LoginResponse>>, t: Throwable) {
                 _isLoading.value = false
-                _response.value = InitialResponse("Please try again later\\! Server isn\\'t responding")
+                _response.value = InitialResponse("Please try again later! Server isn't responding")
             }
         })
     }

@@ -12,7 +12,6 @@ import com.amoure.amoure.R
 import com.amoure.amoure.databinding.ActivityTryonResultBinding
 import com.amoure.amoure.reduceFileImage
 import com.amoure.amoure.ui.ViewModelFactory
-import com.amoure.amoure.ui.review.TryOnViewModel
 import com.amoure.amoure.uriToFile
 import com.amoure.amoure.withCurrencyFormat
 import com.bumptech.glide.Glide

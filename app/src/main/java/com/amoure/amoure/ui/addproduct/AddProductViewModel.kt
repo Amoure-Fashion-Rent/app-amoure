@@ -20,6 +20,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class AddProductViewModel(private val repository: UserRepository) : ViewModel() {
     private val _profile = MutableLiveData<Profile>()
@@ -53,10 +56,13 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
         viewModelScope.launch {
             _isLoading.value = true
             try {
+                val uploadedImageUrls = mutableListOf<String>()
+
                 for (image in imagesToUpload) {
-                    postImage(image)
+                    val imageUrl = postImage(image)
+                    uploadedImageUrls.add(imageUrl)
                 }
-                productRequest.images = imageList.toList()
+                productRequest.images = uploadedImageUrls
                 postProduct(productRequest)
             } catch (e: Exception) {
                 Log.d("Add5", e.toString())
@@ -66,8 +72,9 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
         }
     }
 
-    private suspend fun postImage(multipartBody: MultipartBody.Part) {
-        withContext(Dispatchers.IO) {
+    private suspend fun postImage(multipartBody: MultipartBody.Part): String {
+        return withContext(Dispatchers.IO) {
+            suspendCoroutine { continuation ->
             try {
                 val client = ApiConfig.getApiService(accessToken).postProductImage(multipartBody)
                 client.enqueue(object : Callback<InitialResponse<ImageResponse>> {
@@ -77,25 +84,27 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
                     ) {
                         if (response.isSuccessful) {
                             response.body()?.data?.imageUrl?.let {
-                                Log.d("Add6", it)
-                                imageList.add(it)
-                                Log.d("Add61", imageList.toList().toString())
+                                continuation.resume(it)
                             }
                             _isError.value = false
                         } else {
                             _isError.value = true
                             _isLoading.value = false
+                            continuation.resumeWithException(Exception("Image upload failed"))
                         }
                     }
 
                     override fun onFailure(call: Call<InitialResponse<ImageResponse>>, t: Throwable) {
                         _isError.value = true
                         _isLoading.value = false
+                        continuation.resumeWithException(t)
                     }
                 })
             } catch (e: Exception) {
                 Log.d("Add7", e.toString())
+                continuation.resumeWithException(e)
             }
+        }
         }
     }
 
@@ -107,7 +116,6 @@ class AddProductViewModel(private val repository: UserRepository) : ViewModel() 
                 if (response.isSuccessful) {
                     _isLoading.postValue(false)
                     _isError.postValue(false)
-                    imageList.clear()
                 } else {
                     _isLoading.postValue(false)
                     _isError.postValue(true)

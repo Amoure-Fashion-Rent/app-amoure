@@ -1,4 +1,4 @@
-package com.amoure.amoure.ui.review
+package com.amoure.amoure.ui.tryon
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -85,9 +85,10 @@ class TryOnViewModel(private val repository: UserRepository) : ViewModel() {
                 response: Response<InitialResponse<ResponseBody>>
             ) {
                 if (response.isSuccessful) {
-                    _tryOn.value = BitmapFactory.decodeStream(
-                        response.body()!!.data?.byteStream()
-                    )
+                    response.body()?.data?.let {
+                        _tryOn.value = BitmapFactory.decodeStream(it.byteStream())
+                    }
+                    _isError.value = false
                 } else {
                     _isError.value = true
                 }
